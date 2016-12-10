@@ -17,6 +17,13 @@ public class ClassNodeGraph {
 		
 	}
 	
+	public List<IClassEdge> getEdges() {
+		return this.classEdges;
+	}
+	
+	public List<IClassVertex> getVertices() {
+		return this.classVertices;
+	}
 	
 	public void addClassVertex(IClassVertex vertex){
 		this.classVertices.add(vertex);

@@ -1,11 +1,16 @@
 package projectFile;
 
-public class DOMNode {
+public class DOMClassNode implements IDOMNode{
 	
-	String OutlineColor;
-	String BGColor;
-	String Font;
+	String OutlineColor = "black";
+	String BGColor = "white";
+	String Font = "SansSerif";
+	String classTitle = "";
 	
+	
+	public void setTitle(String title) {
+		this.classTitle = title;
+	}
 	
 	public void setOutlineColor(String color) {
 		this.OutlineColor=color;
@@ -26,4 +31,5 @@ public class DOMNode {
 	public String getClassType() {
 		return "";
 	}
+	
 }

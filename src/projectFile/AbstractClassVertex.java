@@ -11,7 +11,7 @@ public class AbstractClassVertex implements IClassVertex {
 	}
 	
 	@Override
-	public DOMNode getCorrespondingDOMNode() {
+	public DOMClassNode getCorrespondingDOMNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}

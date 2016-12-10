@@ -11,7 +11,7 @@ public class InterfaceVertex implements IClassVertex {
 	}
 	
 	@Override
-	public DOMNode getCorrespondingDOMNode() {
+	public DOMClassNode getCorrespondingDOMNode() {
 		return null;
 
 	}

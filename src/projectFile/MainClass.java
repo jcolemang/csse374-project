@@ -14,8 +14,11 @@ public class MainClass {
 		for(String str: args){
 			strs.add(str);
 		}
-		ClassNodeGraph NodeGraph = gp.parse(strs);
-		System.out.println(NodeGraph);
+		ClassNodeGraph nodeGraph = gp.parse(strs);
+		System.out.println(nodeGraph);
+		
+		ClassNodeDOMTree dom = new ClassNodeDOMTree();
+		dom.generateDOMTree(nodeGraph);
 	}
 
 }
