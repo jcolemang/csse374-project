@@ -11,13 +11,17 @@ public class DOMGraph implements Iterable<DOMClassNode>{
 	public String abstractClassColor;
 	public String vanillaClassColor;
 	private List<DOMClassNode> domNodes;
-	private int fontSize;
+	private int fontSize = 14;
 	
 	public void generateDOMTree(ClassNodeGraph g) {
+		this.domNodes = new ArrayList<DOMClassNode>();
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
 		for(IClassVertex vert : vertices) {
+			DOMClassNode en = new DOMClassNode();
+			en.setTitle(vert.getTitle());
+			domNodes.add(en);
 		}
 		
 		for(IClassEdge edge : edges) {
