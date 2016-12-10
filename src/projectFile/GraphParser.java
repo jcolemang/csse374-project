@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 
 public class GraphParser {
@@ -15,11 +16,11 @@ public class GraphParser {
 		PUBLIC
 	}
 
-	private ClassNodeGraph graph;
 	private boolean recursivelyParse;
 	private PrivacyLevel privacyLevel;
 
 	public ClassNodeGraph parse(List<String> classNames) throws IOException{
+		ClassNodeGraph graph = new ClassNodeGraph();
 		
 		for (String className : classNames) {
 			IClassVertex newVertex = makeSingleNode(className);
@@ -48,7 +49,7 @@ public class GraphParser {
 	
 
 	public ClassNodeGraph parse(String packageName){
-		return graph;
+		return null;
 	}
 	
 
@@ -63,20 +64,22 @@ public class GraphParser {
 	
 	
 	private InterfaceVertex makeInterfaceVertex(ClassNode classNode) {
-		InterfaceVertex iv = new InterfaceVertex();
-		
-		classNode.
-		
+		String name = Type.getObjectType(classNode.name).getClassName();
+		InterfaceVertex iv = new InterfaceVertex(name);
 		return iv;
 	}
 	
 	
 	private AbstractClassVertex makeAbstractVertex(ClassNode classNode) {
-		return null;
+		String name = Type.getObjectType(classNode.name).getClassName();
+		AbstractClassVertex av =new AbstractClassVertex(name);
+		return av;
 	}
 	
 	
 	private RegularClassVertex makeVanillaVertex(ClassNode classNode) {
-		return null;
+		String name = Type.getObjectType(classNode.name).getClassName();
+		RegularClassVertex vv =new RegularClassVertex(name);
+		return vv;
 	}
 }
