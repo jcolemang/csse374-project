@@ -1,11 +1,17 @@
 package projectFile;
 
 public class InterfaceVertex implements IClassVertex {
+	
+	private String title = "";
 
 	@Override
 	public DOMNode getCorrespondingDOMNode() {
-		// TODO Auto-generated method stub
-		return null;
+
+	}
+
+	@Override
+	public String getTitle() {
+		return this.title;
 	}
 
 }
