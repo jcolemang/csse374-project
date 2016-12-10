@@ -17,8 +17,11 @@ public class MainClass {
 		ClassNodeGraph nodeGraph = gp.parse(strs);
 		System.out.println(nodeGraph);
 		
-		ClassNodeDOMTree dom = new ClassNodeDOMTree();
+		DOMGraph dom = new DOMGraph();
 		dom.generateDOMTree(nodeGraph);
+		
+		TextGenerator generator = new TextGenerator();
+		generator.writeFile("out.dot", dom);
 	}
 
 }

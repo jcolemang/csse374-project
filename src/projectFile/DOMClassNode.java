@@ -2,10 +2,19 @@ package projectFile;
 
 public class DOMClassNode implements IDOMNode{
 	
+	public enum EdgeType {
+		EXTENDS,
+		IMPLEMENTS,
+		HAS_A,
+		DEPENDS_ON
+	}
+		
 	String OutlineColor = "black";
 	String BGColor = "white";
 	String Font = "SansSerif";
 	String classTitle = "";
+	String color;
+	EdgeType type;
 	
 	
 	public void setTitle(String title) {
@@ -25,11 +34,15 @@ public class DOMClassNode implements IDOMNode{
 	}
 	
 	public String getClassName() {
-		return "";
+		return this.classTitle;
 	}
 	
 	public String getClassType() {
 		return "";
+	}
+	
+	public void setEdgeType(EdgeType type) {
+		this.type = type;
 	}
 	
 }
