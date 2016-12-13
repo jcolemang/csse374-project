@@ -12,18 +12,30 @@ public class AbstractClassVertex implements IClassVertex {
 	
 	@Override
 	public DOMClassNode getCorrespondingDOMNode() {
-		// TODO Auto-generated method stub
+		// TODO Implement this
 		return null;
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
+		// TODO Implement this
 		return this.title;
 	}
 
 	@Override
 	public List<String> getMethodNames() {
+		// TODO Implement this
+		return null;
+	}
+
+	@Override
+	public DOMClassNode setCorrespondingDOMNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<IClassEdge> getEdges() {
 		// TODO Auto-generated method stub
 		return null;
 	}

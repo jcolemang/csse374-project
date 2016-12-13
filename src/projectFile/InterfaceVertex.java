@@ -23,7 +23,18 @@ public class InterfaceVertex implements IClassVertex {
 
 	@Override
 	public List<String> getMethodNames() {
-		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DOMClassNode setCorrespondingDOMNode() {
+		// TODO Implement this
+		return null;
+	}
+
+	@Override
+	public List<IClassEdge> getEdges() {
+		// TODO Implement this
 		return null;
 	}
 

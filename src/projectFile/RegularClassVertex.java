@@ -2,6 +2,9 @@ package projectFile;
 
 import java.util.List;
 
+/*
+ * TODO make a "set corresponding DOM node" method
+ */
 public class RegularClassVertex implements IClassVertex {
 
 	private String title;
@@ -12,19 +15,28 @@ public class RegularClassVertex implements IClassVertex {
 	
 	@Override
 	public DOMClassNode getCorrespondingDOMNode() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
 		return this.title;
 	}
 
 	@Override
 	public List<String> getMethodNames() {
-		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DOMClassNode setCorrespondingDOMNode() {
+		// TODO Implement this
+		return null;
+	}
+
+	@Override
+	public List<IClassEdge> getEdges() {
+		// TODO Implement this
 		return null;
 	}
 

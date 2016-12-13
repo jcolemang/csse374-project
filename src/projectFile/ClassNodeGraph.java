@@ -6,11 +6,10 @@ import java.util.List;
 
 public class ClassNodeGraph {
 	
-//	private List<IAnalyzer> analyzers;
 	private List<IClassVertex> classVertices;
 	private List<IClassEdge> classEdges;
 	
-	public ClassNodeGraph(){
+	public ClassNodeGraph() {
 		
 		this.classVertices = new ArrayList<IClassVertex>();
 		this.classEdges = new ArrayList<IClassEdge>();

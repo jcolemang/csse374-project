@@ -72,14 +72,14 @@ public class GraphParser {
 	
 	private AbstractClassVertex makeAbstractVertex(ClassNode classNode) {
 		String name = Type.getObjectType(classNode.name).getClassName();
-		AbstractClassVertex av =new AbstractClassVertex(name);
+		AbstractClassVertex av = new AbstractClassVertex(name);
 		return av;
 	}
 	
 	
 	private RegularClassVertex makeVanillaVertex(ClassNode classNode) {
 		String name = Type.getObjectType(classNode.name).getClassName();
-		RegularClassVertex vv =new RegularClassVertex(name);
+		RegularClassVertex vv = new RegularClassVertex(name);
 		return vv;
 	}
 }

@@ -8,7 +8,6 @@ import org.objectweb.asm.ClassReader;
 public class MainClass {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		GraphParser gp = new GraphParser();
 		ArrayList<String> strs = new ArrayList<String>();
 		for(String str: args){
@@ -20,7 +19,7 @@ public class MainClass {
 		DOMGraph dom = new DOMGraph();
 		dom.generateDOMTree(nodeGraph);
 		
-		TextGenerator generator = new TextGenerator();
+		TextAggregator generator = new TextAggregator();
 		generator.writeFile("out.dot", dom);
 	}
 

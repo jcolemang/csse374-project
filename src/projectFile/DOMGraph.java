@@ -5,25 +5,26 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class DOMGraph implements Iterable<DOMClassNode>{
+public class DOMGraph implements Iterable<IDOMNode>{
 	
-	public String interfaceColor;
-	public String abstractClassColor;
-	public String vanillaClassColor;
-	private List<DOMClassNode> domNodes;
+	private String interfaceColor;
+	private String abstractClassColor;
+	private String vanillaClassColor;
+	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
 	public void generateDOMTree(ClassNodeGraph g) {
-		this.domNodes = new ArrayList<DOMClassNode>();
+		this.domNodes = new ArrayList<IDOMNode>();
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
-		for(IClassVertex vert : vertices) {
-			DOMClassNode en = new DOMClassNode();
-			en.setTitle(vert.getTitle());
-			domNodes.add(en);
+		for (IClassVertex vert : vertices) {
+			this.addDOMVertex(vert);
 		}
 		
+		/*
+		 * TODO This currently doesn't do anything
+		 */
 		for(IClassEdge edge : edges) {
 			DOMClassNode en = new DOMClassNode();
 			domNodes.add(en);
@@ -32,6 +33,10 @@ public class DOMGraph implements Iterable<DOMClassNode>{
 	}
 	
 	
+	/*
+	 * TODO We will need to fill out all of the DOM Node info
+	 * from the vertex info
+	 */
 	private void addDOMVertex(IClassVertex v) {
         DOMClassNode dn = new DOMClassNode();
         dn.setTitle(v.getTitle());
@@ -56,16 +61,16 @@ public class DOMGraph implements Iterable<DOMClassNode>{
 	
 
 	@Override
-	public Iterator iterator() {
+	public Iterator<IDOMNode> iterator() {
 		return new GraphIterator(this.domNodes);
 	}
 	
-	private class GraphIterator implements Iterator {
+	private class GraphIterator implements Iterator<IDOMNode> {
 		
-		private List<DOMClassNode> nodes;
-		private Iterator iter;
+		private List<IDOMNode> nodes;
+		private Iterator<IDOMNode> iter;
 		
-		public GraphIterator(List<DOMClassNode> nodes) {
+		public GraphIterator(List<IDOMNode> nodes) {
 			this.nodes = nodes;
 			this.iter = this.nodes.iterator();
 		}
@@ -76,7 +81,7 @@ public class DOMGraph implements Iterable<DOMClassNode>{
 		}
 
 		@Override
-		public Object next() {
+		public IDOMNode next() {
 			return this.iter.next();
 		}
 		

@@ -44,5 +44,11 @@ public class DOMClassNode implements IDOMNode{
 	public void setEdgeType(EdgeType type) {
 		this.type = type;
 	}
+
+	@Override
+	public String getTextRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
