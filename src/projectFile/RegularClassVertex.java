@@ -54,8 +54,7 @@ public class RegularClassVertex implements IClassVertex {
 
 	@Override
 	public void addMethodData(MethodData data) {
-		throw new RuntimeException("Not implemented yet");
-		
+		this.methods.add(data);
 	}
 
 	@Override

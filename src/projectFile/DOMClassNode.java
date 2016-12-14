@@ -73,8 +73,11 @@ public class DOMClassNode implements IDOMNode{
 			for(IClassVertex f : m.getParams()) {
 				paramInfo += f + ", ";
 			}
+
 			//chop off trialing ", "
-			paramInfo = paramInfo.substring(0, paramInfo.length() - 2); 
+			if (paramInfo.length() != 0) {
+				paramInfo = paramInfo.substring(0, paramInfo.length() - 2); 
+			}
 				
 			this.methods.add(this.accessStringToSign(m.getAccessLevel()) +
 							m.getMethodName() + "( " + paramInfo + ")\n");	
@@ -101,12 +104,16 @@ public class DOMClassNode implements IDOMNode{
 			System.out.println(s);
 		}
 		
-		// TODO set the methods fields
+		// setting the method fields
+		String methodFields = "";
+		for (String s : this.methods) {
+			methodFields += s + "\\l";
+		}
 		
 		return title.replaceAll("\\.", "") + "[\n" +
-		"label = \"{" + title + "|" + fieldsString + "|" +
-		"METHODS GO HERE\\l" + 
-		"}" + "\"\n]";
+			"label = \"{" + title + "|" + fieldsString + "|" +
+			methodFields + 
+			"}" + "\"\n]";
 		
 		
 	}
@@ -120,6 +127,8 @@ public class DOMClassNode implements IDOMNode{
 			return "+";
 		case "protected": 
 			return "#";
+		case "native":
+			return "?";
 		}
 		throw new IllegalArgumentException("Illegal access type");
 	}

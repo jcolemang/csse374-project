@@ -9,9 +9,11 @@ public class InterfaceVertex implements IClassVertex {
 
 	private String title;
 	private List<MethodData> methods;
+	private List<FieldData> fields;
 
 	public InterfaceVertex(String title) {
 		this.title = title;
+		this.fields = new ArrayList<FieldData>();
 	}
 
 	@Override
@@ -73,13 +75,12 @@ public class InterfaceVertex implements IClassVertex {
 
 	@Override
 	public void addFieldData(FieldData data) {
-		throw new IllegalArgumentException("Interfaces don't have fields, do not attempt");
+		this.fields.add(data);
 	}
 
 	@Override
 	public void removeFieldData(FieldData data) {
-		throw new IllegalArgumentException("Interfaces don't have fields, do not attempt");
-		
+		this.fields.remove(data);
 	}
 
 	@Override

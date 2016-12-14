@@ -80,4 +80,10 @@ public class PrimitiveVertex implements IClassVertex {
 		return this.getTitle();
 	}
 
+	@Override
+	public List<MethodData> getMethods() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

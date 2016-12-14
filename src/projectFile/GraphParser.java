@@ -32,6 +32,8 @@ public class GraphParser {
 	private IClassVertex makeSingleNode(String className) {
 		System.out.println("Making " + className + ".");
 		IClassVertex classVertex;
+		
+		System.out.println(this.visited.keySet());
 
 		try {
 			ClassReader reader = new ClassReader(className);
@@ -46,10 +48,14 @@ public class GraphParser {
                 classVertex = this.makeVanillaVertex(classNode);
             }
 		} catch (IOException e) {
+			System.out.println("Making primitive!");
+			System.out.println(className);
 			classVertex = this.makePrimitiveVertex(className);
 		}
 		
 		
+		System.out.println("~~~~~ Visited! ~~~~~");
+		System.out.println(className);
 		visited.put(className, classVertex);
 		
 		return classVertex;
@@ -70,6 +76,7 @@ public class GraphParser {
 		InterfaceVertex iv = new InterfaceVertex(name);
 		this.addVisit(name, iv);
 		this.setFields(classNode, iv);
+		this.setMethods(classNode, iv);
 		
 		return iv;
 	}
@@ -80,6 +87,7 @@ public class GraphParser {
 		AbstractClassVertex av = new AbstractClassVertex(name);
 		this.addVisit(name, av);
 		this.setFields(classNode, av);
+		this.setMethods(classNode, av);
 		
 		return av;
 	}
@@ -90,13 +98,16 @@ public class GraphParser {
 		RegularClassVertex vv = new RegularClassVertex(name);
 		this.addVisit(name, vv);
 		this.setFields(classNode, vv);
+		this.setMethods(classNode, vv);
 		
 		return vv;
 	}
 	
 	
 	private PrimitiveVertex makePrimitiveVertex(String className) {
-		return new PrimitiveVertex(className);
+		PrimitiveVertex primitiveVertex = new PrimitiveVertex(className);
+		this.addVisit(className, primitiveVertex);
+		return primitiveVertex;
 	}
 	
 	
@@ -113,7 +124,7 @@ public class GraphParser {
 			String accessLevel = this.getAccessLevel(f.access);
 			String fieldType = Type.getType(f.desc).getClassName();
 			
-			if (hasBeenVisited(name)) {
+			if (hasBeenVisited(fieldType)) {
 				realType = this.visited.get(fieldType);
 			} else {
 				realType = this.makeSingleNode(fieldType);
@@ -140,8 +151,9 @@ public class GraphParser {
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
 			IClassVertex param;
+			String paramName;
 			
-			if (hasBeenVisited(name)) {
+			if (hasBeenVisited(returnType)) {
 				realReturnType = this.visited.get(returnType);
 			} else {
 				realReturnType = this.makeSingleNode(returnType);
@@ -149,14 +161,15 @@ public class GraphParser {
 			
 			MethodData mdToAdd = new MethodData(access, name, realReturnType);
 			
-			for(Type paramType : Type.getArgumentTypes(m.desc)) {
-				
-				if (hasBeenVisited(name)) {
-					param = this.visited.get(paramType.getClassName());
+			for (Type paramType : Type.getArgumentTypes(m.desc)) {
+				paramName = paramType.getClassName();
+				if (hasBeenVisited(paramName)) {
+					param = this.visited.get(paramName);
 				} else {
-					param = this.makeSingleNode(paramType.getClassName());
+					param = this.makeSingleNode(paramName);
 				}
 				
+				System.out.println(param);
 				mdToAdd.addParam(param);
 			}
 			
@@ -165,6 +178,9 @@ public class GraphParser {
 		}
 	}
 	
+	/*
+	 * TODO Should <clinit> and <init> be handled differently?
+	 */
 	private String getAccessLevel(int opcode) {
 		
 		if((opcode & Opcodes.ACC_PUBLIC) > 0) {
@@ -174,8 +190,8 @@ public class GraphParser {
 		} else if((opcode & Opcodes.ACC_PROTECTED) > 0) {
 			return "protected";
 		} else {
-			throw new IllegalArgumentException("Access level not recognized");
-		}
+			return "native";
+		} 
 	}
 	
 

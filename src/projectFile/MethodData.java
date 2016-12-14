@@ -1,5 +1,6 @@
 package projectFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.Type;
@@ -15,6 +16,7 @@ public class MethodData {
 		this.access = access;
 		this.methodName = methodName;
 		this.returnType = returnType;
+		this.params = new ArrayList<IClassVertex>();
 	}
 	
 	public String getAccessLevel() {
