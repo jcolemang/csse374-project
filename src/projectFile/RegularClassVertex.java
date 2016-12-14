@@ -84,5 +84,11 @@ public class RegularClassVertex implements IClassVertex {
 		throw new RuntimeException("Not implemented yet");
 		
 	}
+	
+	
+	@Override
+	public String toString() {
+		return this.getTitle();
+	}
 
 }

@@ -3,12 +3,12 @@ package projectFile;
 public class FieldData {
 	private String accessLevel;
 	private String fieldName;
-	private String fieldType;
+	private IClassVertex fieldType;
 	
-	public FieldData(String accessLevel, String fieldName, String fieldType2) {
+	public FieldData(String accessLevel, String fieldName, IClassVertex fieldType) {
 		this.accessLevel = accessLevel;
 		this.fieldName = fieldName;
-		this.fieldType = fieldType2;
+		this.fieldType = fieldType;
 	}
 	
 	
@@ -20,7 +20,7 @@ public class FieldData {
 		return this.fieldName;
 	}
 
-	public String getFieldType() {
+	public IClassVertex getFieldType() {
 		return this.fieldType;
 	}
 	

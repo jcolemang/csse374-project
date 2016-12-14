@@ -72,16 +72,16 @@ public class DOMClassNode implements IDOMNode{
 		String title = this.getClassName();
 		
 		// setting the fields string
-		String fields = "";
+		String fieldsString = "";
 		for (String s : this.fields) {
-			fields += s + "\\l";
+			fieldsString += s + "\\l";
 			System.out.println(s);
 		}
 		
 		// TODO set the methods fields
 		
 		return title.replaceAll("\\.", "") + "[\n" +
-			"label = \"{" + title + "|" + fields + "|" +
+			"label = \"{" + title + "|" + fieldsString + "|" +
 			"METHODS GO HERE\\l" + 
 			"}" + "\"\n]";
 			

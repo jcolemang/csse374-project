@@ -28,21 +28,26 @@ public class GraphParser {
 	}
 	
 
-	private IClassVertex makeSingleNode(String className) throws IOException{
+	private IClassVertex makeSingleNode(String className) {
 		System.out.println("Making " + className + ".");
-		ClassReader reader = new ClassReader(className);
-		ClassNode classNode = new ClassNode();
-		reader.accept(classNode, ClassReader.EXPAND_FRAMES);
 		IClassVertex classVertex;
-		
-		// TODO: Consider turning this into a factory pattern ?
-		if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
-			classVertex = this.makeInterfaceVertex(classNode);
-		} else if ((classNode.access & Opcodes.ACC_ABSTRACT) != 0) {
-			classVertex = this.makeAbstractVertex(classNode);
-		} else {
-			classVertex = this.makeVanillaVertex(classNode);
+
+		try {
+			ClassReader reader = new ClassReader(className);
+			ClassNode classNode = new ClassNode();
+			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+            // TODO: Consider turning this into a factory pattern ?
+            if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
+                classVertex = this.makeInterfaceVertex(classNode);
+            } else if ((classNode.access & Opcodes.ACC_ABSTRACT) != 0) {
+                classVertex = this.makeAbstractVertex(classNode);
+            } else {
+                classVertex = this.makeVanillaVertex(classNode);
+            }
+		} catch (IOException e) {
+			classVertex = this.makePrimitiveVertex(className);
 		}
+		
 		
 		visited.put(className, classVertex);
 		
@@ -89,6 +94,11 @@ public class GraphParser {
 	}
 	
 	
+	private PrimitiveVertex makePrimitiveVertex(String className) {
+		return new PrimitiveVertex(className);
+	}
+	
+	
 	private void setFields(ClassNode classNode, IClassVertex cv) throws IOException {
 		System.out.println("Setting fields for " + cv.getTitle()); 
 		
@@ -102,12 +112,12 @@ public class GraphParser {
 			String accessLevel = this.getAccessLevel(f.access);
 			String fieldType = Type.getType(f.desc).getClassName();
 			
-			// if (hasBeenVisited(name)) {
-				// realType = this.visited.get(fieldType);
-			// } else {
-				// realType = this.makeSingleNode(fieldType);
-			// }
-			cv.addFieldData(new FieldData(accessLevel, name, fieldType));
+			if (hasBeenVisited(name)) {
+				realType = this.visited.get(fieldType);
+			} else {
+				realType = this.makeSingleNode(fieldType);
+			}
+			cv.addFieldData(new FieldData(accessLevel, name, realType));
 		}
 		
 		System.out.println("All fields:");
@@ -129,10 +139,12 @@ public class GraphParser {
 		}
 	}
 	
+
 	private boolean hasBeenVisited(String className) {
 		return this.visited.containsKey(className);
 	}
 	
+
 	private void addVisit(String className, IClassVertex vert) {
 		this.visited.put(className, vert);
 	}
