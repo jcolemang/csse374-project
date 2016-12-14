@@ -19,6 +19,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassEdge> edges = g.getEdges();
 		
 		for (IClassVertex vert : vertices) {
+			
 			this.addDOMVertex(vert);
 		}
 		
@@ -26,8 +27,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		 * TODO This currently doesn't do anything
 		 */
 		for(IClassEdge edge : edges) {
-			DOMClassNode en = new DOMClassNode();
-			domNodes.add(en);
+			this.addDOMEdge(edge);
 		}
 		
 	}
@@ -40,6 +40,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private void addDOMVertex(IClassVertex v) {
         DOMClassNode dn = new DOMClassNode();
         dn.setTitle(v.getTitle());
+//        dn.setFields(v.getFields()); //method does not exist yet
         domNodes.add(dn);
 	}
 	
