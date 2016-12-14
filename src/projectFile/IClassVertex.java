@@ -17,5 +17,6 @@ public interface IClassVertex {
 	public void addFieldData(FieldData data);
 	public void removeFieldData(FieldData data);
 	public void setFields();
+	public List<MethodData> getMethods();
 	
 }

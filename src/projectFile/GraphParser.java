@@ -10,6 +10,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 
 public class GraphParser {
 
@@ -124,6 +125,44 @@ public class GraphParser {
 		System.out.println(cv.getFields());
 		
 		
+	}
+	
+	private void setMethods(ClassNode classNode, IClassVertex cv) throws IOException {
+		System.out.println("Setting methods for: " + cv.getTitle());
+		
+		List<MethodNode> methods = classNode.methods;
+		IClassVertex realReturnType;
+		
+		for (MethodNode m : methods) {
+			System.out.println("Method name: " + m.name);
+			
+			String name = m.name;
+			String access = this.getAccessLevel(m.access);
+			String returnType = Type.getReturnType(m.desc).getClassName();
+			IClassVertex param;
+			
+			if (hasBeenVisited(name)) {
+				realReturnType = this.visited.get(returnType);
+			} else {
+				realReturnType = this.makeSingleNode(returnType);
+			}
+			
+			MethodData mdToAdd = new MethodData(access, name, realReturnType);
+			
+			for(Type paramType : Type.getArgumentTypes(m.desc)) {
+				
+				if (hasBeenVisited(name)) {
+					param = this.visited.get(paramType.getClassName());
+				} else {
+					param = this.makeSingleNode(paramType.getClassName());
+				}
+				
+				mdToAdd.addParam(param);
+			}
+			
+			cv.addMethodData(mdToAdd);
+			
+		}
 	}
 	
 	private String getAccessLevel(int opcode) {

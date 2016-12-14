@@ -12,10 +12,12 @@ public class RegularClassVertex implements IClassVertex {
 
 	private String title;
 	private List<FieldData> fields;
+	private List<MethodData> methods;
 
 	public RegularClassVertex(String title){
 		this.title = title;
 		this.fields = new ArrayList<FieldData>();
+		this.methods = new ArrayList<MethodData>();
 	}
 	
 	@Override
@@ -65,6 +67,11 @@ public class RegularClassVertex implements IClassVertex {
 	@Override
 	public List<FieldData> getFields() {
 		return this.fields;
+	}
+	
+	@Override
+	public List<MethodData> getMethods() {
+		return this.methods;
 	}
 
 	@Override

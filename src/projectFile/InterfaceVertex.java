@@ -8,10 +8,9 @@ import org.objectweb.asm.tree.FieldNode;
 public class InterfaceVertex implements IClassVertex {
 
 	private String title;
-	private List<FieldData> fields;
+	private List<MethodData> methods;
 
 	public InterfaceVertex(String title) {
-		this.fields = new ArrayList<FieldData>();
 		this.title = title;
 	}
 
@@ -44,9 +43,14 @@ public class InterfaceVertex implements IClassVertex {
 	}
 
 	@Override
-	public List<FieldData> getFields() {
+	public ArrayList<FieldData> getFields() {
 		// TODO Auto-generated method stub
-		return this.fields;
+		return new ArrayList<FieldData>();
+	}
+	
+	@Override
+	public List<MethodData> getMethods() {
+		return this.methods;
 	}
 
 	@Override
@@ -69,18 +73,18 @@ public class InterfaceVertex implements IClassVertex {
 
 	@Override
 	public void addFieldData(FieldData data) {
-		this.fields.add(data);
+		throw new IllegalArgumentException("Interfaces don't have fields, do not attempt");
 	}
 
 	@Override
 	public void removeFieldData(FieldData data) {
-		// TODO Auto-generated method stub
+		throw new IllegalArgumentException("Interfaces don't have fields, do not attempt");
 		
 	}
 
 	@Override
 	public void setFields() {
-		// TODO Auto-generated method stub
+		throw new IllegalArgumentException("Interfaces don't have fields, do not attempt");
 	}
 	
 	

@@ -8,7 +8,34 @@ import org.objectweb.asm.tree.MethodNode;
 public class MethodData {
 	private String access;
 	private String methodName;
-	private String returnType;
-	private List<MethodNode> params; // can result in a "Depends on" relationship
+	private IClassVertex returnType;
+	private List<IClassVertex> params; // can result in a "Depends on" relationship
+	
+	public MethodData(String access, String methodName, IClassVertex returnType) { //wb params??
+		this.access = access;
+		this.methodName = methodName;
+		this.returnType = returnType;
+	}
+	
+	public String getAccessLevel() {
+		return this.access;
+	}
+	
+	public String getMethodName() {
+		return this.methodName;
+	}
+	
+	public IClassVertex getReturnType() {
+		return this.returnType;
+	}
+	
+	public List<IClassVertex> getParams() {
+		return this.params;
+	}
+
+	public void addParam(IClassVertex param) {
+		this.params.add(param);
+		
+	}
 	
 }

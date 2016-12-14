@@ -21,6 +21,7 @@ public class DOMClassNode implements IDOMNode{
 	EdgeType type;
 	
 	private List<String> fields;
+	private List<String> methods;
 	
 	
 	public void setTitle(String title) {
@@ -58,11 +59,33 @@ public class DOMClassNode implements IDOMNode{
 							f.getFieldType());
 		}
 	}
+
+	public void setMethods(List<MethodData> data) {
+		System.out.println("Setting methods for " + this.getClassName());
+		
+		this.methods = new ArrayList<String>();
+		
+		
+		for (MethodData m : data) {
+			System.out.println(m);
+
+			String paramInfo = "";
+			for(IClassVertex f : m.getParams()) {
+				paramInfo += f + ", ";
+			}
+			//chop off trialing ", "
+			paramInfo = paramInfo.substring(0, paramInfo.length() - 2); 
+				
+			this.methods.add(this.accessStringToSign(m.getAccessLevel()) +
+							m.getMethodName() + "( " + paramInfo + ")\n");	
+		}
+		
+	}
 	
 	public void setEdgeType(EdgeType type) {
 		this.type = type;
 	}
-
+	
 	@Override
 	public String getTextRepresentation() {
 		
@@ -81,10 +104,10 @@ public class DOMClassNode implements IDOMNode{
 		// TODO set the methods fields
 		
 		return title.replaceAll("\\.", "") + "[\n" +
-			"label = \"{" + title + "|" + fieldsString + "|" +
-			"METHODS GO HERE\\l" + 
-			"}" + "\"\n]";
-			
+		"label = \"{" + title + "|" + fieldsString + "|" +
+		"METHODS GO HERE\\l" + 
+		"}" + "\"\n]";
+		
 		
 	}
 	

@@ -41,7 +41,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		System.out.println("Adding DOM Vertex");
         DOMClassNode dn = new DOMClassNode();
         dn.setTitle(v.getTitle());
-        dn.setFields(v.getFields()); //method does not exist yet
+        dn.setFields(v.getFields());
+        dn.setMethods(v.getMethods());
         domNodes.add(dn);
 	}
 	

@@ -24,6 +24,6 @@ public class FieldData {
 		return this.fieldType;
 	}
 	
-	// TODO: Maybe add methods to get/set each of FieldData's fields
+	// TODO: Maybe add methods to set each of FieldData's fields
 	
 }

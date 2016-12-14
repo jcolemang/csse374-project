@@ -9,10 +9,12 @@ public class AbstractClassVertex implements IClassVertex {
 
 	private String title;
 	private List<FieldData> fields;
+	private List<MethodData> methods;
 
 	public AbstractClassVertex(String title){
 		this.title=title;
 		this.fields = new ArrayList<FieldData>();
+		this.methods = new ArrayList<MethodData>();
 	}
 	
 	@Override
@@ -67,6 +69,11 @@ public class AbstractClassVertex implements IClassVertex {
 	public List<FieldData> getFields() {
 		return this.fields;
 	}
+	
+	@Override
+	public List<MethodData> getMethods() {
+		return this.methods;
+	}
 
 	@Override
 	public void addFieldData(FieldData data) {
@@ -91,5 +98,6 @@ public class AbstractClassVertex implements IClassVertex {
 	public String toString() {
 		return this.getTitle();
 	}
+
 
 }
