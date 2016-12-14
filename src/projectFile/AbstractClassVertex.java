@@ -1,5 +1,6 @@
 package projectFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.FieldNode;
@@ -7,9 +8,11 @@ import org.objectweb.asm.tree.FieldNode;
 public class AbstractClassVertex implements IClassVertex {
 
 	private String title;
+	private List<FieldData> fields;
 
 	public AbstractClassVertex(String title){
 		this.title=title;
+		this.fields = new ArrayList<FieldData>();
 	}
 	
 	@Override
@@ -61,9 +64,8 @@ public class AbstractClassVertex implements IClassVertex {
 	}
 
 	@Override
-	public List<FieldNode> getFields() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FieldData> getFields() {
+		return this.fields;
 	}
 
 	@Override

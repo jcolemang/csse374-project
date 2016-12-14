@@ -14,12 +14,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private int fontSize = 14;
 	
 	public void generateDOMTree(ClassNodeGraph g) {
+		System.out.println("Generating DOM Graph");
 		this.domNodes = new ArrayList<IDOMNode>();
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
 		for (IClassVertex vert : vertices) {
-			
 			this.addDOMVertex(vert);
 		}
 		
@@ -38,9 +38,10 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * from the vertex info
 	 */
 	private void addDOMVertex(IClassVertex v) {
+		System.out.println("Adding DOM Vertex");
         DOMClassNode dn = new DOMClassNode();
         dn.setTitle(v.getTitle());
-//        dn.setFields(v.getFields()); //method does not exist yet
+        dn.setFields(v.getFields()); //method does not exist yet
         domNodes.add(dn);
 	}
 	

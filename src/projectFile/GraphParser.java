@@ -29,6 +29,7 @@ public class GraphParser {
 	
 
 	private IClassVertex makeSingleNode(String className) throws IOException{
+		System.out.println("Making " + className + ".");
 		ClassReader reader = new ClassReader(className);
 		ClassNode classNode = new ClassNode();
 		reader.accept(classNode, ClassReader.EXPAND_FRAMES);
@@ -62,7 +63,6 @@ public class GraphParser {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		InterfaceVertex iv = new InterfaceVertex(name);
 		this.addVisit(name, iv);
-
 		this.setFields(classNode, iv);
 		
 		return iv;
@@ -73,7 +73,6 @@ public class GraphParser {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		AbstractClassVertex av = new AbstractClassVertex(name);
 		this.addVisit(name, av);
-		
 		this.setFields(classNode, av);
 		
 		return av;
@@ -84,7 +83,6 @@ public class GraphParser {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		RegularClassVertex vv = new RegularClassVertex(name);
 		this.addVisit(name, vv);
-		
 		this.setFields(classNode, vv);
 		
 		return vv;
@@ -92,23 +90,28 @@ public class GraphParser {
 	
 	
 	private void setFields(ClassNode classNode, IClassVertex cv) throws IOException {
+		System.out.println("Setting fields for " + cv.getTitle()); 
 		
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fields = classNode.fields;
 		IClassVertex realType;
 		
-		for(FieldNode f : fields) {
+		for (FieldNode f : fields) {
+			System.out.println("Field name: " + f.name);
 			String name = f.name;
 			String accessLevel = this.getAccessLevel(f.access);
-			String fieldType = Type.getType(f.desc).toString();
+			String fieldType = Type.getType(f.desc).getClassName();
 			
-			if (hasBeenVisited(name)) {
-				realType = this.visited.get(fieldType);
-			} else {
-				realType = this.makeSingleNode(fieldType);
-			}
+			// if (hasBeenVisited(name)) {
+				// realType = this.visited.get(fieldType);
+			// } else {
+				// realType = this.makeSingleNode(fieldType);
+			// }
 			cv.addFieldData(new FieldData(accessLevel, name, fieldType));
 		}
+		
+		System.out.println("All fields:");
+		System.out.println(cv.getFields());
 		
 		
 	}

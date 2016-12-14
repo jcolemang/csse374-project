@@ -1,5 +1,6 @@
 package projectFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.FieldNode;
@@ -10,9 +11,11 @@ import org.objectweb.asm.tree.FieldNode;
 public class RegularClassVertex implements IClassVertex {
 
 	private String title;
+	private List<FieldData> fields;
 
 	public RegularClassVertex(String title){
-		this.title=title;
+		this.title = title;
+		this.fields = new ArrayList<FieldData>();
 	}
 	
 	@Override
@@ -44,43 +47,41 @@ public class RegularClassVertex implements IClassVertex {
 
 	@Override
 	public String setTitle(String title) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("Not implemented yet");
 	}
 
 	@Override
 	public void addMethodData(MethodData data) {
-		// TODO Auto-generated method stub
+		throw new RuntimeException("Not implemented yet");
 		
 	}
 
 	@Override
 	public void removeMethodData(MethodData data) {
-		// TODO Auto-generated method stub
+		throw new RuntimeException("Not implemented yet");
 		
 	}
 
 	@Override
-	public List<FieldNode> getFields() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FieldData> getFields() {
+		return this.fields;
 	}
 
 	@Override
 	public void addFieldData(FieldData data) {
-		// TODO Auto-generated method stub
+		this.fields.add(data);
 		
 	}
 
 	@Override
 	public void removeFieldData(FieldData data) {
-		// TODO Auto-generated method stub
+		throw new RuntimeException("Not implemented yet");
 		
 	}
 
 	@Override
 	public void setFields() {
-		// TODO Auto-generated method stub
+		throw new RuntimeException("Not implemented yet");
 		
 	}
 

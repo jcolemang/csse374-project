@@ -1,5 +1,6 @@
 package projectFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.FieldNode;
@@ -7,8 +8,10 @@ import org.objectweb.asm.tree.FieldNode;
 public class InterfaceVertex implements IClassVertex {
 
 	private String title;
+	private List<FieldData> fields;
 
 	public InterfaceVertex(String title) {
+		this.fields = new ArrayList<FieldData>();
 		this.title = title;
 	}
 
@@ -41,9 +44,9 @@ public class InterfaceVertex implements IClassVertex {
 	}
 
 	@Override
-	public List<FieldNode> getFields() {
+	public List<FieldData> getFields() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.fields;
 	}
 
 	@Override
@@ -66,8 +69,7 @@ public class InterfaceVertex implements IClassVertex {
 
 	@Override
 	public void addFieldData(FieldData data) {
-		// TODO Auto-generated method stub
-		
+		this.fields.add(data);
 	}
 
 	@Override

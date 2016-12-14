@@ -11,6 +11,19 @@ public class FieldData {
 		this.fieldType = fieldType2;
 	}
 	
+	
+	public String getAccessLevel() {
+		return this.accessLevel;
+	}
+
+	public String getFieldName() {
+		return this.fieldName;
+	}
+
+	public String getFieldType() {
+		return this.fieldType;
+	}
+	
 	// TODO: Maybe add methods to get/set each of FieldData's fields
 	
 }

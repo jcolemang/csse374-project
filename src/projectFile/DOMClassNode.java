@@ -1,5 +1,9 @@
 package projectFile;
 
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DOMClassNode implements IDOMNode{
 	
 	public enum EdgeType {
@@ -15,6 +19,8 @@ public class DOMClassNode implements IDOMNode{
 	String classTitle = "";
 	String color;
 	EdgeType type;
+	
+	private List<String> fields;
 	
 	
 	public void setTitle(String title) {
@@ -41,14 +47,58 @@ public class DOMClassNode implements IDOMNode{
 		return "";
 	}
 	
+	public void setFields(List<FieldData> data) {
+		System.out.println("Setting fields for " + this.getClassName());
+		this.fields = new ArrayList<String>();
+		for (FieldData f : data) {
+			System.out.println(f);
+			this.fields.add(this.accessStringToSign(f.getAccessLevel()) +
+							f.getFieldName() +
+							": " +
+							f.getFieldType());
+		}
+	}
+	
 	public void setEdgeType(EdgeType type) {
 		this.type = type;
 	}
 
 	@Override
 	public String getTextRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		System.out.println("Getting text representation of " + this.getClassName());
+		
+		// setting the name of the node
+		String title = this.getClassName();
+		
+		// setting the fields string
+		String fields = "";
+		for (String s : this.fields) {
+			fields += s + "\\l";
+			System.out.println(s);
+		}
+		
+		// TODO set the methods fields
+		
+		return title.replaceAll("\\.", "") + "[\n" +
+			"label = \"{" + title + "|" + fields + "|" +
+			"METHODS GO HERE\\l" + 
+			"}" + "\"\n]";
+			
+		
+	}
+	
+	
+	private String accessStringToSign(String access) {
+		switch (access) {
+		case "private":
+			return "-";
+		case "public":
+			return "+";
+		case "protected": 
+			return "#";
+		}
+		throw new IllegalArgumentException("Illegal access type");
 	}
 	
 }

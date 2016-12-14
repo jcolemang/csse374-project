@@ -1,3 +1,9 @@
 digraph AWESOMEGRAPH {
 rankdir = TB
-fontsize = 0
+fontsize = 14
+node [shape = record]
+javalangString[
+label = "{java.lang.String|-value: char[]\l-hash: int\l-serialVersionUID: long\l-serialPersistentFields: java.io.ObjectStreamField[]\l+CASE_INSENSITIVE_ORDER: java.util.Comparator\l|METHODS GO HERE\l}"
+]javautilTreeSet[
+label = "{java.util.TreeSet|-m: java.util.NavigableMap\l-PRESENT: java.lang.Object\l-serialVersionUID: long\l|METHODS GO HERE\l}"
+]}

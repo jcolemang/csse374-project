@@ -27,7 +27,7 @@ public class TextAggregator {
 		out.write("digraph AWESOMEGRAPH {\n".getBytes());
 		out.write("rankdir = TB\n".getBytes());
 		out.write(("fontsize = " + fontSize + "\n").getBytes());
-		out.write("node [shape = box]\n".getBytes());
+		out.write("node [shape = record]\n".getBytes());
 	}
 	
 	

@@ -13,7 +13,7 @@ public interface IClassVertex {
 	public void addMethodData(MethodData data);
 	public void removeMethodData(MethodData data);
 	public List<IClassEdge> getEdges();
-	public List<FieldNode> getFields();
+	public List<FieldData> getFields();
 	public void addFieldData(FieldData data);
 	public void removeFieldData(FieldData data);
 	public void setFields();
