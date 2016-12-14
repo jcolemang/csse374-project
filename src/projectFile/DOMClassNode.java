@@ -49,10 +49,8 @@ public class DOMClassNode implements IDOMNode{
 	}
 	
 	public void setFields(List<FieldData> data) {
-		System.out.println("Setting fields for " + this.getClassName());
 		this.fields = new ArrayList<String>();
 		for (FieldData f : data) {
-			System.out.println(f);
 			this.fields.add(this.accessStringToSign(f.getAccessLevel()) +
 							f.getFieldName() +
 							": " +
@@ -61,13 +59,9 @@ public class DOMClassNode implements IDOMNode{
 	}
 
 	public void setMethods(List<MethodData> data) {
-		System.out.println("Setting methods for " + this.getClassName());
-		
 		this.methods = new ArrayList<String>();
 		
-		
 		for (MethodData m : data) {
-			System.out.println(m);
 
 			String paramInfo = "";
 			for(IClassVertex f : m.getParams()) {
@@ -80,7 +74,7 @@ public class DOMClassNode implements IDOMNode{
 			}
 				
 			this.methods.add(this.accessStringToSign(m.getAccessLevel()) +
-							m.getMethodName() + "( " + paramInfo + ")\n");	
+							m.getMethodName() + "(" + paramInfo + ")\n");	
 		}
 		
 	}
@@ -92,8 +86,6 @@ public class DOMClassNode implements IDOMNode{
 	@Override
 	public String getTextRepresentation() {
 		
-		System.out.println("Getting text representation of " + this.getClassName());
-		
 		// setting the name of the node
 		String title = this.getClassName();
 		
@@ -101,7 +93,6 @@ public class DOMClassNode implements IDOMNode{
 		String fieldsString = "";
 		for (String s : this.fields) {
 			fieldsString += s + "\\l";
-			System.out.println(s);
 		}
 		
 		// setting the method fields
@@ -111,14 +102,16 @@ public class DOMClassNode implements IDOMNode{
 		}
 		
 		return title.replaceAll("\\.", "") + "[\n" +
-			"label = \"{" + title + "|" + fieldsString + "|" +
-			methodFields + 
-			"}" + "\"\n]";
+			"label = \"{" + title + "|" + fieldsString + "|" + methodFields + 
+			"}\"\n]";
 		
 		
 	}
 	
 	
+	/*
+	 * TODO What is the access level modifier of <clinit>?
+	 */
 	private String accessStringToSign(String access) {
 		switch (access) {
 		case "private":
@@ -128,7 +121,7 @@ public class DOMClassNode implements IDOMNode{
 		case "protected": 
 			return "#";
 		case "native":
-			return "?";
+			return "=";
 		}
 		throw new IllegalArgumentException("Illegal access type");
 	}

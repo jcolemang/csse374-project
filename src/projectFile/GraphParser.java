@@ -30,11 +30,8 @@ public class GraphParser {
 	
 
 	private IClassVertex makeSingleNode(String className) {
-		System.out.println("Making " + className + ".");
 		IClassVertex classVertex;
 		
-		System.out.println(this.visited.keySet());
-
 		try {
 			ClassReader reader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
@@ -48,14 +45,10 @@ public class GraphParser {
                 classVertex = this.makeVanillaVertex(classNode);
             }
 		} catch (IOException e) {
-			System.out.println("Making primitive!");
-			System.out.println(className);
 			classVertex = this.makePrimitiveVertex(className);
 		}
 		
 		
-		System.out.println("~~~~~ Visited! ~~~~~");
-		System.out.println(className);
 		visited.put(className, classVertex);
 		
 		return classVertex;
@@ -112,14 +105,11 @@ public class GraphParser {
 	
 	
 	private void setFields(ClassNode classNode, IClassVertex cv) throws IOException {
-		System.out.println("Setting fields for " + cv.getTitle()); 
-		
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fields = classNode.fields;
 		IClassVertex realType;
 		
 		for (FieldNode f : fields) {
-			System.out.println("Field name: " + f.name);
 			String name = f.name;
 			String accessLevel = this.getAccessLevel(f.access);
 			String fieldType = Type.getType(f.desc).getClassName();
@@ -132,21 +122,13 @@ public class GraphParser {
 			cv.addFieldData(new FieldData(accessLevel, name, realType));
 		}
 		
-		System.out.println("All fields:");
-		System.out.println(cv.getFields());
-		
-		
 	}
 	
 	private void setMethods(ClassNode classNode, IClassVertex cv) throws IOException {
-		System.out.println("Setting methods for: " + cv.getTitle());
-		
 		List<MethodNode> methods = classNode.methods;
 		IClassVertex realReturnType;
 		
 		for (MethodNode m : methods) {
-			System.out.println("Method name: " + m.name);
-			
 			String name = m.name;
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
@@ -169,8 +151,8 @@ public class GraphParser {
 					param = this.makeSingleNode(paramName);
 				}
 				
-				System.out.println(param);
 				mdToAdd.addParam(param);
+
 			}
 			
 			cv.addMethodData(mdToAdd);

@@ -14,7 +14,6 @@ public class MainClass {
 			strs.add(str);
 		}
 		ClassNodeGraph nodeGraph = gp.parse(strs);
-		System.out.println(nodeGraph);
 		
 		DOMGraph dom = new DOMGraph();
 		dom.generateDOMTree(nodeGraph);
