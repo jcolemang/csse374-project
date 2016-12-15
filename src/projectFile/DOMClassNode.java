@@ -79,10 +79,12 @@ public class DOMClassNode implements IDOMNode{
 		
 	}
 	
+
 	public void setEdgeType(EdgeType type) {
 		this.type = type;
 	}
 	
+
 	@Override
 	public String getTextRepresentation() {
 		
@@ -90,7 +92,7 @@ public class DOMClassNode implements IDOMNode{
 		String title = this.getClassName();
 		
 		// setting the fields string
-		String fieldsString = "";
+		String fieldsString = "\n";
 		for (String s : this.fields) {
 			fieldsString += s + "\\l";
 		}
@@ -101,9 +103,9 @@ public class DOMClassNode implements IDOMNode{
 			methodFields += s + "\\l";
 		}
 		
-		return title.replaceAll("\\.", "") + "[\n" +
+		return this.sanitize(title.replaceAll("\\.", "") + "[\n" +
 			"label = \"{" + title + "|" + fieldsString + "|" + methodFields + 
-			"}\"\n]";
+			"}\"\n]");
 		
 		
 	}
@@ -120,10 +122,14 @@ public class DOMClassNode implements IDOMNode{
 			return "+";
 		case "protected": 
 			return "#";
-		case "native":
-			return "=";
 		}
-		throw new IllegalArgumentException("Illegal access type");
+		return "";
+	}
+	
+	
+	private String sanitize(String s) {
+		return s.replaceAll("<", "&lt;")
+				.replaceAll(">", "&gt;");
 	}
 	
 }
