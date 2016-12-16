@@ -8,15 +8,16 @@ public interface IClassVertex {
 	public DOMClassNode getCorrespondingDOMNode();
 	public DOMClassNode setCorrespondingDOMNode();
 	public String getTitle();
-	public String setTitle(String title);
-	public List<String> getMethodNames();
+	
 	public void addMethodData(MethodData data);
 	public void removeMethodData(MethodData data);
+	public List<MethodData> getMethods();
+	
 	public List<IClassEdge> getEdges();
+	
 	public List<FieldData> getFields();
 	public void addFieldData(FieldData data);
 	public void removeFieldData(FieldData data);
-	public void setFields();
-	public List<MethodData> getMethods();
+	
 	
 }
