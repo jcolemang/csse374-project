@@ -20,7 +20,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	// TODO Change this to IDOMNode some time in the future
 	private Map<Class<? extends IClassVertex>, Class<? extends IDOMClassNode>> vertexToDOMNode = new HashMap<>();
-	private Map<Class<? extends IClassEdge>, Class<? extends IDOMNode>> edgeToDOMEdge = new HashMap<>();
+	private Map<Class<? extends IClassEdge>, Class<? extends IDOMEdgeNode>> edgeToDOMEdge = new HashMap<>();
 	
 	/**
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
@@ -37,6 +37,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassEdge> edges = g.getEdges();
 		
 		int numClasses = 0;
+		IDOMNode generatedDOMNode;
 		
 		for (IClassVertex vert : vertices) {
 			if (vert instanceof PrimitiveVertex) {
@@ -47,15 +48,22 @@ public class DOMGraph implements Iterable<IDOMNode>{
 			}
 			
 			System.out.println("Displaying node: " + vert + ", " + vert.getTitle());
-            this.addDOMVertex(vert);
+            generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
+            vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
             
-            // 
 			numClasses++;
 		}
 		
 		System.out.println("Showing " + numClasses + " nodes.");
 		
 		for(IClassEdge edge : edges) {
+			if (edge.getHead() instanceof PrimitiveVertex || edge.getTail() instanceof PrimitiveVertex) {
+				continue;
+			}
+			if (!this.displayAllNodes && (!this.classesToDisplay.contains(edge.getHead().getTitle()) ||
+					!this.classesToDisplay.contains(edge.getTail().getTitle()))) {
+				continue;
+			}
 			System.out.println(edge);
 			this.addDOMEdge(edge);
 		}
@@ -73,7 +81,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	
 	public void addEdgeToDOMEdgeMapping(Class<? extends IClassEdge> eClass,
-			Class<? extends IDOMNode> domClass) {
+			Class<? extends IDOMEdgeNode> domClass) {
 		this.edgeToDOMEdge.put(eClass, domClass);
 	}
 	
@@ -86,15 +94,18 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * Get some information from IClassVertex and fill them into a DOMClassNode.
 	 * Add it into the DOMNode list.
 	 * @param v
+	 * @return 
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	private void addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
+	private IDOMNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
         IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
+        System.out.println("XXXXX This is the generated DOM Vertex: " + dn);
         dn.setTitle(v.getTitle());
         dn.setMethods(v.getMethods());
         dn.setFields(v.getFields());
         domNodes.add(dn);
+        return dn;
 	}
 	
 	/**
@@ -105,7 +116,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws InstantiationException 
 	 */
 	private void addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
-		IDOMNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
+		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
+		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
 		this.domNodes.add(domNode);
 	}
 	
@@ -169,10 +181,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		public IDOMNode next() {
 			return this.iter.next();
 		}
-		
-		
-		
-		
 		
 	}
 

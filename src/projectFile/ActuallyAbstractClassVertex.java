@@ -18,12 +18,26 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	private List<FieldData> fields;
 	private List<MethodData> methods;
 	private List<IClassEdge> edges;
+	
+	private IDOMClassNode myDOMNode;
 
 	public ActuallyAbstractClassVertex(String title) {
 		this.title = title;
 		this.fields = new ArrayList<FieldData>();
 		this.methods = new ArrayList<MethodData>();
 		this.edges = new ArrayList<IClassEdge>();
+	}
+	
+	public IDOMClassNode getCorrespondingDOMNode() {
+		System.out.println(this.myDOMNode);
+		return this.myDOMNode;
+	}
+	
+	@Override
+	public void setCorrespondingDOMNode(IDOMNode domNode) {
+		System.out.println(domNode);
+		this.myDOMNode = (IDOMClassNode) domNode;
+		
 	}
 
 

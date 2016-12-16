@@ -11,4 +11,5 @@ public class AbstractClassVertex extends ActuallyAbstractClassVertex {
 		super(title);
 	}
 
+
 }

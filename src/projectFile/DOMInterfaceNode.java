@@ -16,7 +16,7 @@ public class DOMInterfaceNode extends DOMAbstractBoxNode {
 
 		// Compile the text representation of the class to
 		// be used as the class's DOT representation's label
-		return this.sanitizedTitle() + "[\n" +
+		return this.getDOTTitle() + "[\n" +
 				"label = \"{" + this.sanitize(title) + "\n|" +
 				this.sanitize(methodFields) + "}\"\n]";
 

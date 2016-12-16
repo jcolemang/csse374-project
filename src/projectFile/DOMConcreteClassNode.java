@@ -1,8 +1,5 @@
 package projectFile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 
 	@Override
@@ -25,7 +22,7 @@ public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 
 		// Compile the text representation of the class to
 		// be used as the class's DOT representation's label
-		return this.sanitize(this.sanitizedTitle() + "[\n" +
+		return this.sanitize(this.getDOTTitle() + "[\n" +
 				"label = \"{" + title + "|" + fieldsString + "|"
 				+ methodFields + "}\"\n]");
 

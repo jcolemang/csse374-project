@@ -24,6 +24,7 @@ public class TextAggregator {
 		for (IDOMNode node : domGraph) {
 			out.write(node.getTextRepresentation().getBytes());
 		}
+		
 		this.writeFooter(out);
 		
 		out.close();

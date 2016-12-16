@@ -34,6 +34,10 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 		return this.classTitle;
 	}
 	
+	public String getDOTTitle() {
+		return this.classTitle.replaceAll("\\W", "");
+	}
+	
 	public abstract String getTextRepresentation();
 	
 	/**
@@ -104,13 +108,6 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 		return this.classTitle;
 	}
 
-
-	/*
-	 * 
-	 */
-	protected String sanitizedTitle() {
-		return this.classTitle.replaceAll("\\W", "");
-	}
 	
 
 	/**
