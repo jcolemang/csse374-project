@@ -16,6 +16,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
+	private String defaultAccessLevel = "private";
 	private boolean recursivelyParse = false;
 	private List<String> classesToDisplay = new ArrayList<String>();
 	
@@ -75,13 +76,11 @@ public class DOMGraph implements Iterable<IDOMNode>{
 			edgesToUse = this.getEdgesToUse(classesToUse);
 		}
 		
-		int numClasses = 0;
 		IDOMClassNode generatedDOMNode;
 		
 		for (IClassVertex vert : classesToUse) {
             generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
             vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
-			numClasses++;
 		}
 		
 		for(IClassEdge edge : edgesToUse) {
@@ -165,6 +164,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
         IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
+        dn.setAccessLevel(this.defaultAccessLevel);
         dn.setTitle(v.getTitle());
         dn.setMethods(v.getMethods());
         dn.setFields(v.getFields());
@@ -192,6 +192,16 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	public void setRecursivelyParse(boolean recursivelyParse) {
 		this.recursivelyParse = recursivelyParse;
+	}
+	
+	
+	/**
+	 * Possible values for access are "public", "protected", "private", and "default"
+	 * 
+	 * @param access The default access level
+	 */
+	public void setDefaultAccessLevel(String access) {
+		this.defaultAccessLevel = access;
 	}
 	
 	

@@ -8,4 +8,5 @@ public interface IDOMClassNode extends IDOMNode {
 	void setFields(List<FieldData> data);
 	void setTitle(String title);
 	void setMethods(List<MethodData> data);
+	void setAccessLevel(String access);
 }

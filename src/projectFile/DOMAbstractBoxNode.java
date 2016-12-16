@@ -5,40 +5,78 @@ import java.util.List;
 
 public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	
+	private static final int PRIVATE = 3;
+	private static final int PROTECTED = 2;
+	private static final int DEFAULT = 1;
+	private static final int PUBLIC = 0;
+	
 	String OutlineColor = "black";
 	String BGColor = "white";
 	String Font = "SansSerif";
 	String classTitle = "";
 	String color;
+	private int accessLevel = 0;
 
 	protected List<String> fields;
 	protected List<String> methods;
+
 
 	public void setTitle(String title) {
 		this.classTitle = title;
 	}
 
+
 	public void setOutlineColor(String color) {
 		this.OutlineColor = color;
 	}
+
 
 	public void setBGColor(String color) {
 		this.BGColor = color;
 	}
 
+
 	public void setFont(String font) {
 		this.Font = font;
 	}
+	
+
+	public void setAccessLevel(String access) {
+		this.accessLevel = this.translateAccessLevel(access);
+	}
+	
+
+	private int translateAccessLevel(String access) {
+		switch (access) {
+		case "public":
+			return DOMAbstractBoxNode.PUBLIC;
+		case "private":
+			return DOMAbstractBoxNode.PRIVATE;
+		case "protected":
+			return DOMAbstractBoxNode.PROTECTED;
+		case "default":
+			return DOMAbstractBoxNode.DEFAULT;
+		}
+		throw new IllegalArgumentException("Illegal access level");
+	}
+	
+
+	protected boolean shouldRender(String access) {
+		int num = this.translateAccessLevel(access);
+		return num <= this.accessLevel;
+	}
+
 
 	public String getClassName() {
 		return this.classTitle;
 	}
 	
+
 	public String getDOTTitle() {
 		return this.classTitle.replaceAll("\\W", "");
 	}
 	
-	public abstract String getTextRepresentation();
+	
 	
 	/**
 	 * Initializes the DOMClassNode's this.fields to be an array filled with
@@ -50,8 +88,10 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 		this.fields = new ArrayList<String>();
 		
 		for (FieldData f : data) {
-			this.fields.add(this.accessStringToSign(f.getAccessLevel()) +
-					f.getFieldName() + ": " + f.getFieldType());
+			if (this.shouldRender(f.getAccessLevel())) {
+				this.fields.add(this.accessStringToSign(f.getAccessLevel()) +
+						f.getFieldName() + ": " + f.getFieldType());
+			}
 		}
 	}
 	
@@ -67,6 +107,11 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 
 		for (MethodData m : data) { // For every method the class has
 			String paramInfo = ""; // Reset parameter information for each method
+
+			// testing the access level of the methods
+			if (!this.shouldRender(m.getAccessLevel())) {
+				continue;
+			}
 			
 			for (IClassVertex f : m.getParams()) { // For every parameter of that method
 				paramInfo += f + ", ";
@@ -122,4 +167,6 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 				.replaceAll(">", "&gt;");
 	}
 
+
+	public abstract String getTextRepresentation();
 }
