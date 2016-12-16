@@ -13,7 +13,7 @@ import org.objectweb.asm.tree.FieldNode;
  */
 public interface IClassVertex {
 	public IDOMClassNode getCorrespondingDOMNode();
-	public void setCorrespondingDOMNode(IDOMNode generatedDOMNode);
+	public void setCorrespondingDOMNode(IDOMClassNode generatedDOMNode);
 	public String getTitle();
 	
 	public void addMethodData(MethodData data);

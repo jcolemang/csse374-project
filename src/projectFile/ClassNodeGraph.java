@@ -1,22 +1,24 @@
 package projectFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ClassNodeGraph {
 	
 	private List<IClassVertex> classVertices;
 	private List<IClassEdge> classEdges;
+	private Map<String, IClassVertex> nameToVertex;
 	
 	/**
 	 * Create a graph of classnodes with classVertices and classEdges.
 	 */
 	public ClassNodeGraph() {
-		
 		this.classVertices = new ArrayList<IClassVertex>();
 		this.classEdges = new ArrayList<IClassEdge>();
-		
+		this.nameToVertex = new HashMap<String, IClassVertex>();
 	}
 	
 	/**
@@ -35,12 +37,19 @@ public class ClassNodeGraph {
 		return this.classVertices;
 	}
 	
+	
+	public IClassVertex getVertex(String name) {
+		return this.nameToVertex.get(name);
+	}
+	
+	
 	/**
 	 * Add a IClassVertex in the list of classVertices
 	 * @param vertex
 	 */
 	public void addClassVertex(IClassVertex vertex){
 		this.classVertices.add(vertex);
+		this.nameToVertex.put(vertex.getTitle(), vertex);
 	}
 	
 	/**
@@ -49,7 +58,6 @@ public class ClassNodeGraph {
 	 */
 	public void addClassEdge(IClassEdge edge){
 		this.classEdges.add(edge);
-		
 	}
 	
 	/**

@@ -196,8 +196,6 @@ public class GraphParser {
 			vertex = makeSingleNode(className, graph);
 		}
 		
-		System.out.println("Size: " + classNames.size());
-		
 		return graph;
 	}
 	

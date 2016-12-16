@@ -19,6 +19,8 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	private List<MethodData> methods;
 	private List<IClassEdge> edges;
 	
+	private boolean test = false;
+	
 	private IDOMClassNode myDOMNode;
 
 	public ActuallyAbstractClassVertex(String title) {
@@ -29,15 +31,13 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	}
 	
 	public IDOMClassNode getCorrespondingDOMNode() {
-		System.out.println(this.myDOMNode);
 		return this.myDOMNode;
 	}
 	
 	@Override
-	public void setCorrespondingDOMNode(IDOMNode domNode) {
-		System.out.println(domNode);
-		this.myDOMNode = (IDOMClassNode) domNode;
-		
+	public void setCorrespondingDOMNode(IDOMClassNode domNode) {
+		this.test = true;
+		this.myDOMNode = domNode;
 	}
 
 

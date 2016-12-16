@@ -3,6 +3,7 @@ package projectFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
-	private boolean displayAllNodes = false;
+	private boolean recursivelyParse = false;
 	private List<String> classesToDisplay = new ArrayList<String>();
 	
 	// TODO Change this to IDOMNode some time in the future
@@ -31,64 +32,81 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws InstantiationException 
 	 */
 	public void generateDOMTree(ClassNodeGraph g) throws InstantiationException, IllegalAccessException {
-		System.out.println("Generating DOM Graph");
 		this.domNodes = new ArrayList<IDOMNode>();
-		List<IClassVertex> vertices = g.getVertices();
-		List<IClassEdge> edges = g.getEdges();
 		
-		List<IClassVertex> classesToUse = new ArrayList<>();
-		List<IClassEdge> edgesToUse = new ArrayList<>();
+		List<IClassVertex> classesToUse;
+		List<IClassEdge> edgesToUse;
+		List<IClassVertex> start = new LinkedList<>();
+		
+		// Getting a starting point for classes to display
+		for (String name : this.classesToDisplay) {
+			start.add(g.getVertex(name));
+		}
+		
+		if (this.recursivelyParse) {
+			classesToUse = new LinkedList<>();
+			edgesToUse = new LinkedList<>();
+			this.recursivelyGetClassesToUse(start, classesToUse, edgesToUse);
+		} else {
+			classesToUse = start;
+			edgesToUse = this.getEdgesToUse(classesToUse);
+		}
 		
 		int numClasses = 0;
-		IDOMNode generatedDOMNode;
+		IDOMClassNode generatedDOMNode;
 		
-		for (IClassVertex vert : vertices) {
-			if (vert instanceof PrimitiveVertex) {
-				continue;
-			}
-			if (!this.displayAllNodes && !this.classesToDisplay.contains(vert.getTitle())) {
-				continue;
-			}
-			if (!this.classesToDisplay.contains(vert.getTitle())) {
-				continue;
-			}
-			
-			System.out.println("Displaying node: " + vert + ", " + vert.getTitle());
+		for (IClassVertex vert : classesToUse) {
             generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
             vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
-            
 			numClasses++;
 		}
 		
-		System.out.println("Showing " + numClasses + " nodes.");
-		
-		for(IClassEdge edge : edges) {
-			if (edge.getStart() instanceof PrimitiveVertex || edge.getEnd() instanceof PrimitiveVertex) {
-				continue;
-			}
-			if (!this.displayAllNodes && 
-					(!this.classesToDisplay.contains(edge.getStart().getTitle()) ||
-					!this.classesToDisplay.contains(edge.getEnd().getTitle()))) {
-				continue;
-			}
-			System.out.println(edge);
+		for(IClassEdge edge : edgesToUse) {
 			this.addDOMEdge(edge);
 		}
 		
 	}
 	
 	
-	private void getClassesToUse(List<IClassVertex> start, List<IClassVertex> result, List<IClassEdge> edges) {
+	private List<IClassEdge> getEdgesToUse(List<IClassVertex> vertices) {
+		List<IClassEdge> edges = new LinkedList<>();
+		for (IClassVertex v : vertices) {
+			for (IClassEdge e : v.getEdges()) {
+				if (vertices.contains(e.getEnd())) {
+					edges.add(e);
+				}
+			}
+		}
+		return edges;
+	}
+	
+	
+	private void recursivelyGetClassesToUse(List<IClassVertex> start, 
+			List<IClassVertex> result, 
+			List<IClassEdge> edges) {
+		
+		// base case
 		if (start.size() == 0) {
 			return;
 		}
-		
+
+		// checking if I've been here before
 		IClassVertex first = start.get(0);
+		if (result.contains(first)) {
+			this.recursivelyGetClassesToUse(start.subList(1, start.size()), result, edges);
+			return;
+		}
+
+		// I haven't been here.
+		// Get all connected elements and add them to the queue
 		result.add(first);
 		for (IClassEdge e : first.getEdges()) {
 			edges.add(e);
 			start.add(e.getEnd());
 		}
+
+		// and recurse!
+		this.recursivelyGetClassesToUse(start.subList(1, start.size()), result, edges);
 	}
 	
 	
@@ -119,13 +137,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	private IDOMNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
+	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
         IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
-        System.out.println("XXXXX This is the generated DOM Vertex: " + dn);
         dn.setTitle(v.getTitle());
         dn.setMethods(v.getMethods());
         dn.setFields(v.getFields());
-        domNodes.add(dn);
+        this.domNodes.add(dn);
         return dn;
 	}
 	
@@ -147,8 +164,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * If this is false, it will only use the nodes given by setClassesToDisplay().
 	 * Defaults to false.
 	 */
-	public void setDisplayAll(boolean shouldDisplayAll) {
-		this.displayAllNodes = shouldDisplayAll;
+	public void setRecursivelyParse(boolean recursivelyParse) {
+		this.recursivelyParse = recursivelyParse;
 	}
 	
 	

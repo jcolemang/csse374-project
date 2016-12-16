@@ -32,7 +32,7 @@ public class MainClass {
 		dom.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
 		dom.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
 
-		dom.setDisplayAll(false);
+		dom.setRecursivelyParse(true);
 		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
 
