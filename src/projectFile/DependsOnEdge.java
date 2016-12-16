@@ -1,17 +1,7 @@
 package projectFile;
 
-public class DependsOnEdge implements IClassEdge {
+public class DependsOnEdge extends ActuallyAbstractEdge {
 
-	@Override
-	public IClassVertex getHead() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IClassVertex getTail() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
