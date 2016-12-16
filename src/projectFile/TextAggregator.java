@@ -40,7 +40,7 @@ public class TextAggregator {
 	 */
 	public void writeHeader(OutputStream out, String fontSize) throws IOException {
 		out.write("digraph AWESOMEGRAPH {\n".getBytes());
-		out.write("rankdir = TB\n".getBytes());
+		out.write("rankdir = BT\n".getBytes());
 		out.write(("fontsize = " + fontSize + "\n").getBytes());
 		out.write("node [ shape = record ]\n".getBytes());
 	}
