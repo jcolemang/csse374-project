@@ -19,8 +19,13 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
+		// TODO I think this should be moved elsewhere
 		for (IClassVertex vert : vertices) {
-			this.addDOMVertex(vert);
+			if (vert instanceof PrimitiveVertex) {
+				continue;
+			}
+            System.out.println(vert);
+            this.addDOMVertex(vert);
 		}
 		
 		/*

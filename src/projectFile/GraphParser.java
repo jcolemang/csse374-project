@@ -12,99 +12,181 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public class GraphParser {
 
-	private String privacyLevel;
 	private Map<String, IClassVertex> visited = new HashMap<>();
+	
 
-	public ClassNodeGraph parse(List<String> classNames) throws IOException{
+	/*
+	 * Adds the vertex to our map of names to vertices
+	 */
+	private void addVisit(String className, IClassVertex vert, ClassNodeGraph g) {
+		this.visited.put(className, vert);
+		g.addClassVertex(vert);
+	}
+
+	
+	/*
+	 * 
+	 */
+	private String getAccessLevel(int opcode) {
 		
-		ClassNodeGraph graph = new ClassNodeGraph();
-		
-		for (String className : classNames) {
-			IClassVertex newVertex = makeSingleNode(className);
-			graph.addClassVertex(newVertex);
-		}
-		return graph;
+		if((opcode & Opcodes.ACC_PUBLIC) > 0) {
+			return "public";
+		} else if((opcode & Opcodes.ACC_PRIVATE) > 0) {
+			return "private";
+		} else if((opcode & Opcodes.ACC_PROTECTED) > 0) {
+			return "protected";
+		} else {
+			return "default";
+		} 
 	}
 	
 
-	private IClassVertex makeSingleNode(String className) {
-		IClassVertex classVertex;
-		
-		try {
-			ClassReader reader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-            // TODO: Consider turning this into a factory pattern ?
-            if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
-                classVertex = this.makeInterfaceVertex(classNode);
-            } else if ((classNode.access & Opcodes.ACC_ABSTRACT) != 0) {
-                classVertex = this.makeAbstractVertex(classNode);
-            } else {
-                classVertex = this.makeVanillaVertex(classNode);
-            }
-		} catch (IOException e) {
-			classVertex = this.makePrimitiveVertex(className);
-		}
-		
-		
-		visited.put(className, classVertex);
-		
-		return classVertex;
+	/*
+	 * Returns true if and only if the vertex has been visited and added to our
+	 * map of names to vertex objects
+	 */
+	private boolean hasBeenVisited(String className) {
+		return this.visited.containsKey(className);
 	}
 	
 
-	public ClassNodeGraph parse(String packageName){
-		return null;
-	}
-	
-
-	public void setPrivacyLevel(String p){
-		this.privacyLevel = p;
-	}	
-	
-	private InterfaceVertex makeInterfaceVertex(ClassNode classNode) throws IOException {
+	/*
+	 * 
+	 */
+	private InterfaceVertex makeInterfaceVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		InterfaceVertex iv = new InterfaceVertex(name);
-		this.addVisit(name, iv);
-		this.setFields(classNode, iv);
-		this.setMethods(classNode, iv);
+		this.addVisit(name, iv, g);
+		this.setFields(classNode, iv, g);
+		this.setMethods(classNode, iv, g);
 		
 		return iv;
 	}
 	
 
-	private AbstractClassVertex makeAbstractVertex(ClassNode classNode) throws IOException {
+	/*
+	 * TODO: Consider turning this into a factory pattern?
+	 * This "if this then make one of these" pattern tells me 
+	 * that is something we should do.
+	 */
+	private IClassVertex makeSingleNode(String className, ClassNodeGraph g) {
+		IClassVertex classVertex;
+		IClassVertex superClassVertex;
+		ClassNode classNode = new ClassNode();
+		ClassReader reader;
+		
+		// parsing the class itself
+		try {
+			// ASM setup code
+			reader = new ClassReader(className);
+			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+
+			// checking the types and delegating to separate methods
+            if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
+                classVertex = this.makeInterfaceVertex(classNode, g);
+            } else if ((classNode.access & Opcodes.ACC_ABSTRACT) != 0) {
+                classVertex = this.makeAbstractVertex(classNode, g);
+            } else {
+                classVertex = this.makeVanillaVertex(classNode, g);
+            }
+
+		} catch (IOException classException) {
+			classVertex = this.makePrimitiveVertex(className, g);
+		}
+		
+		
+		/*
+        // parsing the superclass
+        String superClassName = classNode.superName;
+        if (superClassName != null) {
+        	superClassVertex = this.makeSingleNode(superClassName);
+        } else {
+        	System.out.println("No superclass");
+        }
+        */
+		
+		// parsing the interfaces
+		System.out.println("Here are the interfaces!");
+		System.out.println(classNode.interfaces);
+		
+		
+		this.addVisit(className, classVertex, g);
+		return classVertex;
+	}
+	
+
+	/*
+	 * 
+	 */
+	private AbstractClassVertex makeAbstractVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		AbstractClassVertex av = new AbstractClassVertex(name);
-		this.addVisit(name, av);
-		this.setFields(classNode, av);
-		this.setMethods(classNode, av);
+		this.addVisit(name, av, g);
+		this.setFields(classNode, av, g);
+		this.setMethods(classNode, av, g);
 		
 		return av;
 	}
 	
 	
-	private RegularClassVertex makeVanillaVertex(ClassNode classNode) throws IOException {
+	/*
+	 * 
+	 */
+	private RegularClassVertex makeVanillaVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
 		RegularClassVertex vv = new RegularClassVertex(name);
-		this.addVisit(name, vv);
-		this.setFields(classNode, vv);
-		this.setMethods(classNode, vv);
+		this.addVisit(name, vv, g);
+		this.setFields(classNode, vv, g);
+		this.setMethods(classNode, vv, g);
 		
 		return vv;
 	}
 	
 	
-	private PrimitiveVertex makePrimitiveVertex(String className) {
+	/*
+	 * Used as a placeholder for primitive types, even though they are not classes.
+	 */
+	private PrimitiveVertex makePrimitiveVertex(String className, ClassNodeGraph g) {
 		PrimitiveVertex primitiveVertex = new PrimitiveVertex(className);
-		this.addVisit(className, primitiveVertex);
+		this.addVisit(className, primitiveVertex, g);
 		return primitiveVertex;
+	}
+
+
+	/*
+	 * 
+	 */
+	public ClassNodeGraph parse(List<String> classNames) throws IOException{
+		
+		ClassNodeGraph graph = new ClassNodeGraph();
+		IClassVertex vertex;
+		
+		// Need multiple starting points in case the vertices are not connected
+		for (String className : classNames) {
+			vertex = makeSingleNode(className, graph);
+		}
+		
+		return graph;
+	}
+	
+
+	/*
+	 * Will take a Java package and will parse each of the classes in it
+	 * TODO Implement this
+	 */
+	public ClassNodeGraph parse(String packageName){
+		throw new NotImplementedException();
 	}
 	
 	
-	private void setFields(ClassNode classNode, IClassVertex cv) throws IOException {
+	/*
+	 * 
+	 */
+	private void setFields(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fields = classNode.fields;
 		IClassVertex realType;
@@ -117,14 +199,18 @@ public class GraphParser {
 			if (hasBeenVisited(fieldType)) {
 				realType = this.visited.get(fieldType);
 			} else {
-				realType = this.makeSingleNode(fieldType);
+				realType = this.makeSingleNode(fieldType, g);
 			}
 			cv.addFieldData(new FieldData(accessLevel, name, realType));
 		}
 		
 	}
 	
-	private void setMethods(ClassNode classNode, IClassVertex cv) throws IOException {
+	
+	/*
+	 * 
+	 */
+	private void setMethods(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
 		List<MethodNode> methods = classNode.methods;
 		IClassVertex realReturnType;
 		
@@ -138,7 +224,7 @@ public class GraphParser {
 			if (hasBeenVisited(returnType)) {
 				realReturnType = this.visited.get(returnType);
 			} else {
-				realReturnType = this.makeSingleNode(returnType);
+				realReturnType = this.makeSingleNode(returnType, g);
 			}
 			
 			MethodData mdToAdd = new MethodData(access, name, realReturnType);
@@ -148,7 +234,7 @@ public class GraphParser {
 				if (hasBeenVisited(paramName)) {
 					param = this.visited.get(paramName);
 				} else {
-					param = this.makeSingleNode(paramName);
+					param = this.makeSingleNode(paramName, g);
 				}
 				
 				mdToAdd.addParam(param);
@@ -158,31 +244,5 @@ public class GraphParser {
 			cv.addMethodData(mdToAdd);
 			
 		}
-	}
-	
-	/*
-	 * TODO Should <clinit> and <init> be handled differently?
-	 */
-	private String getAccessLevel(int opcode) {
-		
-		if((opcode & Opcodes.ACC_PUBLIC) > 0) {
-			return "public";
-		} else if((opcode & Opcodes.ACC_PRIVATE) > 0) {
-			return "private";
-		} else if((opcode & Opcodes.ACC_PROTECTED) > 0) {
-			return "protected";
-		} else {
-			return "native";
-		} 
-	}
-	
-
-	private boolean hasBeenVisited(String className) {
-		return this.visited.containsKey(className);
-	}
-	
-
-	private void addVisit(String className, IClassVertex vert) {
-		this.visited.put(className, vert);
 	}
 }
