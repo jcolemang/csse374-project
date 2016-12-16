@@ -13,8 +13,10 @@ public class MainClass {
 	 * 
 	 * @param args
 	 * @throws IOException
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
 		GraphParser gp = new GraphParser();
 		ArrayList<String> strs = new ArrayList<String>();
 		for(String str: args) {
@@ -24,7 +26,7 @@ public class MainClass {
 		
 		DOMGraph dom = new DOMGraph();
 		dom.setDisplayAll(true);
-		dom.setClassesToDisplay(strs);
+//		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
 
 		TextAggregator generator = new TextAggregator();

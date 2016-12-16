@@ -17,17 +17,15 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	private String title;
 	private List<FieldData> fields;
 	private List<MethodData> methods;
+	private List<IClassEdge> edges;
 
 	public ActuallyAbstractClassVertex(String title) {
 		this.title = title;
 		this.fields = new ArrayList<FieldData>();
 		this.methods = new ArrayList<MethodData>();
+		this.edges = new ArrayList<IClassEdge>();
 	}
 
-	@Override
-	public DOMClassNode getCorrespondingDOMNode() {
-		return null;
-	}
 
 	/**
 	 * Returns the title of the class
@@ -40,25 +38,17 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	}
 
 	/**
-	 * Sets the DOMNode that the class is associated with.
-	 * 
-	 * @return DOMClassNode
-	 */
-	@Override
-	public DOMClassNode setCorrespondingDOMNode() {
-		// TODO Implement this
-		return null;
-	}
-
-	/**
 	 * Returns a list of all edges attached to the class
 	 * 
 	 * @return List<IClassEdge>
 	 */
 	@Override
 	public List<IClassEdge> getEdges() {
-		// TODO Implement this
-		return null;
+		return this.edges;
+	}
+	
+	public void addEdge(IClassEdge edge) {
+		this.edges.add(edge);
 	}
 
 	/**

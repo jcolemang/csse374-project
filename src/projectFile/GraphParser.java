@@ -78,8 +78,10 @@ public class GraphParser {
 	private IClassVertex makeSingleNode(String className, ClassNodeGraph g) {
 		IClassVertex classVertex;
 		IClassVertex superClassVertex;
+		IClassVertex interfaceVertex;
 		ClassNode classNode = new ClassNode();
 		ClassReader reader;
+		IClassEdge edge;
 		
 		// parsing the class itself
 		try {
@@ -105,6 +107,8 @@ public class GraphParser {
         String superClassName = classNode.superName;
         if (superClassName != null) {
         	superClassVertex = this.makeSingleNode(superClassName, g);
+        	edge = new ExtendsEdge(classVertex, superClassVertex);
+        	classVertex.addEdge(edge);
         } else {
         	System.out.println("No superclass");
         }
@@ -112,6 +116,14 @@ public class GraphParser {
 		// parsing the interfaces
 		System.out.println("Here are the interfaces!");
 		System.out.println(classNode.interfaces);
+		
+		for (Object inter: classNode.interfaces) {
+			System.out.println(inter.toString());
+			
+			interfaceVertex = this.makeSingleNode(inter.toString(), g);
+			edge = new ImplementsEdge(classVertex, interfaceVertex);
+			classVertex.addEdge(edge);
+		}
 		
 		this.addVisit(className, classVertex, g);
 		return classVertex;

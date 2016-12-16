@@ -3,13 +3,8 @@ package projectFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DOMClassNode implements IDOMNode {
-
-	//TODO: maybe remove/move this because the setEdgeType method was removed?
-	public enum EdgeType {
-		EXTENDS, IMPLEMENTS, HAS_A, DEPENDS_ON
-	}
-
+public abstract class DOMAbstractBoxNode implements IDOMNode{
+	
 	String OutlineColor = "black";
 	String BGColor = "white";
 	String Font = "SansSerif";
@@ -17,8 +12,8 @@ public class DOMClassNode implements IDOMNode {
 	String color;
 	// EdgeType type;
 
-	private List<String> fields;
-	private List<String> methods;
+	protected List<String> fields;
+	protected List<String> methods;
 
 	public void setTitle(String title) {
 		this.classTitle = title;
@@ -39,8 +34,9 @@ public class DOMClassNode implements IDOMNode {
 	public String getClassName() {
 		return this.classTitle;
 	}
-
-
+	
+	public abstract String getTextRepresentation();
+	
 	/**
 	 * Initializes the DOMClassNode's this.fields to be an array filled with
 	 * string representations of each field in the class.
@@ -55,13 +51,13 @@ public class DOMClassNode implements IDOMNode {
 					f.getFieldName() + ": " + f.getFieldType());
 		}
 	}
-
-
+	
 	/**
 	 * Initializes the DOMClassNode's this.methods to be an array filled with
 	 * string representations of each method in the class.
 	 * @param data
 	 */
+	//TODO: consider putting this into the IDOMNode interface
 	public void setMethods(List<MethodData> data) {
 		
 		this.methods = new ArrayList<String>();
@@ -81,41 +77,7 @@ public class DOMClassNode implements IDOMNode {
 					m.getMethodName() + "(" + paramInfo + ")\n");
 		}
 	}
-
-	/**
-	 * Returns the text representation for the entire class. The string returned
-	 * is the label for the class's DOT node. The '\\l' means "newline and align left"
-	 * and the '|' means "make a horizontal line through the box shape (to split 
-	 * the class's name and its fields and its methods)"
-	 * @return String (the text representation of the entire class)
-	 */
-	@Override
-	public String getTextRepresentation() {
-
-		// Set the name of the node
-		String title = this.getClassName();
-
-		// Set the fields string
-		String fieldsString = "\n";
-		for (String s : this.fields) {
-			fieldsString += s + "\\l";
-		}
-
-		// Set the method fields
-		String methodFields = "";
-		for (String s : this.methods) {
-			methodFields += s + "\\l";
-		}
-
-		// Compile the text representation of the class to
-		// be used as the class's DOT representation's label
-		return this.sanitize(this.sanitizedTitle() + "[\n" +
-				"label = \"{" + title + "|" + fieldsString + "|"
-				+ methodFields + "}\"\n]");
-
-	}
-
-
+	
 	/**
 	 * Helper method that returns the UML Access Level symbol
 	 * associated with each string "private," "public," etc.
@@ -125,7 +87,7 @@ public class DOMClassNode implements IDOMNode {
 	/*
 	 * TODO What is the access level modifier of <clinit>?
 	 */
-	private String accessStringToSign(String access) {
+	protected String accessStringToSign(String access) {
 		switch (access) {
 		case "private":
 			return "-";
@@ -137,11 +99,11 @@ public class DOMClassNode implements IDOMNode {
 		return "";
 	}
 	
-	
+
 	/*
 	 * 
 	 */
-	private String sanitizedTitle() {
+	protected String sanitizedTitle() {
 		return this.classTitle.replaceAll("\\W", "");
 	}
 	
@@ -152,7 +114,7 @@ public class DOMClassNode implements IDOMNode {
 	 * @param s
 	 * @return the sanitized String
 	 */
-	private String sanitize(String s) {
+	protected String sanitize(String s) {
 		return s.replaceAll("&", "&amp;")
 				.replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");

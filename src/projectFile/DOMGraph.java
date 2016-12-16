@@ -1,8 +1,10 @@
 package projectFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 public class DOMGraph implements Iterable<IDOMNode>{
@@ -16,13 +18,17 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private boolean displayAllNodes = false;
 	private List<String> classesToDisplay = new ArrayList<String>();
 	
+	private Map<Class<? extends IClassVertex>, Class<? extends DOMAbstractBoxNode>> vertexToDOMNode = new HashMap<>();
+	
 	/**
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
 	 * Store them into a list of IDOMNodes
 	 * 
 	 * @param g
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public void generateDOMTree(ClassNodeGraph g) {
+	public void generateDOMTree(ClassNodeGraph g) throws InstantiationException, IllegalAccessException {
 		System.out.println("Generating DOM Graph");
 		this.domNodes = new ArrayList<IDOMNode>();
 		List<IClassVertex> vertices = g.getVertices();
@@ -63,12 +69,17 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * Get some information from IClassVertex and fill them into a DOMClassNode.
 	 * Add it into the DOMNode list.
 	 * @param v
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	private void addDOMVertex(IClassVertex v) {
-        DOMClassNode dn = new DOMClassNode();
+	private void addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
+        DOMAbstractBoxNode dn = this.vertexToDOMNode.get(v).newInstance();
         dn.setTitle(v.getTitle());
-        dn.setFields(v.getFields());
         dn.setMethods(v.getMethods());
+        
+        if (v instanceof ActuallyAbstractClassVertex) {
+        	((DOMAbstractBoxNode)dn).setFields(v.getFields());
+        }
         domNodes.add(dn);
 	}
 	
@@ -78,8 +89,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @param v
 	 */
 	private void addDOMEdge(IClassEdge e) {
-        DOMClassNode dn = new DOMClassNode();
-        domNodes.add(dn);
+        DOMEdgeNode en = new DOMEdgeNode();
 	}
 	
 	/**
