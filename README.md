@@ -34,6 +34,9 @@ project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 ## Contributions
 
 ### Wenkang
+- Update the uml design for our milestone 1 at end
+- Do some start for command line arguments
+
 
 ### Sabrina
 - Contributed to overall design and many design refinement debates
