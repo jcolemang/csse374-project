@@ -20,15 +20,17 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private boolean recursivelyParse = false;
 	private List<String> classesToDisplay = new ArrayList<String>();
 	
-	// TODO Change this to IDOMNode some time in the future
 	private Map<Class<? extends IClassVertex>, Class<? extends IDOMClassNode>> vertexToDOMNode = new HashMap<>();
 	private Map<Class<? extends IClassEdge>, Class<? extends IDOMEdgeNode>> edgeToDOMEdge = new HashMap<>();
 	
 	
 	/**
+	 * Used for mapping between IClassVertices and IDOMClassNodes. Given an IClassVertex
+	 * you should be able to create a IDOMClassNode instance using this method and
+	 * the newInstance() method
 	 * 
-	 * @param vClass
-	 * @param domClass
+	 * @param vClass the given IClassVertex class
+	 * @param domClass the resultant IDOMClassNode class
 	 */
 	public void addVertexToDOMNodeMapping(Class<? extends IClassVertex> vClass, 
 			Class<? extends IDOMClassNode> domClass) {
@@ -37,9 +39,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	
 	/**
+	 * Used for mapping between IClassEdges and IDOMEdgeNodes. Given an IClassEdge
+	 * class this method should be able to produce an IDOMEdgeNode instance using
+	 * the newInstance() method
 	 * 
-	 * @param eClass
-	 * @param domClass
+	 * @param eClass the given IClassEdge class
+	 * @param domClass the resultant IDOMEdgeNode class
 	 */
 	public void addEdgeToDOMEdgeMapping(Class<? extends IClassEdge> eClass,
 			Class<? extends IDOMEdgeNode> domClass) {
@@ -51,7 +56,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
 	 * Store them into a list of IDOMNodes
 	 * 
-	 * @param g
+	 * @param g the graph to generate a DOMGraph from
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
@@ -77,7 +82,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		}
 		
 		IDOMClassNode generatedDOMNode;
-		
 		for (IClassVertex vert : classesToUse) {
             generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
             vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
@@ -91,9 +95,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	
 	/**
+	 * Gets the edges without recursively parsing the graph. An edge with be
+	 * added to the output list if the edge both starts and ends in a vertex from
+	 * the given list
 	 * 
 	 * @param vertices
-	 * @return
+	 * @return all edges starting and ended at vertices from the given list
 	 */
 	private List<IClassEdge> getEdgesToUse(List<IClassVertex> vertices) {
 		List<IClassEdge> edges = new LinkedList<>();
@@ -148,12 +155,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	}
 	
 	
-	
-	
-	/*
-	 * TODO We will need to fill out all of the DOM Node info
-	 * from the vertex info
-	 */
 	/**
 	 * Get some information from IClassVertex and fill them into a DOMClassNode.
 	 * Add it into the DOMNode list.
@@ -175,7 +176,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	/**
 	 * Get some information from IClassEdge and fill them into a DOMEdgeNode.
 	 * Add it into the DOMNode list.
-	 * @param v
+	 * @param e
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */

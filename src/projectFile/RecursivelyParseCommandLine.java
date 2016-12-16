@@ -15,7 +15,8 @@ public class RecursivelyParseCommandLine implements ICommandLineArgument {
 	public List<String> execute(List<String> args) {
 		List<String> argsNotUsed = new ArrayList<>();
 
-		for (String str: args){
+		for (String str: args) {
+			System.out.println(str);
 			if (str.equals("-recursive")){
 				this.graph.setRecursivelyParse(true);
 			} else {
@@ -23,6 +24,7 @@ public class RecursivelyParseCommandLine implements ICommandLineArgument {
 			}
 		}
 		
+		System.out.println(argsNotUsed);
 		return argsNotUsed;
 			
 	}

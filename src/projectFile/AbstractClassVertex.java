@@ -6,10 +6,7 @@ package projectFile;
  *
  */
 public class AbstractClassVertex extends ActuallyAbstractClassVertex {
-
 	public AbstractClassVertex(String title) {
 		super(title);
 	}
-
-
 }

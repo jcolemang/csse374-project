@@ -28,15 +28,19 @@ public class MainClass {
 		GraphParser gp = new GraphParser();
 		DOMGraph dom = new DOMGraph();
 		argParsers.add(new RecursivelyParseCommandLine(dom));
+		argParsers.add(new AccessCommandLineArgument(dom));
 		
 		for (ICommandLineArgument cla : argParsers) {
 			strs = cla.execute(strs);
+			System.out.println(strs);
 		}
+		
+		System.out.println(strs);
 
 		ClassNodeGraph nodeGraph = gp.parse(strs);
 		
 		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
-		dom.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMConcreteClassNode.class);
+		dom.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMAbstractClassNode.class);
 		dom.addVertexToDOMNodeMapping(InterfaceVertex.class, DOMInterfaceNode.class);
 		
 		dom.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
