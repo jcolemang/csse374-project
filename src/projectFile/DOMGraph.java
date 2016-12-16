@@ -36,6 +36,9 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
+		List<IClassVertex> classesToUse = new ArrayList<>();
+		List<IClassEdge> edgesToUse = new ArrayList<>();
+		
 		int numClasses = 0;
 		IDOMNode generatedDOMNode;
 		
@@ -44,6 +47,9 @@ public class DOMGraph implements Iterable<IDOMNode>{
 				continue;
 			}
 			if (!this.displayAllNodes && !this.classesToDisplay.contains(vert.getTitle())) {
+				continue;
+			}
+			if (!this.classesToDisplay.contains(vert.getTitle())) {
 				continue;
 			}
 			
@@ -57,17 +63,32 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		System.out.println("Showing " + numClasses + " nodes.");
 		
 		for(IClassEdge edge : edges) {
-			if (edge.getHead() instanceof PrimitiveVertex || edge.getTail() instanceof PrimitiveVertex) {
+			if (edge.getStart() instanceof PrimitiveVertex || edge.getEnd() instanceof PrimitiveVertex) {
 				continue;
 			}
-			if (!this.displayAllNodes && (!this.classesToDisplay.contains(edge.getHead().getTitle()) ||
-					!this.classesToDisplay.contains(edge.getTail().getTitle()))) {
+			if (!this.displayAllNodes && 
+					(!this.classesToDisplay.contains(edge.getStart().getTitle()) ||
+					!this.classesToDisplay.contains(edge.getEnd().getTitle()))) {
 				continue;
 			}
 			System.out.println(edge);
 			this.addDOMEdge(edge);
 		}
 		
+	}
+	
+	
+	private void getClassesToUse(List<IClassVertex> start, List<IClassVertex> result, List<IClassEdge> edges) {
+		if (start.size() == 0) {
+			return;
+		}
+		
+		IClassVertex first = start.get(0);
+		result.add(first);
+		for (IClassEdge e : first.getEdges()) {
+			edges.add(e);
+			start.add(e.getEnd());
+		}
 	}
 	
 	
@@ -117,7 +138,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private void addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
 		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
-		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
+		domNode.set(e.getStart().getCorrespondingDOMNode(), e.getEnd().getCorrespondingDOMNode());
 		this.domNodes.add(domNode);
 	}
 	

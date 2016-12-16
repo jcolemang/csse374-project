@@ -6,13 +6,13 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	public IClassVertex tail;
 
 	@Override
-	public IClassVertex getHead() {
+	public IClassVertex getEnd() {
 		return this.head;
 	}
 
 
 	@Override
-	public IClassVertex getTail() {
+	public IClassVertex getStart() {
 		return this.tail;
 	}
 	

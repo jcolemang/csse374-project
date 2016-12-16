@@ -7,7 +7,7 @@ package projectFile;
  *
  */
 public interface IClassEdge {
-	IClassVertex getHead();
-	IClassVertex getTail();
+	IClassVertex getEnd();
+	IClassVertex getStart();
 	void set(IClassVertex head, IClassVertex tail);
 }

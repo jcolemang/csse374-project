@@ -6,26 +6,26 @@ package projectFile;
  */
 public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	
-	protected IDOMClassNode head;
-	protected IDOMClassNode tail;
+	protected IDOMClassNode start;
+	protected IDOMClassNode end;
 	
 
 	@Override
-	public IDOMClassNode getHead() {
-		return this.head;
+	public IDOMClassNode getStart() {
+		return this.start;
 	}
 	
 
 	@Override
-	public IDOMClassNode getTail() {
-		return this.tail;
+	public IDOMClassNode getEnd() {
+		return this.end;
 	}
 
 
 	@Override
-	public void set(IDOMClassNode head, IDOMClassNode tail) {
-		this.head = head;
-		this.tail = tail;
+	public void set(IDOMClassNode start, IDOMClassNode end) {
+		this.start = start;
+		this.end = end;
 	}
 
 }
