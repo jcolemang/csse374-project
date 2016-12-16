@@ -34,25 +34,10 @@ project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 ## Contributions
 
 ### Wenkang
-- Contributed to design
-- Contributed to documentation
-- Contributed to
 
 ### Sabrina
-- Contributed to design
-- Debugged and
 
 ### Coleman
 - Contributed to design
 - Helped to write the class -> graph parsing code
 - Helped to write the graph -> DOM parsing code
--
-
-
-
-## Things to do:
-- Redo our design document
-- Italicize Interfaces and Abstract classes
-- Demo run configurations
-- Finish adding privacy level command line argument
-- Comment code and add javadocs
