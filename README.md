@@ -26,8 +26,8 @@ project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 4. Select the "Arguments" tab
 5. Enter the class name of each class you would like analyzed under "Program
    arguments"
-6. Add "-recursive" to recursively parse superclasses and interfaces and
-   "-private", "-public", or "-protected" to limit the fields and methods
+6. Add `-recursive` to recursively parse superclasses and interfaces and
+   `-private`, `-public`, or `-protected` to limit the fields and methods
    displayed
 
 
