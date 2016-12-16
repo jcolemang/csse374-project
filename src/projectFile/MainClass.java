@@ -2,6 +2,7 @@ package projectFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 
@@ -17,14 +18,23 @@ public class MainClass {
 	 * @throws InstantiationException 
 	 */
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
-		GraphParser gp = new GraphParser();
-		ArrayList<String> strs = new ArrayList<String>();
-		for(String str: args) {
+		
+		List<String> strs = new ArrayList<String>();
+		for (String str: args) {
 			strs.add(str);
 		 }
+		
+		List<ICommandLineArgument> argParsers = new ArrayList<>();
+		GraphParser gp = new GraphParser();
+		DOMGraph dom = new DOMGraph();
+		argParsers.add(new RecursivelyParseCommandLine(dom));
+		
+		for (ICommandLineArgument cla : argParsers) {
+			strs = cla.execute(strs);
+		}
+
 		ClassNodeGraph nodeGraph = gp.parse(strs);
 		
-		DOMGraph dom = new DOMGraph();
 		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
 		dom.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMConcreteClassNode.class);
 		dom.addVertexToDOMNodeMapping(InterfaceVertex.class, DOMInterfaceNode.class);
@@ -32,7 +42,6 @@ public class MainClass {
 		dom.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
 		dom.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
 
-		dom.setRecursivelyParse(true);
 		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
 

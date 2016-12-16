@@ -1,6 +1,8 @@
 package projectFile;
 
+import java.util.List;
+
 public interface ICommandLineArgument {
 
-	void execute(String[] args);
+	List<String> execute(List<String> args);
 }

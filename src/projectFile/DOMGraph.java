@@ -23,6 +23,29 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private Map<Class<? extends IClassVertex>, Class<? extends IDOMClassNode>> vertexToDOMNode = new HashMap<>();
 	private Map<Class<? extends IClassEdge>, Class<? extends IDOMEdgeNode>> edgeToDOMEdge = new HashMap<>();
 	
+	
+	/**
+	 * 
+	 * @param vClass
+	 * @param domClass
+	 */
+	public void addVertexToDOMNodeMapping(Class<? extends IClassVertex> vClass, 
+			Class<? extends IDOMClassNode> domClass) {
+		this.vertexToDOMNode.put(vClass, domClass);
+	}
+	
+	
+	/**
+	 * 
+	 * @param eClass
+	 * @param domClass
+	 */
+	public void addEdgeToDOMEdgeMapping(Class<? extends IClassEdge> eClass,
+			Class<? extends IDOMEdgeNode> domClass) {
+		this.edgeToDOMEdge.put(eClass, domClass);
+	}
+
+	
 	/**
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
 	 * Store them into a list of IDOMNodes
@@ -68,6 +91,11 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	}
 	
 	
+	/**
+	 * 
+	 * @param vertices
+	 * @return
+	 */
 	private List<IClassEdge> getEdgesToUse(List<IClassVertex> vertices) {
 		List<IClassEdge> edges = new LinkedList<>();
 		for (IClassVertex v : vertices) {
@@ -81,6 +109,17 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	}
 	
 	
+	/**
+	 * Used to discover classes which should be parsed from the given graph.
+	 * Uses a list of initial starting points and recursively adds to this
+	 * starting list from the connected edges. Needs the two extra arguments
+	 * for the efficiency of not needing to redundantly discover the edges
+	 * after this method runs
+	 * 
+	 * @param start The initial list of vertices
+	 * @param result The resultant list of vertices, modified in place
+	 * @param edges the resultant list of edges, modified in place
+	 */
 	private void recursivelyGetClassesToUse(List<IClassVertex> start, 
 			List<IClassVertex> result, 
 			List<IClassEdge> edges) {
@@ -110,19 +149,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	}
 	
 	
-	/*
-	 * 
-	 */
-	public void addVertexToDOMNodeMapping(Class<? extends IClassVertex> vClass, 
-			Class<? extends IDOMClassNode> domClass) {
-		this.vertexToDOMNode.put(vClass, domClass);
-	}
-	
-	
-	public void addEdgeToDOMEdgeMapping(Class<? extends IClassEdge> eClass,
-			Class<? extends IDOMEdgeNode> domClass) {
-		this.edgeToDOMEdge.put(eClass, domClass);
-	}
 	
 	
 	/*
