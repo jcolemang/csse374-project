@@ -13,6 +13,9 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
+	private boolean displayAllNodes = false;
+	private List<String> classesToDisplay = new ArrayList<String>();
+	
 	/**
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
 	 * Store them into a list of IDOMNodes
@@ -25,14 +28,22 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassVertex> vertices = g.getVertices();
 		List<IClassEdge> edges = g.getEdges();
 		
-		// TODO I think this should be moved elsewhere
+		int c = 0;
+		
 		for (IClassVertex vert : vertices) {
 			if (vert instanceof PrimitiveVertex) {
 				continue;
 			}
-            System.out.println(vert);
+			if (!this.displayAllNodes && !this.classesToDisplay.contains(vert.getTitle())) {
+				continue;
+			}
+			
+			System.out.println("Displaying node: " + vert);
+			c++;
             this.addDOMVertex(vert);
 		}
+		
+		System.out.println("Showing " + c + " nodes.");
 		
 		/*
 		 * TODO This currently doesn't do anything
@@ -54,7 +65,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @param v
 	 */
 	private void addDOMVertex(IClassVertex v) {
-		System.out.println("Adding DOM Vertex");
         DOMClassNode dn = new DOMClassNode();
         dn.setTitle(v.getTitle());
         dn.setFields(v.getFields());
@@ -75,7 +85,20 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	/**
 	 * Set the fontsize.
 	 * @param size
+	 * Set to true if the DOMGraph should use every node from the ClassNodeGraph
+	 * If this is false, it will only use the nodes given by setClassesToDisplay().
+	 * Defaults to false.
 	 */
+	public void setDisplayAll(boolean shouldDisplayAll) {
+		this.displayAllNodes = shouldDisplayAll;
+	}
+	
+	
+	public void setClassesToDisplay(List<String> classNames) {
+		this.classesToDisplay = classNames;
+	}
+	
+
 	public void setFontSize(int size) {
 		this.fontSize = size;
 	}
