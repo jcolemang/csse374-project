@@ -5,7 +5,7 @@
 
 Our CSSE374 project is a UML generation tool meant to be **fully featured** and
 **open to extension**. It was written using the Java ASM library and generates
-Graphviz Dot files to be compiled and viewed with an external editor. This
+Graphviz-compatible .DOT files to be compiled and viewed with an external editor. This
 project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 
 
@@ -36,6 +36,11 @@ project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 ### Wenkang
 
 ### Sabrina
+- Contributed to overall design and many design refinement debates
+- Edge implementation
+- DOT code debugging
+- Code design improvements via abstraction of related classes
+- Interface cleanup
 
 ### Coleman
 - Contributed to design
