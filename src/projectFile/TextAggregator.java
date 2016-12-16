@@ -8,6 +8,13 @@ public class TextAggregator {
 	
 	private final String FOLDER_NAME = "./input_output/";
 
+	/**
+	 * Create the dot file and write the text we get from each DOMNode of DOMGraph in it.
+	 * 
+	 * @param fileName
+	 * @param domGraph
+	 * @throws IOException
+	 */
 	public void writeFile(String fileName, DOMGraph domGraph) throws IOException {
 		FileOutputStream out = new FileOutputStream(FOLDER_NAME + fileName);
 		
@@ -22,7 +29,14 @@ public class TextAggregator {
 		out.close();
 	}
 	
-	
+	/**
+	 * Setting the head for each .dot document going to be made by following the dot language.
+	 * Including the name, rankdir, fontsize and shape.
+	 * 
+	 * @param out
+	 * @param fontSize
+	 * @throws IOException
+	 */
 	public void writeHeader(OutputStream out, String fontSize) throws IOException {
 		out.write("digraph AWESOMEGRAPH {\n".getBytes());
 		out.write("rankdir = TB\n".getBytes());
@@ -30,7 +44,12 @@ public class TextAggregator {
 		out.write("node [ shape = record ]\n".getBytes());
 	}
 	
-	
+	/**
+	 * Add the last character '}' in the end of each document we made.
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
 	public void writeFooter(OutputStream out) throws IOException {
 		out.write("}".getBytes());
 	}

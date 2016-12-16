@@ -7,6 +7,13 @@ import org.objectweb.asm.ClassReader;
 
 public class MainClass {
 
+	/**
+	 * This is our main method to make GraphParser of class and make DOMGraph 
+	 * and generator the text we get from DOMGraph into .dot file.
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		GraphParser gp = new GraphParser();
 		ArrayList<String> strs = new ArrayList<String>();
