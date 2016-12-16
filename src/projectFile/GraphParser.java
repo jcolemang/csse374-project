@@ -23,8 +23,10 @@ public class GraphParser {
 	 * Adds the vertex to our map of names to vertices
 	 */
 	private void addVisit(String className, IClassVertex vert, ClassNodeGraph g) {
-		this.visited.put(className, vert);
-		g.addClassVertex(vert);
+		if (!hasBeenVisited(className)) {
+            this.visited.put(className, vert);
+            g.addClassVertex(vert);
+		}
 	}
 
 	
@@ -99,20 +101,17 @@ public class GraphParser {
 		}
 		
 		
-		/*
         // parsing the superclass
         String superClassName = classNode.superName;
         if (superClassName != null) {
-        	superClassVertex = this.makeSingleNode(superClassName);
+        	superClassVertex = this.makeSingleNode(superClassName, g);
         } else {
         	System.out.println("No superclass");
         }
-        */
 		
 		// parsing the interfaces
 		System.out.println("Here are the interfaces!");
 		System.out.println(classNode.interfaces);
-		
 		
 		this.addVisit(className, classVertex, g);
 		return classVertex;

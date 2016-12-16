@@ -40,9 +40,6 @@ public class DOMClassNode implements IDOMNode {
 		return this.classTitle;
 	}
 
-	public String getClassType() {
-		return "";
-	}
 
 	/**
 	 * Initializes the DOMClassNode's this.fields to be an array filled with
@@ -58,6 +55,7 @@ public class DOMClassNode implements IDOMNode {
 					f.getFieldName() + ": " + f.getFieldType());
 		}
 	}
+
 
 	/**
 	 * Initializes the DOMClassNode's this.methods to be an array filled with
@@ -111,11 +109,12 @@ public class DOMClassNode implements IDOMNode {
 
 		// Compile the text representation of the class to
 		// be used as the class's DOT representation's label
-		return this.sanitize(title.replaceAll("\\.", "") + "[\n" +
+		return this.sanitize(this.sanitizedTitle() + "[\n" +
 				"label = \"{" + title + "|" + fieldsString + "|"
 				+ methodFields + "}\"\n]");
 
 	}
+
 
 	/**
 	 * Helper method that returns the UML Access Level symbol
@@ -137,6 +136,15 @@ public class DOMClassNode implements IDOMNode {
 		}
 		return "";
 	}
+	
+	
+	/*
+	 * 
+	 */
+	private String sanitizedTitle() {
+		return this.classTitle.replaceAll("\\W", "");
+	}
+	
 
 	/**
 	 * Helper method that replaces '<' and '>' with their ASCII representations
@@ -145,7 +153,9 @@ public class DOMClassNode implements IDOMNode {
 	 * @return the sanitized String
 	 */
 	private String sanitize(String s) {
-		return s.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		return s.replaceAll("&", "&amp;")
+				.replaceAll("<", "&lt;")
+				.replaceAll(">", "&gt;");
 	}
 
 }
