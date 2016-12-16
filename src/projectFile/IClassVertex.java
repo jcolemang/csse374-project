@@ -4,6 +4,13 @@ import java.util.List;
 
 import org.objectweb.asm.tree.FieldNode;
 
+/**
+ * This is an interface for some kinds of ClassVertex, like InterfaceVertex, 
+ * PrimitiveVertex, and RegularClassVertex.
+ * 
+ * @author Administrator
+ *
+ */
 public interface IClassVertex {
 	public DOMClassNode getCorrespondingDOMNode();
 	public DOMClassNode setCorrespondingDOMNode();

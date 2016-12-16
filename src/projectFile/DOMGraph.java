@@ -13,6 +13,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
+	/**
+	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
+	 * Store them into a list of IDOMNodes
+	 * 
+	 * @param g
+	 */
 	public void generateDOMTree(ClassNodeGraph g) {
 		System.out.println("Generating DOM Graph");
 		this.domNodes = new ArrayList<IDOMNode>();
@@ -37,6 +43,11 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * TODO We will need to fill out all of the DOM Node info
 	 * from the vertex info
 	 */
+	/**
+	 * Get some information from IClassVertex and fill them into a DOMClassNode.
+	 * Add it into the DOMNode list.
+	 * @param v
+	 */
 	private void addDOMVertex(IClassVertex v) {
 		System.out.println("Adding DOM Vertex");
         DOMClassNode dn = new DOMClassNode();
@@ -46,28 +57,46 @@ public class DOMGraph implements Iterable<IDOMNode>{
         domNodes.add(dn);
 	}
 	
-	
+	/**
+	 * Get some information from IClassEdge and fill them into a DOMEdgeNode.
+	 * Add it into the DOMNode list.
+	 * @param v
+	 */
 	private void addDOMEdge(IClassEdge e) {
         DOMClassNode dn = new DOMClassNode();
         domNodes.add(dn);
 	}
 	
-	
+	/**
+	 * Set the fontsize.
+	 * @param size
+	 */
 	public void setFontSize(int size) {
 		this.fontSize = size;
 	}
 	
-	
+	/**
+	 * Return the fontsize.
+	 * @return
+	 */
 	public int getFontSize() {
 		return this.fontSize;
 	}
 	
 
+	/**
+	 * Create a Iterator for IDOMNode.
+	 */
 	@Override
 	public Iterator<IDOMNode> iterator() {
 		return new GraphIterator(this.domNodes);
 	}
 	
+	/**
+	 * 
+	 * @author Administrator
+	 *
+	 */
 	private class GraphIterator implements Iterator<IDOMNode> {
 		
 		private List<IDOMNode> nodes;
