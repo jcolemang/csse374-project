@@ -16,7 +16,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GraphParser {
 
-	private Map<String, IClassVertex> visited = new HashMap<>();
+	private Map<String, IClassVertex> visited;
+
+	public GraphParser() {
+		this.visited = new HashMap<>();
+	}
 	
 
 	/*
@@ -76,6 +80,18 @@ public class GraphParser {
 	 * that is something we should do.
 	 */
 	private IClassVertex makeSingleNode(String className, ClassNodeGraph g) {
+		
+		// taking care of array nonsense
+		// hardcore external coupling
+		// unavoidable as far as I can tell
+		className = className.replaceAll("\\[\\]", "")
+				.replaceAll("/", "\\.");
+		
+		if (hasBeenVisited(className)) {
+			return this.visited.get(className);
+		}
+		
+		
 		IClassVertex classVertex;
 		IClassVertex superClassVertex;
 		IClassVertex interfaceVertex;
@@ -99,6 +115,8 @@ public class GraphParser {
             }
 
 		} catch (IOException classException) {
+			System.out.println("Could not find class: " + className);
+			System.out.println("Considering class as a primitive");
 			classVertex = this.makePrimitiveVertex(className, g);
 		}
 		
@@ -107,22 +125,19 @@ public class GraphParser {
         String superClassName = classNode.superName;
         if (superClassName != null) {
         	superClassVertex = this.makeSingleNode(superClassName, g);
-        	edge = new ExtendsEdge(classVertex, superClassVertex);
+        	edge = new ExtendsEdge();
+        	edge.set(classVertex, superClassVertex);
         	classVertex.addEdge(edge);
-        } else {
-        	System.out.println("No superclass");
+        	g.addClassEdge(edge);
         }
 		
 		// parsing the interfaces
-		System.out.println("Here are the interfaces!");
-		System.out.println(classNode.interfaces);
-		
 		for (Object inter: classNode.interfaces) {
-			System.out.println(inter.toString());
-			
 			interfaceVertex = this.makeSingleNode(inter.toString(), g);
-			edge = new ImplementsEdge(classVertex, interfaceVertex);
+			edge = new ImplementsEdge();
+			edge.set(classVertex, interfaceVertex);
 			classVertex.addEdge(edge);
+        	g.addClassEdge(edge);
 		}
 		
 		this.addVisit(className, classVertex, g);
@@ -180,6 +195,8 @@ public class GraphParser {
 		for (String className : classNames) {
 			vertex = makeSingleNode(className, graph);
 		}
+		
+		System.out.println("Size: " + classNames.size());
 		
 		return graph;
 	}

@@ -25,8 +25,15 @@ public class MainClass {
 		ClassNodeGraph nodeGraph = gp.parse(strs);
 		
 		DOMGraph dom = new DOMGraph();
-		dom.setDisplayAll(true);
-//		dom.setClassesToDisplay(strs);
+		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
+		dom.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMConcreteClassNode.class);
+		dom.addVertexToDOMNodeMapping(InterfaceVertex.class, DOMInterfaceNode.class);
+		
+		dom.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
+		dom.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
+
+		dom.setDisplayAll(false);
+		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
 
 		TextAggregator generator = new TextAggregator();

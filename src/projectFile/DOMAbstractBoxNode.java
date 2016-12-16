@@ -3,14 +3,13 @@ package projectFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DOMAbstractBoxNode implements IDOMNode{
+public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	
 	String OutlineColor = "black";
 	String BGColor = "white";
 	String Font = "SansSerif";
 	String classTitle = "";
 	String color;
-	// EdgeType type;
 
 	protected List<String> fields;
 	protected List<String> methods;
@@ -99,6 +98,12 @@ public abstract class DOMAbstractBoxNode implements IDOMNode{
 		return "";
 	}
 	
+	
+	@Override
+	public String getTitle() {
+		return this.classTitle;
+	}
+
 
 	/*
 	 * 
