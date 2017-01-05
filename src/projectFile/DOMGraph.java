@@ -83,8 +83,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMClassNode generatedDOMNode;
 		for (IClassVertex vert : classesToUse) {
-            generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
-            vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
+            generatedDOMNode = this.addDOMVertex(vert);
+            vert.setCorrespondingDOMNode(generatedDOMNode);
 		}
 		
 		for(IClassEdge edge : edgesToUse) {
