@@ -34,6 +34,8 @@ project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
 ## Contributions
 
 ### Wenkang
+- Contributed to design
+- Contributed to command line parsers
 
 ### Sabrina
 - Contributed to overall design and many design refinement debates
