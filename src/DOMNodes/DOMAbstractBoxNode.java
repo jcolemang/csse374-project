@@ -1,7 +1,11 @@
-package projectFile;
+package DOMNodes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import graphNodes.IClassVertex;
+import projectFile.FieldData;
+import projectFile.MethodData;
 
 public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	

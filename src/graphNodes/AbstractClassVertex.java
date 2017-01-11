@@ -1,4 +1,4 @@
-package projectFile;
+package graphNodes;
 
 /**
  * A graph representation of Abstract Classes. Part of the ClassNodeGraph structure.

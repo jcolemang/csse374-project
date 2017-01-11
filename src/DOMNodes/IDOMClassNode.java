@@ -1,6 +1,9 @@
-package projectFile;
+package DOMNodes;
 
 import java.util.List;
+
+import projectFile.FieldData;
+import projectFile.MethodData;
 
 public interface IDOMClassNode extends IDOMNode {
 	String getTitle();

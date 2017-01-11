@@ -6,6 +6,17 @@ import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 
+import DOMNodes.DOMAbstractClassNode;
+import DOMNodes.DOMConcreteClassNode;
+import DOMNodes.DOMExtendsEdge;
+import DOMNodes.DOMImplementsEdge;
+import DOMNodes.DOMInterfaceNode;
+import graphNodes.AbstractClassVertex;
+import graphNodes.ExtendsEdge;
+import graphNodes.ImplementsEdge;
+import graphNodes.InterfaceVertex;
+import graphNodes.RegularClassVertex;
+
 public class MainClass {
 
 	/**

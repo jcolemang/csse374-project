@@ -1,4 +1,4 @@
-package projectFile;
+package DOMNodes;
 
 public interface IDOMEdgeNode extends IDOMNode {
 	IDOMClassNode getEnd();

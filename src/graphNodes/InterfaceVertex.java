@@ -1,4 +1,4 @@
-package projectFile;
+package graphNodes;
 
 /**
  * A graph representation of Interfaces. Part of the ClassNodeGraph structure.

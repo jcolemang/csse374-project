@@ -1,4 +1,4 @@
-package projectFile;
+package graphNodes;
 
 public abstract class ActuallyAbstractEdge implements IClassEdge {
 	

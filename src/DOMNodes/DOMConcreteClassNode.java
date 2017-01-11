@@ -1,4 +1,4 @@
-package projectFile;
+package DOMNodes;
 
 public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 

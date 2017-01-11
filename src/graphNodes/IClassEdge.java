@@ -1,4 +1,4 @@
-package projectFile;
+package graphNodes;
 
 /**
  * This is a interface for some kinds of ClassEdge like DependsOnEdge and ExtendsEdge

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import graphNodes.IClassEdge;
+import graphNodes.IClassVertex;
+
 
 public class ClassNodeGraph {
 	

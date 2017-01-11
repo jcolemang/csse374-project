@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import DOMNodes.IDOMNode;
+
 public class TextAggregator {
 	
 	private final String FOLDER_NAME = "./input_output/";

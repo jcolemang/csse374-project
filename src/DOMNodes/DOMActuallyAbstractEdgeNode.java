@@ -1,4 +1,4 @@
-package projectFile;
+package DOMNodes;
 
 /*
  * TODO We should be able to add new types of DOM nodes to

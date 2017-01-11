@@ -1,5 +1,7 @@
 package projectFile;
 
+import graphNodes.IClassVertex;
+
 public class FieldData {
 	private String accessLevel;
 	private String fieldName;

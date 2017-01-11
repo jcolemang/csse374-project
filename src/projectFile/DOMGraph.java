@@ -7,6 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import DOMNodes.IDOMClassNode;
+import DOMNodes.IDOMEdgeNode;
+import DOMNodes.IDOMNode;
+import graphNodes.IClassEdge;
+import graphNodes.IClassVertex;
+
 
 public class DOMGraph implements Iterable<IDOMNode>{
 	
