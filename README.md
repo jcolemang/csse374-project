@@ -1,12 +1,26 @@
 
 # CSSE374 Final Project
 
+# TODO
+- Make things that should be enums, enums
+
+# Added
+- Make DOM nodes comparable
+- Add cardinality setter
+- Make sure arrows arent overwriting eachother
+- Ask Hays whether all types can repeat
+- Add classes for association, dependency, bidirection
+- do comparisons when we go from data structure to DOM
+- Add cardinalities when we go from data structure to DOM
+
 ## Introduction
 
 Our CSSE374 project is a UML generation tool meant to be **fully featured** and
 **open to extension**. It was written using the Java ASM library and generates
 Graphviz-compatible .DOT files to be compiled and viewed with an external editor. This
 project was written by Wenkang Dang, Sabrina Wicker, and Coleman Gibson.
+
+only association, not
 
 
 ## Using Our Project

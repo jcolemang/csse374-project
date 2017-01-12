@@ -1,7 +1,11 @@
-package projectFile;
+package graphNodes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import DOMNodes.IDOMClassNode;
+import projectFile.FieldData;
+import projectFile.MethodData;
 
 /**
  * An abstract class that contains all common methods for concrete instances of

@@ -1,4 +1,4 @@
-package projectFile;
+package graphNodes;
 
 /**
  * A graph representation of primitive Classes such as int, long, etc.

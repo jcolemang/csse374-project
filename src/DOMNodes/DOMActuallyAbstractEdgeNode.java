@@ -1,4 +1,7 @@
-package projectFile;
+package DOMNodes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * TODO We should be able to add new types of DOM nodes to
@@ -8,13 +11,24 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	
 	protected IDOMClassNode start;
 	protected IDOMClassNode end;
-	
+	private String headCardinality;
+	private String tailCardinality;
+
+	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
 	@Override
 	public IDOMClassNode getStart() {
 		return this.start;
 	}
 	
+
+	public String getHeadCardinality() {
+		return this.headCardinality;
+	}
+	
+	public String getTailCardinality() {
+		return this.tailCardinality;
+	}
 
 	@Override
 	public IDOMClassNode getEnd() {

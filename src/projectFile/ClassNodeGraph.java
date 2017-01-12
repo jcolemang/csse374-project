@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import graphNodes.IClassEdge;
+import graphNodes.IClassVertex;
+
 
 public class ClassNodeGraph {
 	
@@ -37,11 +40,14 @@ public class ClassNodeGraph {
 		return this.classVertices;
 	}
 	
-	
+	/**
+	 * Return the single vertex with the given name
+	 * @param name
+	 * @return
+	 */
 	public IClassVertex getVertex(String name) {
 		return this.nameToVertex.get(name);
 	}
-	
 	
 	/**
 	 * Add a IClassVertex in the list of classVertices

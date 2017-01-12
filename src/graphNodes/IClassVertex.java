@@ -1,8 +1,12 @@
-package projectFile;
+package graphNodes;
 
 import java.util.List;
 
 import org.objectweb.asm.tree.FieldNode;
+
+import DOMNodes.IDOMClassNode;
+import projectFile.FieldData;
+import projectFile.MethodData;
 
 /**
  * This is an interface for some kinds of ClassVertex, like InterfaceVertex, 

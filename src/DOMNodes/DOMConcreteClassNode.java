@@ -1,12 +1,18 @@
-package projectFile;
+package DOMNodes;
 
-public class DOMInterfaceNode extends DOMAbstractBoxNode {
+public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 
 	@Override
 	public String getTextRepresentation() {
 
 		// Set the name of the node
 		String title = this.getClassName();
+
+		// Set the fields string
+		String fieldsString = "\n";
+		for (String s : this.fields) {
+			fieldsString += s + "\\l";
+		}
 
 		// Set the method fields
 		String methodFields = "";
@@ -16,11 +22,9 @@ public class DOMInterfaceNode extends DOMAbstractBoxNode {
 
 		// Compile the text representation of the class to
 		// be used as the class's DOT representation's label
-		return this.getDOTTitle() + "[\n" +
-				"label = <{<I>" + this.sanitize(title) + 
-				"</I>|" +
-				this.sanitize(methodFields).replaceAll("\\\\l", "<br align=\"left\"/>") + 
-				"}>\n]";
+		return this.sanitize(this.getDOTTitle() + "[\n" +
+				"label = \"{" + title + "|" + fieldsString + "|"
+				+ methodFields + "}\"\n]");
 
 	}
 

@@ -12,6 +12,14 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import graphNodes.AbstractClassVertex;
+import graphNodes.ExtendsEdge;
+import graphNodes.IClassEdge;
+import graphNodes.IClassVertex;
+import graphNodes.ImplementsEdge;
+import graphNodes.InterfaceVertex;
+import graphNodes.PrimitiveVertex;
+import graphNodes.RegularClassVertex;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GraphParser {

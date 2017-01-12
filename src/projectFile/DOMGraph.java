@@ -7,6 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import DOMNodes.IDOMClassNode;
+import DOMNodes.IDOMEdgeNode;
+import DOMNodes.IDOMNode;
+import graphNodes.IClassEdge;
+import graphNodes.IClassVertex;
+
 
 public class DOMGraph implements Iterable<IDOMNode>{
 	
@@ -83,8 +89,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMClassNode generatedDOMNode;
 		for (IClassVertex vert : classesToUse) {
-            generatedDOMNode = this.addDOMVertex(vert); // uuhhhhh
-            vert.setCorrespondingDOMNode(generatedDOMNode); // weird circular dependency
+            generatedDOMNode = this.addDOMVertex(vert);
+            vert.setCorrespondingDOMNode(generatedDOMNode);
 		}
 		
 		for(IClassEdge edge : edgesToUse) {

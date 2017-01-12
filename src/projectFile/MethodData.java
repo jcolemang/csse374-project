@@ -6,6 +6,8 @@ import java.util.List;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.MethodNode;
 
+import graphNodes.IClassVertex;
+
 public class MethodData {
 	private String access;
 	private String methodName;
