@@ -28,4 +28,5 @@ public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 
 	}
 
+
 }

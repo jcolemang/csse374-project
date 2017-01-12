@@ -7,11 +7,15 @@ import java.util.List;
 import org.objectweb.asm.ClassReader;
 
 import DOMNodes.DOMAbstractClassNode;
+import DOMNodes.DOMAssociationEdge;
 import DOMNodes.DOMConcreteClassNode;
+import DOMNodes.DOMDependencyEdge;
 import DOMNodes.DOMExtendsEdge;
 import DOMNodes.DOMImplementsEdge;
 import DOMNodes.DOMInterfaceNode;
 import graphNodes.AbstractClassVertex;
+import graphNodes.AssociationEdge;
+import graphNodes.DependencyEdge;
 import graphNodes.ExtendsEdge;
 import graphNodes.ImplementsEdge;
 import graphNodes.InterfaceVertex;
@@ -25,8 +29,8 @@ public class MainClass {
 	 * 
 	 * @param args
 	 * @throws IOException
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
 		
@@ -56,6 +60,8 @@ public class MainClass {
 		
 		dom.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
 		dom.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
+		dom.addEdgeToDOMEdgeMapping(AssociationEdge.class, DOMAssociationEdge.class);
+		dom.addEdgeToDOMEdgeMapping(DependencyEdge.class, DOMDependencyEdge.class);
 
 		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);

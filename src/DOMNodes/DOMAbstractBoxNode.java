@@ -1,7 +1,9 @@
 package DOMNodes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import graphNodes.IClassVertex;
 import projectFile.FieldData;
@@ -13,12 +15,15 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	private static final int PROTECTED = 2;
 	private static final int DEFAULT = 1;
 	private static final int PUBLIC = 0;
+
 	
-	String OutlineColor = "black";
-	String BGColor = "white";
-	String Font = "SansSerif";
+	Map<String, String> aestheticAttributes = new HashMap<String, String>();
+	
+//	String OutlineColor = "black";
+//	String BGColor = "white";
+//	String Font = "SansSerif";
 	String classTitle = "";
-	String color;
+//	String color;
 	private int accessLevel = 0;
 
 	protected List<String> fields;
@@ -28,22 +33,6 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	public void setTitle(String title) {
 		this.classTitle = title;
 	}
-
-
-	public void setOutlineColor(String color) {
-		this.OutlineColor = color;
-	}
-
-
-	public void setBGColor(String color) {
-		this.BGColor = color;
-	}
-
-
-	public void setFont(String font) {
-		this.Font = font;
-	}
-	
 
 	public void setAccessLevel(String access) {
 		this.accessLevel = this.translateAccessLevel(access);

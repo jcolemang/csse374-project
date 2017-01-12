@@ -4,10 +4,22 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	
 	public IClassVertex head;
 	public IClassVertex tail;
+	public String headCardinality;
+	public String tailCardinality;
 
 	@Override
 	public IClassVertex getEnd() {
 		return this.head;
+	}
+	
+	@Override
+	public String getHeadCardinality() {
+		return this.headCardinality;
+	}
+	
+	@Override
+	public String getTailCardinality() {
+		return this.tailCardinality;
 	}
 
 
