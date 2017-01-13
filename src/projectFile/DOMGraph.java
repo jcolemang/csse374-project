@@ -170,7 +170,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws InstantiationException 
 	 */
 	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
-        IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
+		if (this.vertexToDOMNode.get(v.getClass()) == null) {
+			System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+			System.out.println(v.getClass());
+		}
+		IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
+        
         dn.setAccessLevel(this.defaultAccessLevel);
         dn.setTitle(v.getTitle());
         dn.setMethods(v.getMethods());

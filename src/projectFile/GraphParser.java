@@ -11,8 +11,10 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeAnnotationNode;
 
 import graphNodes.AbstractClassVertex;
+import graphNodes.AssociationEdge;
 import graphNodes.ExtendsEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
@@ -103,6 +105,7 @@ public class GraphParser {
 		IClassVertex classVertex;
 		IClassVertex superClassVertex;
 		IClassVertex interfaceVertex;
+		IClassVertex fieldVertex;
 		ClassNode classNode = new ClassNode();
 		ClassReader reader;
 		IClassEdge edge;
@@ -112,7 +115,7 @@ public class GraphParser {
 			// ASM setup code
 			reader = new ClassReader(className);
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-
+			
 			// checking the types and delegating to separate methods
             if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
                 classVertex = this.makeInterfaceVertex(classNode, g);
@@ -147,6 +150,17 @@ public class GraphParser {
 			classVertex.addEdge(edge);
         	g.addClassEdge(edge);
 		}
+		
+		// parsing the instance variables
+//		for (Object f : classNode.fields) {
+//			FieldNode field = (FieldNode)f;
+//			fieldVertex = this.makeSingleNode(Type.getType(field.desc).toString(), g);
+//			edge = new AssociationEdge();
+//			edge.set(classVertex, fieldVertex);
+//			classVertex.addEdge(edge);
+//        	g.addClassEdge(edge);
+//		}
+		
 		
 		this.addVisit(className, classVertex, g);
 		return classVertex;

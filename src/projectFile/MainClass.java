@@ -50,8 +50,6 @@ public class MainClass {
 			System.out.println(strs);
 		}
 		
-		System.out.println(strs);
-
 		ClassNodeGraph nodeGraph = gp.parse(strs);
 		
 		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
