@@ -6,6 +6,8 @@ import java.util.List;
 
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
+import projectFile.ClassNodeGraph;
+import projectFile.DOMGraph;
 
 public class MergeArrowAnalyzer implements IAnalyzer {
 
@@ -44,9 +46,22 @@ public class MergeArrowAnalyzer implements IAnalyzer {
 	}
 
 	@Override
+	public void analyze(IClassVertex v, ClassNodeGraph g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void setVisited(IClassVertex v) {
 		// TODO Auto-generated method stub
-		this.trackVisited.put(v, true);
+		
 	}
+
 
 }

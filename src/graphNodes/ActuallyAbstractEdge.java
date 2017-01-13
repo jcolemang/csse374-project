@@ -9,6 +9,8 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	public String headCardinality = "";
 	public String tailCardinality = "";
 	private IDOMEdgeNode domEdge;
+	
+	private IClassVertex cameFrom;
 
 	@Override
 	public IClassVertex getTail() { //confusing we know
@@ -67,6 +69,14 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	@Override
 	public IDOMEdgeNode getCorrespondingDOMNode() {
 		return this.domEdge;
+	}
+	
+	public void setOrigin(IClassVertex v) {
+		this.cameFrom = v;
+	}
+	
+	public IClassVertex getOrigin() {
+		return this.cameFrom;
 	}
 
 }
