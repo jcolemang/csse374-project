@@ -93,8 +93,10 @@ public class DOMGraph implements Iterable<IDOMNode>{
             vert.setCorrespondingDOMNode(generatedDOMNode);
 		}
 		
+		IDOMEdgeNode generatedDOMEdge;
 		for(IClassEdge edge : edgesToUse) {
-			this.addDOMEdge(edge);
+			generatedDOMEdge = this.addDOMEdge(edge);
+			edge.setCorrespondingDOMNode(generatedDOMEdge);
 		}
 		
 	}
@@ -191,11 +193,12 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	private void addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
+	private IDOMEdgeNode addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
 		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
 		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
-		domNode.addAttribute("headlabel", "1..n"); // PLACEHOLDER
+//		domNode.addAttribute("headlabel", "1..n"); // PLACEHOLDER
 		this.domNodes.add(domNode);
+		return domNode;
 	}
 	
 	/**
