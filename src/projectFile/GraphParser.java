@@ -1,6 +1,7 @@
 package projectFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,14 +153,25 @@ public class GraphParser {
 		}
 		
 		// parsing the instance variables
-//		for (Object f : classNode.fields) {
-//			FieldNode field = (FieldNode)f;
-//			fieldVertex = this.makeSingleNode(Type.getType(field.desc).toString(), g);
-//			edge = new AssociationEdge();
-//			edge.set(classVertex, fieldVertex);
-//			classVertex.addEdge(edge);
-//        	g.addClassEdge(edge);
-//		}
+		String desc;
+		List<String> classes;
+		for (Object f : classNode.fields) {
+			FieldNode field = (FieldNode)f;
+			desc = Type.getType(field.desc).toString();
+			classes = this.getTypeStrings(Type.getType(field.desc).toString());
+			
+			System.out.println(desc);
+			System.out.println(classes);
+			System.out.println();
+			
+			for (String clazz : classes) {
+                fieldVertex = this.makeSingleNode(clazz, g);
+                edge = new AssociationEdge();
+                edge.set(classVertex, fieldVertex);
+                classVertex.addEdge(edge);
+                g.addClassEdge(edge);
+			}
+		}
 		
 		
 		this.addVisit(className, classVertex, g);
@@ -292,5 +304,20 @@ public class GraphParser {
 			cv.addMethodData(mdToAdd);
 			
 		}
+	}
+	
+	
+	private List<String> getTypeStrings(String descriptor) {
+		String[] res;
+		List<String> stuff = new ArrayList<>();
+		String s;
+		res = descriptor.split("[^\\w./\\$]");
+		for (int i = 0; i < res.length; i++) {
+			s = res[i];
+			if (s.startsWith("L")) {
+				stuff.add(s.substring(1));
+			}
+		}
+		return stuff;
 	}
 }
