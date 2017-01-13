@@ -11,8 +11,6 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	
 	protected IDOMClassNode start;
 	protected IDOMClassNode end;
-	protected String headCardinality = "";
-	protected String tailCardinality = "";
 
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
@@ -20,21 +18,31 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	public IDOMClassNode getHead() {
 		return this.start;
 	}
-	
-
-	public String getHeadCardinality() {
-		return this.headCardinality;
-	}
-	
-	public String getTailCardinality() {
-		return this.tailCardinality;
-	}
 
 	@Override
 	public IDOMClassNode getTail() {
 		return this.end;
 	}
+	
+	@Override
+	public void addAttribute(String dotAttrName, String property) {
+		this.aestheticAttributes.put(dotAttrName, property);
+	}
 
+	@Override
+	public String attributeMapToString() {
+		String built = "";
+		
+		if(this.aestheticAttributes.isEmpty()) {
+			return built;
+		}
+		
+		for (String attr : this.aestheticAttributes.keySet()) {
+			built += attr + " = " + this.aestheticAttributes.get(attr) + ", ";
+		}
+		
+		return built.substring(0, built.length() - 2);
+	}
 
 	@Override
 	public void set(IDOMClassNode start, IDOMClassNode end) {

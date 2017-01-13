@@ -3,7 +3,7 @@ package DOMNodes;
 public interface IDOMEdgeNode extends IDOMNode {
 	IDOMClassNode getTail();
 	IDOMClassNode getHead();
-	String getHeadCardinality();
-	String getTailCardinality();
+	void addAttribute(String dotAttrName, String property);
+	String attributeMapToString();
 	void set(IDOMClassNode start, IDOMClassNode end);
 }
