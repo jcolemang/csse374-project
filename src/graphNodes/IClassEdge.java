@@ -11,6 +11,8 @@ public interface IClassEdge {
 	IClassVertex getHead();
 	String getHeadCardinality();
 	String getTailCardinality();
+	void setHeadCardinality(String s);
+	void setTailCardinality(String s);
 	String getHeadTitle();
 	String getTailTitle();
 	void set(IClassVertex head, IClassVertex tail);

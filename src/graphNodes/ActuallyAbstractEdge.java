@@ -4,8 +4,8 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	
 	public IClassVertex head;
 	public IClassVertex tail;
-	public String headCardinality;
-	public String tailCardinality;
+	public String headCardinality = "";
+	public String tailCardinality = "";
 
 	@Override
 	public IClassVertex getTail() { //confusing we know
@@ -15,6 +15,14 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	@Override
 	public IClassVertex getHead() {
 		return this.tail;
+	}
+	
+	public void setHeadCardinality(String s) {
+		this.headCardinality = s;
+	}
+	
+	public void setTailCardinality(String s) {
+		this.tailCardinality = s;
 	}
 	
 	@Override

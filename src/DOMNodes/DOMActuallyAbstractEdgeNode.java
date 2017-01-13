@@ -11,13 +11,13 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	
 	protected IDOMClassNode start;
 	protected IDOMClassNode end;
-	private String headCardinality;
-	private String tailCardinality;
+	private String headCardinality = "";
+	private String tailCardinality = "";
 
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
 	@Override
-	public IDOMClassNode getStart() {
+	public IDOMClassNode getHead() {
 		return this.start;
 	}
 	
@@ -31,7 +31,7 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	}
 
 	@Override
-	public IDOMClassNode getEnd() {
+	public IDOMClassNode getTail() {
 		return this.end;
 	}
 
