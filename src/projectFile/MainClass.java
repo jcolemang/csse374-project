@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 
+import CommandLineArgument.AccessCommandLineArgument;
+import CommandLineArgument.ICommandLineArgument;
+import CommandLineArgument.RecursivelyParseCommandLine;
 import DOMNodes.DOMAbstractClassNode;
 import DOMNodes.DOMAssociationEdge;
 import DOMNodes.DOMConcreteClassNode;
