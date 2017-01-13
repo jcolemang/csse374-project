@@ -33,15 +33,15 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	public String attributeMapToString() {
 		String built = "";
 		
-		if(this.aestheticAttributes.isEmpty()) {
+		if (this.aestheticAttributes.isEmpty()) {
 			return built;
 		}
 		
 		for (String attr : this.aestheticAttributes.keySet()) {
-			built += attr + " = " + this.aestheticAttributes.get(attr) + ", ";
+			built += ", " + attr + " = " + this.aestheticAttributes.get(attr);
 		}
 		
-		return built.substring(0, built.length() - 2);
+		return built;
 	}
 
 	@Override

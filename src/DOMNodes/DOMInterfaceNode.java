@@ -18,7 +18,7 @@ public class DOMInterfaceNode extends DOMAbstractBoxNode {
 		// be used as the class's DOT representation's label
 		return this.getDOTTitle() + "[\n" +
 				"label = <{<I>" + this.sanitize(title) + 
-				"</I>|" +
+				"</I>|" + 
 				this.sanitize(methodFields).replaceAll("\\\\l", "<br align=\"left\"/>") + 
 				"}>\n]";
 
