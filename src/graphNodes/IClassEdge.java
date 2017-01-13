@@ -18,6 +18,8 @@ public interface IClassEdge {
 	String getHeadTitle();
 	String getTailTitle();
 	void set(IClassVertex head, IClassVertex tail);
-	public IDOMEdgeNode getCorrespondingDOMNode();
-	public void setCorrespondingDOMNode(IDOMEdgeNode generatedDOMNode);
+	IDOMEdgeNode getCorrespondingDOMNode();
+	void setCorrespondingDOMNode(IDOMEdgeNode generatedDOMNode);
+	void setOrigin(IClassVertex v);
+	IClassVertex getOrigin();
 }

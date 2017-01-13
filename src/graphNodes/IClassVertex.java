@@ -30,6 +30,7 @@ public interface IClassVertex {
 	public List<FieldData> getFields();
 	public void addFieldData(FieldData data);
 	public void removeFieldData(FieldData data);
+	public void removeEdge(IClassEdge edge);
 	
 	
 }

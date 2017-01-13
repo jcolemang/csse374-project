@@ -71,7 +71,7 @@ public class MainClass {
 		dom.generateDOMTree(nodeGraph);
 
 		IAnalyzer AssociationSupercedesDependency = new AssociationSupercedesDependencyAnalyzer();
-		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph);
+		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph, dom);
 		traverser.analyze(AssociationSupercedesDependency);
 		
 		TextAggregator generator = new TextAggregator();

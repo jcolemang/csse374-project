@@ -66,15 +66,16 @@ public class ClassNodeGraph {
 		this.nameToVertex.put(vertex.getTitle(), vertex);
 	}
 	
-	public ArrayList<IClassEdge> getEdgesOfTwoNodes(IClassVertex n1, IClassVertex n2) {
-		ArrayList<IClassEdge> edges = new ArrayList<IClassEdge>();
-		
+	public List<IClassEdge> getEdgesOfTwoNodes(IClassVertex n1, IClassVertex n2) {
+		List<IClassEdge> edges = new ArrayList<IClassEdge>();
 		List<IClassEdge> potentiallySharedEdges = n1.getEdges();
 		
 		for (int i = 0; i < potentiallySharedEdges.size(); i++) {
 			IClassEdge currentEdge = potentiallySharedEdges.get(i);
-			if(currentEdge.getHeadTitle().equals(n2.getTitle()) ||
-					currentEdge.getTailTitle().equals(n2.getTitle())) {
+			if (currentEdge.getHeadTitle().equals(n2.getTitle()) && 
+					currentEdge.getTailTitle().equals(n1.getTitle()) ||
+					currentEdge.getTailTitle().equals(n2.getTitle()) &&
+					currentEdge.getHeadTitle().equals(n1.getTitle())) {
 				edges.add(currentEdge);
 			}
 		}
@@ -95,4 +96,32 @@ public class ClassNodeGraph {
 		
 		return str;
 	}
+	
+	
+	public boolean containsEdgeType(IClassVertex from, IClassVertex to, Class<? extends IClassEdge> clazz) {
+		List<IClassEdge> edges = this.getEdgesOfTwoNodes(from, to);
+		for (IClassEdge e : edges) {
+			if (clazz.equals(e.getClass())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public IClassEdge getEdgeWithType(IClassVertex from, IClassVertex to, Class<? extends IClassEdge> clazz) {
+		for (IClassEdge e : this.classEdges) {
+			if (e.getHead().getTitle().equals(from.getTitle())) {
+                if (e.getTail().getTitle().equals(to.getTitle())) {
+                	if (e.getClass().equals(clazz)) {
+                		return e;
+                	}
+                }
+				
+			}
+		}
+		
+		throw new IllegalArgumentException();
+	}
+
 }

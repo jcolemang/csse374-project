@@ -4,15 +4,18 @@ import java.util.List;
 
 import graphNodes.IClassVertex;
 import projectFile.ClassNodeGraph;
+import projectFile.DOMGraph;
 
 public class ClassNodeTraverser {
 	private List<IClassVertex> nodeList;
 	private List<IAnalyzer> analyzers;
 	private ClassNodeGraph graph;
+	private DOMGraph dom;
 	
-	public ClassNodeTraverser(ClassNodeGraph g) {
+	public ClassNodeTraverser(ClassNodeGraph g, DOMGraph d) {
 		this.nodeList = g.getVertices();
 		this.graph = g;
+		this.dom = d;
 	}
 	
 	public void addAnalyzer(IAnalyzer an) {
@@ -26,7 +29,9 @@ public class ClassNodeTraverser {
 	public void analyze(IAnalyzer an) {
 		for (IClassVertex v : this.nodeList) {
 			if(!an.wasVisited(v)) {
-				an.analyze(v, this.graph); //FIND WAY TO SELECT DIFFERENT ANALYZERS
+				an.analyze(v);
+				an.analyze(v, this.graph);
+				an.analyze(v, this.graph, this.dom);
 			}
 		}
 	}

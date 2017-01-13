@@ -16,6 +16,7 @@ import org.objectweb.asm.tree.TypeAnnotationNode;
 
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
+import graphNodes.DependencyEdge;
 import graphNodes.ExtendsEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
@@ -82,6 +83,30 @@ public class GraphParser {
 		this.setMethods(classNode, iv, g);
 		
 		return iv;
+	}
+	
+	
+	private IClassEdge addDependsEdge(IClassVertex from, IClassVertex to, ClassNodeGraph g) {
+		if (g.containsEdgeType(from, to, DependencyEdge.class)) {
+			return g.getEdgeWithType(from, to, DependencyEdge.class);
+		}
+        IClassEdge dependsEdge = new DependencyEdge();
+        dependsEdge.set(from, to);
+        g.addClassEdge(dependsEdge);
+        from.addEdge(dependsEdge);
+        return dependsEdge;
+	}
+	
+	
+	private IClassEdge addAssociationEdge(IClassVertex from, IClassVertex to, ClassNodeGraph g) {
+		if (g.containsEdgeType(from, to, AssociationEdge.class)) {
+			return g.getEdgeWithType(from, to, AssociationEdge.class);
+		}
+        IClassEdge edge = new AssociationEdge();
+        edge.set(from, to);
+        g.addClassEdge(edge);
+        from.addEdge(edge);
+        return edge;
 	}
 	
 
@@ -153,25 +178,19 @@ public class GraphParser {
 		}
 		
 		// parsing the instance variables
-		String desc;
+		// TODO go through here
 		List<String> classes;
 		for (Object f : classNode.fields) {
 			FieldNode field = (FieldNode)f;
-			desc = Type.getType(field.desc).toString();
 			classes = this.getTypeStrings(Type.getType(field.desc).toString());
-			
-			System.out.println(desc);
-			System.out.println(classes);
-			System.out.println();
 			
 			for (String clazz : classes) {
                 fieldVertex = this.makeSingleNode(clazz, g);
-                edge = new AssociationEdge();
-                edge.set(classVertex, fieldVertex);
-                classVertex.addEdge(edge);
-                g.addClassEdge(edge);
+                this.addAssociationEdge(classVertex, fieldVertex, g);
 			}
 		}
+		
+		// parsing the lines of code
 		
 		
 		this.addVisit(className, classVertex, g);
@@ -273,6 +292,7 @@ public class GraphParser {
 	private void setMethods(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
 		List<MethodNode> methods = classNode.methods;
 		IClassVertex realReturnType;
+		IClassEdge dependsEdge;
 		
 		for (MethodNode m : methods) {
 			String name = m.name;
@@ -281,13 +301,19 @@ public class GraphParser {
 			IClassVertex param;
 			String paramName;
 			
+			// parsing the return type
 			if (hasBeenVisited(returnType)) {
 				realReturnType = this.visited.get(returnType);
 			} else {
 				realReturnType = this.makeSingleNode(returnType, g);
 			}
 			
-			MethodData mdToAdd = new MethodData(access, name, realReturnType);
+			String returnTypeDesc = Type.getReturnType(m.desc).getDescriptor();
+			
+			// adding edge for method return type dependency
+			this.addDependsEdge(cv, realReturnType, g);
+			
+			MethodData mdToAdd = new MethodData(access, name, realReturnType, returnTypeDesc);
 			
 			for (Type paramType : Type.getArgumentTypes(m.desc)) {
 				paramName = paramType.getClassName();
@@ -296,9 +322,10 @@ public class GraphParser {
 				} else {
 					param = this.makeSingleNode(paramName, g);
 				}
-				
-				mdToAdd.addParam(param);
 
+				// adding edge for method parameter dependency
+				dependsEdge = this.addDependsEdge(cv, param, g);
+				mdToAdd.addParam(param, this.getTypeStrings(paramType.getDescriptor()));
 			}
 			
 			cv.addMethodData(mdToAdd);
