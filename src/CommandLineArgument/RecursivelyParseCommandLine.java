@@ -1,7 +1,9 @@
-package projectFile;
+package CommandLineArgument;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import projectFile.DOMGraph;
 
 public class RecursivelyParseCommandLine implements ICommandLineArgument {
 
