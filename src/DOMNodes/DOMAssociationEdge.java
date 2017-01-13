@@ -1,6 +1,15 @@
 package DOMNodes;
 
 public class DOMAssociationEdge extends DOMActuallyAbstractEdgeNode {
+	
+	public void setHeadCardinality(String s) {
+		this.headCardinality = s;
+	}
+	
+	public void setTailCardinality(String s) {
+		this.tailCardinality = s;
+	}
+
 
 	@Override
 	public String getTextRepresentation() {

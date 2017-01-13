@@ -11,8 +11,8 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	
 	protected IDOMClassNode start;
 	protected IDOMClassNode end;
-	private String headCardinality = "";
-	private String tailCardinality = "";
+	protected String headCardinality = "";
+	protected String tailCardinality = "";
 
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
@@ -45,5 +45,4 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 			System.exit(-1);
 		}
 	}
-
 }
