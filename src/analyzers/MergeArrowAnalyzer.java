@@ -36,7 +36,6 @@ public class MergeArrowAnalyzer implements IAnalyzer {
 				}
 			}
 		}
-		
 	}
 	
 	public void MergeArray(IClassVertex v, IClassVertex x){
