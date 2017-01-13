@@ -1,5 +1,7 @@
 package graphNodes;
 
+import DOMNodes.IDOMEdgeNode;
+
 /**
  * This is a interface for some kinds of ClassEdge like DependsOnEdge and ExtendsEdge
  * 
@@ -16,4 +18,6 @@ public interface IClassEdge {
 	String getHeadTitle();
 	String getTailTitle();
 	void set(IClassVertex head, IClassVertex tail);
+	public IDOMEdgeNode getCorrespondingDOMNode();
+	public void setCorrespondingDOMNode(IDOMEdgeNode generatedDOMNode);
 }

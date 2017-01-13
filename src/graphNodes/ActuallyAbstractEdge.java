@@ -1,11 +1,14 @@
 package graphNodes;
 
+import DOMNodes.IDOMEdgeNode;
+
 public abstract class ActuallyAbstractEdge implements IClassEdge {
 	
 	public IClassVertex head;
 	public IClassVertex tail;
 	public String headCardinality = "";
 	public String tailCardinality = "";
+	private IDOMEdgeNode domEdge;
 
 	@Override
 	public IClassVertex getTail() { //confusing we know
@@ -54,6 +57,16 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	@Override
 	public String toString() {
 		return this.tail + " --> " + this.head;
+	}
+	
+	@Override
+	public void setCorrespondingDOMNode(IDOMEdgeNode edn) {
+		this.domEdge = edn;
+	}
+
+	@Override
+	public IDOMEdgeNode getCorrespondingDOMNode() {
+		return this.domEdge;
 	}
 
 }
