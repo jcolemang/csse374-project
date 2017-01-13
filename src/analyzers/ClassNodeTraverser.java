@@ -8,9 +8,11 @@ import projectFile.ClassNodeGraph;
 public class ClassNodeTraverser {
 	private List<IClassVertex> nodeList;
 	private List<IAnalyzer> analyzers;
+	private ClassNodeGraph graph;
 	
 	public ClassNodeTraverser(ClassNodeGraph g) {
 		this.nodeList = g.getVertices();
+		this.graph = g;
 	}
 	
 	public void addAnalyzer(IAnalyzer an) {
@@ -24,7 +26,7 @@ public class ClassNodeTraverser {
 	public void analyze(IAnalyzer an) {
 		for (IClassVertex v : this.nodeList) {
 			if(!an.wasVisited(v)) {
-				an.analyze(v);
+				an.analyze(v, this.graph);
 			}
 		}
 	}

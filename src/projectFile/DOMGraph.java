@@ -57,6 +57,10 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		this.edgeToDOMEdge.put(eClass, domClass);
 	}
 
+	public void removeNodeFromDOMTree(IDOMNode n) {
+		this.domNodes.remove(n);
+		
+	}
 	
 	/**
 	 * Get nodes from ClassNodeGraph and generate them as DOMNodes.
