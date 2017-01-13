@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import graphNodes.AssociationBidirectionalEdge;
+import graphNodes.AssociationEdge;
+import graphNodes.DependencyEdge;
+import graphNodes.DependsBidirectionalEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 
@@ -30,17 +34,23 @@ public class MergeArrowAnalyzer implements IAnalyzer {
 		}
 		for(IClassVertex temp: heads){
 			for (IClassEdge e: temp.getEdges()){
-				if (e.getTail()==v){
-					
-					MergeArray(v,temp);
+				if (e.getTail().equals(v)){
+					MergeArray(v,temp,e);
 				}
 			}
 		}
 		
 	}
 	
-	public void MergeArray(IClassVertex v, IClassVertex x){
-	
+	public void MergeArray(IClassVertex v, IClassVertex x, IClassEdge e){
+		v.removeEdge(e);
+		x.removeEdge(e);
+		if (e.equals(AssociationEdge.class)){
+			v.addEdge(new AssociationBidirectionalEdge());
+		}
+		if (e.equals(DependencyEdge.class)){
+			v.addEdge(new DependsBidirectionalEdge());
+		}
 	}
 
 	@Override
