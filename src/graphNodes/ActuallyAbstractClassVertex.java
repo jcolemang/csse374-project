@@ -147,5 +147,14 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	public String toString() {
 		return this.getTitle();
 	}
+	
+	@Override
+	public void removeEdge(IClassEdge edge){
+		for (int i = 0; i<this.edges.size();i++){
+			if(edge.equals(this.edges.get(i))){
+				this.edges.remove(i);
+			}
+		}
+	}
 
 }
