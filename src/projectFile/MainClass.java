@@ -16,6 +16,9 @@ import DOMNodes.DOMDependencyEdge;
 import DOMNodes.DOMExtendsEdge;
 import DOMNodes.DOMImplementsEdge;
 import DOMNodes.DOMInterfaceNode;
+import analyzers.ClassNodeTraverser;
+import analyzers.IAnalyzer;
+import analyzers.IfInterfaceThenBlueAnalyzer;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -67,6 +70,10 @@ public class MainClass {
 		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
 
+		IAnalyzer interfaceMeansBlue = new IfInterfaceThenBlueAnalyzer();
+		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph);
+		traverser.analyze(interfaceMeansBlue);
+		
 		TextAggregator generator = new TextAggregator();
 		generator.writeFile("out.dot", dom);
 		

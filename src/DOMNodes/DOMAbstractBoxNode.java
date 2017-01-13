@@ -15,7 +15,6 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	private static final int PROTECTED = 2;
 	private static final int DEFAULT = 1;
 	private static final int PUBLIC = 0;
-
 	
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 	
@@ -36,6 +35,26 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 
 	public void setAccessLevel(String access) {
 		this.accessLevel = this.translateAccessLevel(access);
+	}
+	
+	@Override
+	public void addAttribute(String dotAttrName, String property) {
+		this.aestheticAttributes.put(dotAttrName, property);
+	}
+
+	@Override
+	public String attributeMapToString() {
+		String built = "";
+		
+		if(this.aestheticAttributes.isEmpty()) {
+			return built;
+		}
+		
+		for (String attr : this.aestheticAttributes.keySet()) {
+			built += attr + " = " + this.aestheticAttributes.get(attr) + ", ";
+		}
+		
+		return built.substring(0, built.length() - 2);
 	}
 	
 

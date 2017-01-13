@@ -194,6 +194,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	private void addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
 		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
 		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
+		domNode.addAttribute("headlabel", "1..n"); // PLACEHOLDER
 		this.domNodes.add(domNode);
 	}
 	

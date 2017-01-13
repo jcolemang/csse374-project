@@ -18,5 +18,9 @@ public interface IDOMNode {
 	 * @return String (the text representation of the entire class)
 	 */
 	String getTextRepresentation();
+
+	void addAttribute(String dotAttrName, String property);
+
+	String attributeMapToString();
 	
 }
