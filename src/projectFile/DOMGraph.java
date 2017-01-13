@@ -112,7 +112,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassEdge> edges = new LinkedList<>();
 		for (IClassVertex v : vertices) {
 			for (IClassEdge e : v.getEdges()) {
-				if (vertices.contains(e.getEnd())) {
+				if (vertices.contains(e.getTail())) {
 					edges.add(e);
 				}
 			}
@@ -153,7 +153,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		result.add(first);
 		for (IClassEdge e : first.getEdges()) {
 			edges.add(e);
-			start.add(e.getEnd());
+			start.add(e.getTail());
 		}
 
 		// and recurse!
@@ -193,7 +193,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private void addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
 		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
-		domNode.set(e.getStart().getCorrespondingDOMNode(), e.getEnd().getCorrespondingDOMNode());
+		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
 		this.domNodes.add(domNode);
 	}
 	

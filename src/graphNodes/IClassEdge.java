@@ -7,9 +7,11 @@ package graphNodes;
  *
  */
 public interface IClassEdge {
-	IClassVertex getEnd();
-	IClassVertex getStart();
+	IClassVertex getTail();
+	IClassVertex getHead();
 	String getHeadCardinality();
 	String getTailCardinality();
+	String getHeadTitle();
+	String getTailTitle();
 	void set(IClassVertex head, IClassVertex tail);
 }

@@ -8,8 +8,13 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	public String tailCardinality;
 
 	@Override
-	public IClassVertex getEnd() {
-		return this.head;
+	public IClassVertex getTail() { //confusing we know
+		return this.head; //could fix this if we manage to flip arrows in the image....
+	}
+	
+	@Override
+	public IClassVertex getHead() {
+		return this.tail;
 	}
 	
 	@Override
@@ -21,19 +26,22 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	public String getTailCardinality() {
 		return this.tailCardinality;
 	}
-
-
+	
 	@Override
-	public IClassVertex getStart() {
-		return this.tail;
+	public String getHeadTitle() {
+		return this.head.getTitle();
 	}
 	
+	@Override
+	public String getTailTitle() {
+		return this.tail.getTitle();
+	}
+
 	@Override
 	public void set(IClassVertex from, IClassVertex to) {
 		this.tail = from;
 		this.head = to;
 	}
-	
 	
 	@Override
 	public String toString() {

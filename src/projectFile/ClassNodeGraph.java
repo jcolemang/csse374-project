@@ -25,6 +25,14 @@ public class ClassNodeGraph {
 	}
 	
 	/**
+	 * Add a IClassEdge in the list of classEdges.
+	 * @param edge
+	 */
+	public void addClassEdge(IClassEdge edge){
+		this.classEdges.add(edge);
+	}
+	
+	/**
 	 * Return all classEdges of ClassNodeGraph as a list of IClassEdge.
 	 * @return
 	 */
@@ -58,12 +66,20 @@ public class ClassNodeGraph {
 		this.nameToVertex.put(vertex.getTitle(), vertex);
 	}
 	
-	/**
-	 * Add a IClassEdge in the list of classEdges.
-	 * @param edge
-	 */
-	public void addClassEdge(IClassEdge edge){
-		this.classEdges.add(edge);
+	public ArrayList<IClassEdge> getEdgesOfTwoNodes(IClassVertex n1, IClassVertex n2) {
+		ArrayList<IClassEdge> edges = new ArrayList<IClassEdge>();
+		
+		List<IClassEdge> potentiallySharedEdges = n1.getEdges();
+		
+		for (int i = 0; i < potentiallySharedEdges.size(); i++) {
+			IClassEdge currentEdge = potentiallySharedEdges.get(i);
+			if(currentEdge.getHeadTitle().equals(n2.getTitle()) ||
+					currentEdge.getTailTitle().equals(n2.getTitle())) {
+				edges.add(currentEdge);
+			}
+		}
+		
+		return edges;
 	}
 	
 	/**
