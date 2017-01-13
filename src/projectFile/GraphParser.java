@@ -301,16 +301,19 @@ public class GraphParser {
 			IClassVertex param;
 			String paramName;
 			
+			// parsing the return type
 			if (hasBeenVisited(returnType)) {
 				realReturnType = this.visited.get(returnType);
 			} else {
 				realReturnType = this.makeSingleNode(returnType, g);
 			}
 			
+			String returnTypeDesc = Type.getReturnType(m.desc).getDescriptor();
+			
 			// adding edge for method return type dependency
 			this.addDependsEdge(cv, realReturnType, g);
 			
-			MethodData mdToAdd = new MethodData(access, name, realReturnType);
+			MethodData mdToAdd = new MethodData(access, name, realReturnType, returnTypeDesc);
 			
 			for (Type paramType : Type.getArgumentTypes(m.desc)) {
 				paramName = paramType.getClassName();
@@ -322,7 +325,7 @@ public class GraphParser {
 
 				// adding edge for method parameter dependency
 				dependsEdge = this.addDependsEdge(cv, param, g);
-				mdToAdd.addParam(param);
+				mdToAdd.addParam(param, this.getTypeStrings(paramType.getDescriptor()));
 			}
 			
 			cv.addMethodData(mdToAdd);
