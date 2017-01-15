@@ -268,7 +268,10 @@ public class GraphParser {
 	private void setFields(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fields = classNode.fields;
+		List<IClassVertex> verts;
+		List<String> vertStrings;
 		IClassVertex realType;
+		int i;
 		
 		for (FieldNode f : fields) {
 			String name = f.name;
@@ -280,7 +283,14 @@ public class GraphParser {
 			} else {
 				realType = this.makeSingleNode(fieldType, g);
 			}
-			cv.addFieldData(new FieldData(accessLevel, name, realType));
+			
+			vertStrings = getTypeStrings(f.signature);
+			verts = new ArrayList<IClassVertex>();
+			for (i = 1; i < vertStrings.size(); i++) {
+				verts.add(g.getVertex(vertStrings.get(i)));
+			}
+			
+			cv.addFieldData(new FieldData(accessLevel, name, realType, f.signature, verts));
 		}
 		
 	}
@@ -325,7 +335,7 @@ public class GraphParser {
 
 				// adding edge for method parameter dependency
 				dependsEdge = this.addDependsEdge(cv, param, g);
-				mdToAdd.addParam(param, this.getTypeStrings(paramType.getDescriptor()));
+//				mdToAdd.addParam(param, this.getTypeStrings(paramType.getDescriptor()));
 			}
 			
 			cv.addMethodData(mdToAdd);
@@ -338,6 +348,11 @@ public class GraphParser {
 		String[] res;
 		List<String> stuff = new ArrayList<>();
 		String s;
+
+		if (descriptor == null) {
+			return stuff;
+		}
+
 		res = descriptor.split("[^\\w./\\$]");
 		for (int i = 0; i < res.length; i++) {
 			s = res[i];

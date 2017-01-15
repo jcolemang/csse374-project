@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import graphNodes.IClassVertex;
 import projectFile.FieldData;
 import projectFile.MethodData;
@@ -96,16 +98,24 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	 * @param data
 	 */
 	public void setFields(List<FieldData> data) {
-		
+		String typeString;
 		this.fields = new ArrayList<String>();
+
 		
 		for (FieldData f : data) {
 			if (this.shouldRender(f.getAccessLevel())) {
+				if (f.getTypeParameterString().length() == 0) {
+					typeString = f.getFieldType().toString();
+				} else {
+					typeString = f.getTypeParameterString();
+				}
+
 				this.fields.add(this.accessStringToSign(f.getAccessLevel()) +
-						f.getFieldName() + ": " + f.getFieldType());
+						f.getFieldName() + ": " + typeString);
 			}
 		}
 	}
+	
 	
 	/**
 	 * Initializes the DOMClassNode's this.methods to be an array filled with

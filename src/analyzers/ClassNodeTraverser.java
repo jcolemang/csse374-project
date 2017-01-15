@@ -29,8 +29,6 @@ public class ClassNodeTraverser {
 	public void analyze(IAnalyzer an) {
 		for (IClassVertex v : this.nodeList) {
 			if(!an.wasVisited(v)) {
-				an.analyze(v);
-				an.analyze(v, this.graph);
 				an.analyze(v, this.graph, this.dom);
 			}
 		}

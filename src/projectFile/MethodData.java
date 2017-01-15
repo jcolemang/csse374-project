@@ -17,7 +17,7 @@ public class MethodData {
 	private String returnTypeString;
 	private List<IClassVertex> params; // can result in a "Depends on" relationship
 	
-	private Map<String, List<String>> getTypeEffects;
+//	private Map<String, List<String>> getTypeEffects;
 	
 	/**
 	 * Collect the information of each method in class, include access, name and return type.
@@ -32,8 +32,8 @@ public class MethodData {
 		this.returnType = returnType;
 		this.params = new ArrayList<IClassVertex>();
 		this.returnTypeString = rts;
-		this.getTypeEffects = new HashMap<>();
-		this.addTypeEffect(returnType.getTitle(), rts);
+//		this.getTypeEffects = new HashMap<>();
+//		this.addTypeEffect(returnType.getTitle(), rts);
 	}
 	/**
 	 * Return the access of method as String.
@@ -75,25 +75,25 @@ public class MethodData {
 	 * add a parameter of the method into the list.
 	 * @param param
 	 */
-	public void addParam(IClassVertex param, List<String> typeParams) {
-		this.params.add(param);
-		for (String s : typeParams) {
-			this.addTypeEffect(param.getTitle(), s);
-		}
-		
-	}
+//	public void addParam(IClassVertex param, List<String> typeParams) {
+//		this.params.add(param);
+//		for (String s : typeParams) {
+//			this.addTypeEffect(param.getTitle(), s);
+//		}
+//		
+//	}
 	
-	private void addTypeEffect(String thing, String thingEffected) { 
-		List<String> things;
-		if (this.getTypeEffects.containsKey(thing)) {
-			things = this.getTypeEffects.get(thing);
-			things.add(thingEffected);
-		} else {
-			things = new ArrayList<>();
-			this.getTypeEffects.put(thing, things);
-		}
-		
-		
-	}
+//	private void addTypeEffect(String thing, String thingEffected) { 
+//		List<String> things;
+//		if (this.getTypeEffects.containsKey(thing)) {
+//			things = this.getTypeEffects.get(thing);
+//			things.add(thingEffected);
+//		} else {
+//			things = new ArrayList<>();
+//			this.getTypeEffects.put(thing, things);
+//		}
+//		
+//		
+//	}
 	
 }

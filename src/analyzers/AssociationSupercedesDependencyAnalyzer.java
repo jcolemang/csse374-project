@@ -40,4 +40,5 @@ public class AssociationSupercedesDependencyAnalyzer extends AbstractAnalyzer{
 			}
 		}
 	}
+
 }

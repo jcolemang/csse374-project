@@ -18,18 +18,6 @@ public abstract class AbstractAnalyzer implements IAnalyzer{
 		return this.trackVisited.getOrDefault(v, false);
 	}
 
-	public void analyze (IClassVertex v) {
-	}
-
-	@Override
-	public void analyze(IClassVertex v, ClassNodeGraph g) {
-	}
-	
-	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-		
-	}
-	
-
 	@Override
 	public void setVisited(IClassVertex v) {
 		this.trackVisited.put(v, true);

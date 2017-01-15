@@ -12,6 +12,7 @@ import DOMNodes.IDOMEdgeNode;
 import DOMNodes.IDOMNode;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
+import graphNodes.PrimitiveVertex;
 
 
 public class DOMGraph implements Iterable<IDOMNode>{
@@ -93,12 +94,19 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMClassNode generatedDOMNode;
 		for (IClassVertex vert : classesToUse) {
+            if (vert instanceof PrimitiveVertex) {
+            	continue;
+            }
             generatedDOMNode = this.addDOMVertex(vert);
             vert.setCorrespondingDOMNode(generatedDOMNode);
 		}
 		
 		IDOMEdgeNode generatedDOMEdge;
 		for(IClassEdge edge : edgesToUse) {
+			if (edge.getHead() instanceof PrimitiveVertex || 
+					edge.getTail() instanceof PrimitiveVertex) {
+				continue;
+			}
 			generatedDOMEdge = this.addDOMEdge(edge);
 			edge.setCorrespondingDOMNode(generatedDOMEdge);
 		}
@@ -180,6 +188,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 			System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 			System.out.println(v.getClass());
 		}
+		
 		IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
         
         dn.setAccessLevel(this.defaultAccessLevel);
