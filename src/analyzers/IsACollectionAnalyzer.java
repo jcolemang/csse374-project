@@ -54,7 +54,7 @@ public class IsACollectionAnalyzer extends AbstractAnalyzer {
 		for (IClassEdge e : edges) {
 			if (e instanceof ExtendsEdge) {
 				if (this.extendsCollection(e.getHead(), g)) {
-					this.extendsCollection.put(v.getTitle(), true);
+					this.extendsCollectionMap.put(v.getTitle(), true);
 					return true;
 				}
 					
@@ -62,7 +62,7 @@ public class IsACollectionAnalyzer extends AbstractAnalyzer {
 			
 			if (e instanceof InterfaceVertex) {
 				if (this.extendsCollection(e.getHead(), g)) {
-					this.extendsCollection.put(v.getTitle(), true);
+					this.extendsCollectionMap.put(v.getTitle(), true);
 					return true;
 				}
 			}
