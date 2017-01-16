@@ -300,19 +300,33 @@ public class GraphParser {
 	
 	
 	/*
-	 * 
+	 * All hope abandon, ye who enter here
 	 */
 	private void setMethods(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
+		
+		// general use
 		List<MethodNode> methods = classNode.methods;
 		IClassVertex realReturnType;
 		IClassEdge dependsEdge;
+		int i;
+
+		// return type objects
+		List<IClassVertex> returnTypeTypeParams;
+		List<String> returnTypeTypeStrings;
+		IClassVertex returnTypeTypeVertex;
+		String returnTypeTypeDesc;
+		
+		// parameter type objects
+		List<IClassVertex> paramTypeVertices = new ArrayList<>();
+		List<List<IClassVertex>> paramTypeTypeParams = new ArrayList<>();
+		List<String> allParamTypeStrings = new ArrayList<>();
+		List<String> paramTypeStrings;
+		
 		
 		for (MethodNode m : methods) {
 			String name = m.name;
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
-			IClassVertex param;
-			String paramName;
 			
 			// parsing the return type
 			if (hasBeenVisited(returnType)) {
@@ -321,28 +335,58 @@ public class GraphParser {
 				realReturnType = this.makeSingleNode(returnType, g);
 			}
 			
-			String returnTypeDesc = Type.getReturnType(m.desc).getDescriptor();
-			
 			// adding edge for method return type dependency
 			this.addDependsEdge(cv, realReturnType, g);
-			
-			MethodData mdToAdd = new MethodData(access, name, realReturnType, returnTypeDesc);
-			
-			for (Type paramType : Type.getArgumentTypes(m.desc)) {
-				paramName = paramType.getClassName();
-				if (hasBeenVisited(paramName)) {
-					param = this.visited.get(paramName);
-				} else {
-					param = this.makeSingleNode(paramName, g);
-				}
 
-				// adding edge for method parameter dependency
-				dependsEdge = this.addDependsEdge(cv, param, g);
-//				mdToAdd.addParam(param, this.getTypeStrings(paramType.getDescriptor()));
+			// the return type of the method. Can be null for some reason.
+			// I assume this is when there are no arguments
+			returnTypeTypeDesc = m.signature == null ? m.desc : m.signature;
+
+			returnTypeTypeParams = new ArrayList<IClassVertex>();
+			returnTypeTypeStrings = getTypeStrings(returnTypeTypeDesc);
+			for (i = 1; i < returnTypeTypeStrings.size(); i++) {
+				returnTypeTypeVertex = makeSingleNode(returnTypeTypeStrings.get(i), g);
+				returnTypeTypeParams.add(returnTypeTypeVertex);
+				this.addDependsEdge(cv, returnTypeTypeVertex, g);
+				if (returnTypeTypeDesc.contains("Foo") || 
+						returnTypeTypeDesc.contains("Bar")) {
+					System.out.println("Doing some stuff");
+					System.out.println(returnTypeTypeVertex);
+					System.out.println(returnTypeTypeDesc);
+				}
 			}
 			
-			cv.addMethodData(mdToAdd);
 			
+			String currentTypeDesc;
+			List<String> currentTypeStrings;
+			String currentTypeString;
+			IClassVertex currentTypeVertex;
+			String paramTypeStr;
+			IClassVertex param;
+			for (Type t : Type.getArgumentTypes(m.desc)) {
+				currentTypeDesc = t.getDescriptor();
+				currentTypeStrings = getTypeStrings(currentTypeDesc);
+				paramTypeStr = t.getClassName();
+				param = this.makeSingleNode(paramTypeStr, g);
+				this.addDependsEdge(cv, param, g);
+				
+				List<IClassVertex> parameterTypes = new ArrayList<>();
+				for (i = 1; i < currentTypeStrings.size(); i++) {
+					currentTypeString = currentTypeStrings.get(i);
+					currentTypeVertex = makeSingleNode(currentTypeString, g);
+					this.addDependsEdge(cv, currentTypeVertex, g);
+					parameterTypes.add(currentTypeVertex);
+				}
+				
+				allParamTypeStrings.add(currentTypeDesc);
+				paramTypeTypeParams.add(parameterTypes);
+				paramTypeVertices.add(param);
+			}
+			
+			MethodData md = new MethodData(access, name,
+					realReturnType, returnTypeTypeDesc, returnTypeTypeParams,
+					paramTypeVertices, allParamTypeStrings, paramTypeTypeParams);
+			cv.addMethodData(md);
 		}
 	}
 	

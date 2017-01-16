@@ -17,7 +17,6 @@ public class MethodData {
 	private String returnTypeString;
 	private List<IClassVertex> params; // can result in a "Depends on" relationship
 	
-//	private Map<String, List<String>> getTypeEffects;
 	
 	/**
 	 * Collect the information of each method in class, include access, name and return type.
@@ -26,15 +25,22 @@ public class MethodData {
 	 * @param methodName
 	 * @param returnType
 	 */
-	public MethodData(String access, String methodName, IClassVertex returnType, String rts) { //wb params??
+	public MethodData(String access, String methodName, 
+			IClassVertex returnType, String returnSig, List<IClassVertex> returnTypeParams,
+			List<IClassVertex> paramTypes, List<String> paramStringDescs, List<List<IClassVertex>> methodParamTypeParams) {
 		this.access = access;
 		this.methodName = methodName;
 		this.returnType = returnType;
 		this.params = new ArrayList<IClassVertex>();
-		this.returnTypeString = rts;
-//		this.getTypeEffects = new HashMap<>();
-//		this.addTypeEffect(returnType.getTitle(), rts);
+		this.returnTypeString = returnSig;
+
+        if (this.returnTypeString.contains("Foo") || 
+                this.returnTypeString.contains("Bar")) {
+            System.out.println("In the method" + this.returnTypeString);
+        }
 	}
+	
+	
 	/**
 	 * Return the access of method as String.
 	 * @return
@@ -60,7 +66,7 @@ public class MethodData {
 	}
 	
 	public String getReturnTypeString() {
-		return this.returnTypeString;
+		return this.returnTypeString.equals("()V") ? "void" : this.returnTypeString;
 	}
 	
 	/**

@@ -144,7 +144,8 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 			}
 
 			this.methods.add(this.accessStringToSign(m.getAccessLevel()) +
-					m.getMethodName() + "(" + paramInfo + "): " + m.getReturnType() + "\n");
+					m.getMethodName() + "(" + paramInfo + "): " + 
+					this.sanitize(m.getReturnTypeString()) + "\n");
 		}
 	}
 	

@@ -109,7 +109,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 			}
 			generatedDOMEdge = this.addDOMEdge(edge);
 			edge.setCorrespondingDOMNode(generatedDOMEdge);
-			System.out.println("aoeueoauoau" + edge.getCorrespondingDOMNode());
 		}
 		
 	}
@@ -185,11 +184,6 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 * @throws InstantiationException 
 	 */
 	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
-		if (this.vertexToDOMNode.get(v.getClass()) == null) {
-			System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-			System.out.println(v.getClass());
-		}
-		
 		IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
         
         dn.setAccessLevel(this.defaultAccessLevel);
