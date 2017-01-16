@@ -12,7 +12,7 @@ import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 import projectFile.FieldData;
 
-public class IsACollectionAnalyzer extends AbstractAnalyzer {
+public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 	
 	static String collectionString = "java.util.Collection";
 	private Map<String, Boolean> extendsCollectionMap = new HashMap<>();

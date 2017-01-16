@@ -12,7 +12,7 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	protected IDOMClassNode start;
 	protected IDOMClassNode end;
 
-	Map<String, String> aestheticAttributes = new HashMap<String, String>();
+	public Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
 	@Override
 	public IDOMClassNode getHead() {
@@ -27,6 +27,10 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	@Override
 	public void addAttribute(String dotAttrName, String property) {
 		this.aestheticAttributes.put(dotAttrName, property);
+	}
+	
+	public String getAttribute(String graphvizKey) {
+		return this.aestheticAttributes.get(graphvizKey);
 	}
 
 	@Override

@@ -1,72 +1,75 @@
 package analyzers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import graphNodes.AssociationBidirectionalEdge;
+import DOMNodes.IDOMEdgeNode;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
-import graphNodes.DependsBidirectionalEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 
-public class MergeArrowAnalyzer {//implements IAnalyzer {
+public class MergeArrowAnalyzer extends AbstractAnalyzer {
 
-	private HashMap<IClassVertex, Boolean> trackVisited;
-	
-	public MergeArrowAnalyzer(){
-		this.trackVisited = new HashMap<IClassVertex, Boolean>();
+	private ClassNodeGraph cng;
+	private DOMGraph dg;
+
+
+	@Override
+	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
+		this.cng = g;
+		this.dg = d;
+		List<IClassEdge> fromA = v.getEdges();
+		
+		for (IClassEdge e : fromA) {
+			IClassVertex curVert = e.getHead(); //Maybe e.getTail();
+			mergeBidirectional(v, curVert);
+			this.setVisited(curVert);
+		}		
 	}
 	
-//	@Override
-//	public boolean wasVisited(IClassVertex v) {
-//		// TODO Auto-generated method stub
-//		return this.trackVisited.getOrDefault(v, false);
-//	}
-
-//	@Override
-//	public void analyze(IClassVertex v) {
-//		// TODO Auto-generated method stub
-//		List<IClassVertex> heads = new ArrayList<>();
-//		for(IClassEdge e: v.getEdges()){
-//			heads.add(e.getHead());
-//		}
-//		for(IClassVertex temp: heads){
-//			for (IClassEdge e: temp.getEdges()){
-//				if (e.getTail().equals(v)){
-//					MergeArray(v,temp,e);
-//				}
-//			}
-//		}
-//		
-//	}
+	public void mergeBidirectional(IClassVertex a, IClassVertex b) {
+		List<IClassEdge> fromAtoB;
+		List<IClassEdge> fromBtoA;
+		
+		fromAtoB = this.cng.getEdgesFromTo(a, b);
+		fromBtoA = this.cng.getEdgesFromTo(b, a);
+		
+		if(fromBtoA.isEmpty() || fromBtoA == null) {
+			return;
+		}
+		
+		for (IClassEdge e1 : fromAtoB) {
+			for (IClassEdge e2 : fromBtoA) {
+				
+				if(e1.getCorrespondingDOMNode() == null ||
+						e2.getCorrespondingDOMNode() == null) {
+					continue;
+				}
+				
+				if (e1 instanceof AssociationEdge && e2 instanceof AssociationEdge) {
+					merger (e1.getCorrespondingDOMNode(), e2.getCorrespondingDOMNode());
+					
+				} else if (e1 instanceof DependencyEdge && e2 instanceof DependencyEdge) {
+					merger(e1.getCorrespondingDOMNode(), e2.getCorrespondingDOMNode());
+				}
+			}
+		}
+	}
 	
-//	public void MergeArray(IClassVertex v, IClassVertex x, IClassEdge e){
-//		v.removeEdge(e);
-//		x.removeEdge(e);
-//		if (e.equals(AssociationEdge.class)){
-//			v.addEdge(new AssociationBidirectionalEdge());
-//		}
-//		if (e.equals(DependencyEdge.class)){
-//			v.addEdge(new DependsBidirectionalEdge());
-//		}
-//	}
-
-
-//	@Override
-//	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-//	@override
-//	public void setvisited(iclassvertex v) {
-//		// todo auto-generated method stub
-//		
-//	}
-
-
+	public void merger(IDOMEdgeNode e1, IDOMEdgeNode e2) {
+		String savedCardinality = e2.getAttribute("headlabel");
+		
+		if (savedCardinality == null) {
+			savedCardinality = "\"\"";
+		}
+		
+		e1.addAttribute("dir", "\"both\"");
+		e1.addAttribute("headlabel", savedCardinality);
+		System.out.println("Attribute added! Attributes are: " + e1.attributeMapToString());
+		
+		this.dg.removeNodeFromDOMTree(e2);
+		System.out.println("Extra arrow removed");
+	}
 }

@@ -19,7 +19,8 @@ import DOMNodes.DOMInterfaceNode;
 import analyzers.AssociationSupercedesDependencyAnalyzer;
 import analyzers.ClassNodeTraverser;
 import analyzers.IAnalyzer;
-import analyzers.IsACollectionAnalyzer;
+import analyzers.IsACollectionAndAddCardinalityAnalyzer;
+import analyzers.MergeArrowAnalyzer;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -75,9 +76,13 @@ public class MainClass {
 		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph, dom);
 		traverser.analyze(AssociationSupercedesDependency);
 		
-		System.out.println("Checking our collection thing");
-		IAnalyzer isCollectionAnalyzer = new IsACollectionAnalyzer();
-		traverser.analyze(isCollectionAnalyzer);
+//		System.out.println("Checking our collection thing");
+//		IAnalyzer isCollectionAnalyzer = new IsACollectionAndAddCardinalityAnalyzer();
+//		traverser.analyze(isCollectionAnalyzer);
+		
+		System.out.println("Merging bidirectional arrows");
+		IAnalyzer mergeArrowAnalyzer = new MergeArrowAnalyzer();
+		traverser.analyze(mergeArrowAnalyzer);
 		
 		TextAggregator generator = new TextAggregator();
 		generator.writeFile("out.dot", dom);
