@@ -66,6 +66,18 @@ public class ClassNodeGraph {
 		this.nameToVertex.put(vertex.getTitle(), vertex);
 	}
 	
+	
+	public List<IClassEdge> getEdgesFromTo(IClassVertex n1, IClassVertex n2) {
+		List<IClassEdge> edges = new ArrayList<>();
+		for (IClassEdge e : n1.getEdges()) {
+			if (e.getTail().getTitle().equals(n2.getTitle())) {
+				edges.add(e);
+			}
+		}
+		return edges;
+	}
+	
+	
 	public List<IClassEdge> getEdgesOfTwoNodes(IClassVertex n1, IClassVertex n2) {
 		List<IClassEdge> edges = new ArrayList<IClassEdge>();
 		List<IClassEdge> potentiallySharedEdges = n1.getEdges();

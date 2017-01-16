@@ -272,6 +272,7 @@ public class GraphParser {
 		List<String> vertStrings;
 		IClassVertex realType;
 		int i;
+		IClassVertex paramVert;
 		
 		for (FieldNode f : fields) {
 			String name = f.name;
@@ -287,7 +288,9 @@ public class GraphParser {
 			vertStrings = getTypeStrings(f.signature);
 			verts = new ArrayList<IClassVertex>();
 			for (i = 1; i < vertStrings.size(); i++) {
-				verts.add(g.getVertex(vertStrings.get(i)));
+				paramVert = this.makeSingleNode(vertStrings.get(i), g);
+				verts.add(paramVert);
+				this.addAssociationEdge(cv, paramVert, g);
 			}
 			
 			cv.addFieldData(new FieldData(accessLevel, name, realType, f.signature, verts));
