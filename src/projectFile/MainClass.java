@@ -76,9 +76,9 @@ public class MainClass {
 		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph, dom);
 		traverser.analyze(AssociationSupercedesDependency);
 		
-//		System.out.println("Checking our collection thing");
-//		IAnalyzer isCollectionAnalyzer = new IsACollectionAndAddCardinalityAnalyzer();
-//		traverser.analyze(isCollectionAnalyzer);
+		System.out.println("Checking our collection thing");
+		IAnalyzer isCollectionAnalyzer = new IsACollectionAndAddCardinalityAnalyzer();
+		traverser.analyze(isCollectionAnalyzer);
 		
 		System.out.println("Merging bidirectional arrows");
 		IAnalyzer mergeArrowAnalyzer = new MergeArrowAnalyzer();

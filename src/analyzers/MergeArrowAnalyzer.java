@@ -15,7 +15,6 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 	private ClassNodeGraph cng;
 	private DOMGraph dg;
 
-
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
 		this.cng = g;
@@ -23,10 +22,12 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 		List<IClassEdge> fromA = v.getEdges();
 		
 		for (IClassEdge e : fromA) {
-			IClassVertex curVert = e.getHead(); //Maybe e.getTail();
+			IClassVertex curVert = e.getTail();
 			mergeBidirectional(v, curVert);
 			this.setVisited(curVert);
-		}		
+		}
+		
+		this.setVisited(v);
 	}
 	
 	public void mergeBidirectional(IClassVertex a, IClassVertex b) {
@@ -36,18 +37,17 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 		fromAtoB = this.cng.getEdgesFromTo(a, b);
 		fromBtoA = this.cng.getEdgesFromTo(b, a);
 		
-		if(fromBtoA.isEmpty() || fromBtoA == null) {
+		if(fromBtoA.isEmpty() || fromBtoA == null ||
+				fromAtoB.isEmpty() || fromAtoB == null) {
 			return;
 		}
 		
 		for (IClassEdge e1 : fromAtoB) {
 			for (IClassEdge e2 : fromBtoA) {
-				
 				if(e1.getCorrespondingDOMNode() == null ||
 						e2.getCorrespondingDOMNode() == null) {
 					continue;
 				}
-				
 				if (e1 instanceof AssociationEdge && e2 instanceof AssociationEdge) {
 					merger (e1.getCorrespondingDOMNode(), e2.getCorrespondingDOMNode());
 					
@@ -66,10 +66,10 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 		}
 		
 		e1.addAttribute("dir", "\"both\"");
-		e1.addAttribute("headlabel", savedCardinality);
-		System.out.println("Attribute added! Attributes are: " + e1.attributeMapToString());
+		e1.addAttribute("arrowtail", "\"vee\"");
+		e1.addAttribute("arrowhead", "\"vee\"");
+		e1.addAttribute("taillabel", savedCardinality);
 		
 		this.dg.removeNodeFromDOMTree(e2);
-		System.out.println("Extra arrow removed");
 	}
 }
