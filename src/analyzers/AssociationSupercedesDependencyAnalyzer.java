@@ -30,10 +30,6 @@ public class AssociationSupercedesDependencyAnalyzer extends AbstractAnalyzer{
 
 				for (IClassEdge shared : sharedEdges) {
 					if (shared instanceof DependencyEdge) {
-						if (v.getTitle().contains("FieldData")) {
-//							System.out.println("Here it is: " + v.getEdges());
-							System.out.println("removed from " + v + " to " + shared);
-						}
 						d.removeNodeFromDOMTree(shared.getCorrespondingDOMNode());
 					}
 				}

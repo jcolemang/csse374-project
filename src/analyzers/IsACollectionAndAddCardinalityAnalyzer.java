@@ -11,6 +11,7 @@ import graphNodes.ImplementsEdge;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 import projectFile.FieldData;
+import projectFile.MethodData;
 
 public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 	
@@ -19,6 +20,8 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
+		
+		// callback hell has nothing on me
 		for (FieldData fd : v.getFields()) {
 			if (extendsCollection(fd.getFieldType(), g)) {
 				for (IClassVertex param : fd.getTypeParameterVertices()) {
@@ -32,7 +35,23 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 				}
 			}
 		}
+		
+		for (MethodData md : v.getMethods()) {
+			// check the return type
+			if (extendsCollection(md.getReturnType(), g)) {
+				for (IClassVertex returnTypeParam : md.getReturnTypeTypeParameters()) {
+					if (returnTypeParam.getCorrespondingDOMNode() != null) {
+						for (IClassEdge e : g.getEdgesFromTo(v, returnTypeParam)) {
+							if (e.getCorrespondingDOMNode() != null) {
+								e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+							}
+						}
+					}
+				}
+			}
+		}
 	}
+	
 	
 	public boolean extendsCollection(IClassVertex v, ClassNodeGraph g) {
 		

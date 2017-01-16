@@ -16,6 +16,7 @@ public class MethodData {
 	private IClassVertex returnType;
 	private String returnTypeString;
 	private List<IClassVertex> params; // can result in a "Depends on" relationship
+	private List<IClassVertex> returnTypeTypeParams;
 	
 	
 	/**
@@ -33,6 +34,7 @@ public class MethodData {
 		this.returnType = returnType;
 		this.params = new ArrayList<IClassVertex>();
 		this.returnTypeString = returnSig;
+		this.returnTypeTypeParams = returnTypeParams;
 
         if (this.returnTypeString.contains("Foo") || 
                 this.returnTypeString.contains("Bar")) {
@@ -64,6 +66,12 @@ public class MethodData {
 	public IClassVertex getReturnType() {
 		return this.returnType;
 	}
+	
+	
+	public List<IClassVertex> getReturnTypeTypeParameters() {
+		return this.returnTypeTypeParams;
+	}
+	
 	
 	public String getReturnTypeString() {
 		return this.returnTypeString.equals("()V") ? "void" : this.returnTypeString;
