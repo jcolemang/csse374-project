@@ -36,7 +36,10 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 			}
 		}
 		
+		List<IClassVertex> params;
+		List<IClassVertex> paramTypeParams;
 		for (MethodData md : v.getMethods()) {
+
 			// check the return type
 			if (extendsCollection(md.getReturnType(), g)) {
 				for (IClassVertex returnTypeParam : md.getReturnTypeTypeParameters()) {
@@ -46,6 +49,21 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 								e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
 							}
 						}
+					}
+				}
+			}
+			
+			// check the parameters
+			params = md.getParams();
+			for (int i = 0; i < params.size(); i++) {
+				if (extendsCollection(params.get(i), g)) {
+					paramTypeParams = md.getParamTypeParams().get(i);
+					for (IClassVertex type : paramTypeParams) {
+                        for (IClassEdge e : g.getEdgesFromTo(v, type)) {
+                        	if (e.getCorrespondingDOMNode() != null) {
+                        		e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+                        	}
+                        }
 					}
 				}
 			}

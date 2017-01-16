@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
@@ -299,6 +301,28 @@ public class GraphParser {
 	}
 	
 	
+	private String getMethodParameterString(String sig) {
+		if (sig == null) {
+			return null;
+		}
+		Pattern p = Pattern.compile("^(?:<.*>)*\\((.*)\\).*$");
+		Matcher m = p.matcher(sig);
+		m.find();
+		return m.group(1);
+	}
+	
+	
+	private String getMethodReturnTypeString(String sig) {
+		if (sig == null) {
+			return null;
+		}
+		Pattern p = Pattern.compile("^(?:<.*>)*\\(.*\\)(.*)$");
+		Matcher m = p.matcher(sig);
+		m.find();
+		return m.group(1);
+	}
+	
+	
 	/*
 	 * All hope abandon, ye who enter here
 	 */
@@ -340,7 +364,10 @@ public class GraphParser {
 
 			// the return type of the method. Can be null for some reason.
 			// I assume this is when there are no arguments
-			returnTypeTypeDesc = m.signature == null ? m.desc : m.signature;
+			returnTypeTypeDesc = getMethodReturnTypeString(m.signature);
+			if (returnTypeTypeDesc == null) {
+				returnTypeTypeDesc = m.desc;
+			}
 
 			returnTypeTypeParams = new ArrayList<IClassVertex>();
 			returnTypeTypeStrings = getTypeStrings(returnTypeTypeDesc);
@@ -348,12 +375,6 @@ public class GraphParser {
 				returnTypeTypeVertex = makeSingleNode(returnTypeTypeStrings.get(i), g);
 				returnTypeTypeParams.add(returnTypeTypeVertex);
 				this.addDependsEdge(cv, returnTypeTypeVertex, g);
-				if (returnTypeTypeDesc.contains("Foo") || 
-						returnTypeTypeDesc.contains("Bar")) {
-					System.out.println("Doing some stuff");
-					System.out.println(returnTypeTypeVertex);
-					System.out.println(returnTypeTypeDesc);
-				}
 			}
 			
 			
@@ -363,6 +384,16 @@ public class GraphParser {
 			IClassVertex currentTypeVertex;
 			String paramTypeStr;
 			IClassVertex param;
+				
+			// one hundred percent a hack.
+			// this will not work getting the one to many arrows for parameter types
+			List<String> parameterTypeStrings = getTypeStrings(this.getMethodParameterString((m.signature == null ? m.desc : m.signature)));
+			for (String s : parameterTypeStrings) {
+				IClassVertex v = this.makeSingleNode(s, g);
+				this.addDependsEdge(cv, v, g);
+
+			}
+			
 			for (Type t : Type.getArgumentTypes(m.desc)) {
 				currentTypeDesc = t.getDescriptor();
 				currentTypeStrings = getTypeStrings(currentTypeDesc);

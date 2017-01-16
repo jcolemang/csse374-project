@@ -17,6 +17,8 @@ public class MethodData {
 	private String returnTypeString;
 	private List<IClassVertex> params; // can result in a "Depends on" relationship
 	private List<IClassVertex> returnTypeTypeParams;
+	private List<List<IClassVertex>> paramTypeTypeParams;
+	private List<String> paramTypeStrings;
 	
 	
 	/**
@@ -32,14 +34,11 @@ public class MethodData {
 		this.access = access;
 		this.methodName = methodName;
 		this.returnType = returnType;
-		this.params = new ArrayList<IClassVertex>();
+		this.params = paramTypes;
 		this.returnTypeString = returnSig;
 		this.returnTypeTypeParams = returnTypeParams;
-
-        if (this.returnTypeString.contains("Foo") || 
-                this.returnTypeString.contains("Bar")) {
-            System.out.println("In the method" + this.returnTypeString);
-        }
+		this.paramTypeTypeParams = methodParamTypeParams;
+		this.paramTypeStrings = paramStringDescs;
 	}
 	
 	
@@ -74,7 +73,7 @@ public class MethodData {
 	
 	
 	public String getReturnTypeString() {
-		return this.returnTypeString.equals("()V") ? "void" : this.returnTypeString;
+		return this.returnTypeString.matches("^(.*)V$") ? "void" : this.returnTypeString;
 	}
 	
 	/**
@@ -83,6 +82,20 @@ public class MethodData {
 	 */
 	public List<IClassVertex> getParams() {
 		return this.params;
+	}
+	
+	
+	public List<String> getParamStrings() {
+		return this.paramTypeStrings;
+	}
+	
+	
+	/**
+	 * For your own sanity please never use this
+	 * @return
+	 */
+	public List<List<IClassVertex>> getParamTypeParams() {
+		return this.paramTypeTypeParams;
 	}
 	
 	/**

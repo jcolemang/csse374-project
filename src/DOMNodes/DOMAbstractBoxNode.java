@@ -135,7 +135,7 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 				continue;
 			}
 			
-			for (IClassVertex f : m.getParams()) { // For every parameter of that method
+			for (String f : m.getParamStrings()) { // For every parameter of that method
 				paramInfo += f + ", ";
 			}
 
