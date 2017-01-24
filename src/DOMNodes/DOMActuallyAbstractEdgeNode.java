@@ -15,12 +15,12 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	public Map<String, String> aestheticAttributes = new HashMap<String, String>();
 
 	@Override
-	public IDOMClassNode getHead() {
+	public IDOMClassNode getTo() {
 		return this.start;
 	}
 
 	@Override
-	public IDOMClassNode getTail() {
+	public IDOMClassNode getFrom() {
 		return this.end;
 	}
 	
@@ -42,10 +42,10 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 		}
 		
 		for (String attr : this.aestheticAttributes.keySet()) {
-			built += ", " + attr + " = " + this.aestheticAttributes.get(attr);
+			built += attr + " = " + this.aestheticAttributes.get(attr) + ", ";
 		}
 		
-		return built;
+		return built.substring(0, built.length() - 2);
 	}
 
 	@Override

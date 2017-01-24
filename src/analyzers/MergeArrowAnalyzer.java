@@ -22,7 +22,7 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 		List<IClassEdge> fromA = v.getEdges();
 		
 		for (IClassEdge e : fromA) {
-			IClassVertex curVert = e.getTail();
+			IClassVertex curVert = e.getTo();
 			mergeBidirectional(v, curVert);
 			this.setVisited(curVert);
 		}

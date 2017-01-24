@@ -87,7 +87,7 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 		List<IClassEdge> edges = v.getEdges();
 		for (IClassEdge e : edges) {
 			if (e instanceof ExtendsEdge) {
-				if (this.extendsCollection(e.getTail(), g)) {
+				if (this.extendsCollection(e.getTo(), g)) {
 					this.extendsCollectionMap.put(v.getTitle(), true);
 					return true;
 				}
@@ -95,7 +95,7 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 			}
 			
 			if (e instanceof ImplementsEdge) {
-				if (this.extendsCollection(e.getTail(), g)) {
+				if (this.extendsCollection(e.getTo(), g)) {
 					this.extendsCollectionMap.put(v.getTitle(), true);
 					return true;
 				}

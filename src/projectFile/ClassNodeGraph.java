@@ -70,7 +70,7 @@ public class ClassNodeGraph {
 	public List<IClassEdge> getEdgesFromTo(IClassVertex n1, IClassVertex n2) {
 		List<IClassEdge> edges = new ArrayList<>();
 		for (IClassEdge e : n1.getEdges()) {
-			if (e.getTail().getTitle().equals(n2.getTitle())) {
+			if (e.getTo().getTitle().equals(n2.getTitle())) {
 				edges.add(e);
 			}
 		}
@@ -123,8 +123,8 @@ public class ClassNodeGraph {
 	
 	public IClassEdge getEdgeWithType(IClassVertex from, IClassVertex to, Class<? extends IClassEdge> clazz) {
 		for (IClassEdge e : this.classEdges) {
-			if (e.getHead().getTitle().equals(from.getTitle())) {
-                if (e.getTail().getTitle().equals(to.getTitle())) {
+			if (e.getFrom().getTitle().equals(from.getTitle())) {
+                if (e.getTo().getTitle().equals(to.getTitle())) {
                 	if (e.getClass().equals(clazz)) {
                 		return e;
                 	}

@@ -10,4 +10,5 @@ public interface IAnalyzer {
 	void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d);
 	void setVisited(IClassVertex v);
 
+
 }

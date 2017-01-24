@@ -156,5 +156,18 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 			}
 		}
 	}
+	
+	public IClassEdge getSuperclassEdge() {
+		
+		IClassEdge superclassEdge = null;
+		
+		for (IClassEdge e : this.edges) {
+			if (e instanceof ExtendsEdge) {
+				superclassEdge = e;
+			}
+		}
+		
+		return superclassEdge;
+	}
 
 }

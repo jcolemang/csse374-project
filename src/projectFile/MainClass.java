@@ -21,6 +21,7 @@ import analyzers.ClassNodeTraverser;
 import analyzers.IAnalyzer;
 import analyzers.IsACollectionAndAddCardinalityAnalyzer;
 import analyzers.MergeArrowAnalyzer;
+import analyzers.ViolatesCompositionOverInheritenceAnalyzer;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -74,18 +75,26 @@ public class MainClass {
 
 		IAnalyzer AssociationSupercedesDependency = new AssociationSupercedesDependencyAnalyzer();
 		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph, dom);
-		traverser.analyze(AssociationSupercedesDependency);
+		traverser.addAnalyzer(AssociationSupercedesDependency);
 		
 		System.out.println("Checking our collection thing");
 		IAnalyzer isCollectionAnalyzer = new IsACollectionAndAddCardinalityAnalyzer();
-		traverser.analyze(isCollectionAnalyzer);
+		traverser.addAnalyzer(isCollectionAnalyzer);
 		
 		System.out.println("Merging bidirectional arrows");
 		IAnalyzer mergeArrowAnalyzer = new MergeArrowAnalyzer();
-		traverser.analyze(mergeArrowAnalyzer);
+		traverser.addAnalyzer(mergeArrowAnalyzer);
+		
+		System.out.println("Highlighting violations of composition v. inheritance");
+		IAnalyzer violationAnalyzer = new ViolatesCompositionOverInheritenceAnalyzer();
+		traverser.addAnalyzer(violationAnalyzer);
+		
+		traverser.analyzeAll(); //run all analyzers
 		
 		TextAggregator generator = new TextAggregator();
 		generator.writeFile("out.dot", dom);
+		
+		System.out.println("DONE");
 		
 	}
 

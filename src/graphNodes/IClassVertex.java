@@ -32,5 +32,6 @@ public interface IClassVertex {
 	public void removeFieldData(FieldData data);
 	public void removeEdge(IClassEdge edge);
 	
+	IClassEdge getSuperclassEdge();
 	
 }

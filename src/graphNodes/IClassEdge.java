@@ -9,8 +9,8 @@ import DOMNodes.IDOMEdgeNode;
  *
  */
 public interface IClassEdge {
-	IClassVertex getTail();
-	IClassVertex getHead();
+	IClassVertex getTo();
+	IClassVertex getFrom();
 	String getHeadCardinality();
 	String getTailCardinality();
 	void setHeadCardinality(String s);

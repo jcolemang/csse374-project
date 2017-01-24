@@ -1,5 +1,6 @@
 package analyzers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import graphNodes.IClassVertex;
@@ -13,6 +14,7 @@ public class ClassNodeTraverser {
 	private DOMGraph dom;
 	
 	public ClassNodeTraverser(ClassNodeGraph g, DOMGraph d) {
+		this.analyzers = new ArrayList<IAnalyzer>();
 		this.nodeList = g.getVertices();
 		this.graph = g;
 		this.dom = d;

@@ -22,7 +22,7 @@ public class AssociationSupercedesDependencyAnalyzer extends AbstractAnalyzer{
 			//the class MUST have both an association and dependency edge,
 			//therefore it has an association edge
 			if (e instanceof AssociationEdge) { 
-				otherNode = e.getTail();
+				otherNode = e.getTo();
 				
 				
 				sharedEdges = g.getEdgesOfTwoNodes(v, otherNode);

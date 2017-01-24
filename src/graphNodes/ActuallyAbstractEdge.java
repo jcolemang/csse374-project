@@ -13,13 +13,13 @@ public abstract class ActuallyAbstractEdge implements IClassEdge {
 	private IClassVertex cameFrom;
 
 	@Override
-	public IClassVertex getTail() { //confusing we know
-		return this.head; //could fix this if we manage to flip arrows in the image....
+	public IClassVertex getTo() { //aka the other end
+		return this.head;
 	}
 	
 	@Override
-	public IClassVertex getHead() {
-		return this.tail;
+	public IClassVertex getFrom() { //aka the closest end if
+		return this.tail;			//accessing edge from a node
 	}
 	
 	public void setHeadCardinality(String s) {

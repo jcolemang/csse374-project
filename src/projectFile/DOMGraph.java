@@ -17,9 +17,6 @@ import graphNodes.PrimitiveVertex;
 
 public class DOMGraph implements Iterable<IDOMNode>{
 	
-	private String interfaceColor;
-	private String abstractClassColor;
-	private String vanillaClassColor;
 	private List<IDOMNode> domNodes;
 	private int fontSize = 14;
 	
@@ -103,8 +100,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMEdgeNode generatedDOMEdge;
 		for(IClassEdge edge : edgesToUse) {
-			if (edge.getHead() instanceof PrimitiveVertex || 
-					edge.getTail() instanceof PrimitiveVertex) {
+			if (edge.getFrom() instanceof PrimitiveVertex || 
+					edge.getTo() instanceof PrimitiveVertex) {
 				continue;
 			}
 			generatedDOMEdge = this.addDOMEdge(edge);
@@ -126,7 +123,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassEdge> edges = new LinkedList<>();
 		for (IClassVertex v : vertices) {
 			for (IClassEdge e : v.getEdges()) {
-				if (vertices.contains(e.getTail())) {
+				if (vertices.contains(e.getTo())) {
 					edges.add(e);
 				}
 			}
@@ -167,7 +164,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		result.add(first);
 		for (IClassEdge e : first.getEdges()) {
 			edges.add(e);
-			start.add(e.getTail());
+			start.add(e.getTo());
 		}
 
 		// and recurse!
@@ -203,7 +200,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private IDOMEdgeNode addDOMEdge(IClassEdge e) throws InstantiationException, IllegalAccessException {
 		IDOMEdgeNode domNode = this.edgeToDOMEdge.get(e.getClass()).newInstance();
-		domNode.set(e.getHead().getCorrespondingDOMNode(), e.getTail().getCorrespondingDOMNode());
+		domNode.set(e.getFrom().getCorrespondingDOMNode(), e.getTo().getCorrespondingDOMNode());
 		this.domNodes.add(domNode);
 		return domNode;
 	}
