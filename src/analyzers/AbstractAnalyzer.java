@@ -8,6 +8,7 @@ import projectFile.DOMGraph;
 
 public abstract class AbstractAnalyzer implements IAnalyzer{
 	private HashMap<IClassVertex, Boolean> trackVisited;
+	String description;
 	
 	public AbstractAnalyzer() {
 		this.trackVisited = new HashMap<>();

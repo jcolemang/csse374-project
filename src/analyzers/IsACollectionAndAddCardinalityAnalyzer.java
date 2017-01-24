@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import graphNodes.AssociationEdge;
+import graphNodes.DependencyEdge;
 import graphNodes.ExtendsEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
@@ -27,8 +29,10 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 				for (IClassVertex param : fd.getTypeParameterVertices()) {
 					if (param.getCorrespondingDOMNode() != null) {
                         for (IClassEdge e : g.getEdgesFromTo(v, param)) {
-                            if (e.getCorrespondingDOMNode() != null) {
-                                e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+                        	if(e instanceof DependencyEdge || e instanceof AssociationEdge) {
+                        		if (e.getCorrespondingDOMNode() != null) {
+                        			e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+                        		}
                             }
                         }
 					}
@@ -45,8 +49,10 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 				for (IClassVertex returnTypeParam : md.getReturnTypeTypeParameters()) {
 					if (returnTypeParam.getCorrespondingDOMNode() != null) {
 						for (IClassEdge e : g.getEdgesFromTo(v, returnTypeParam)) {
-							if (e.getCorrespondingDOMNode() != null) {
-								e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+							if(e instanceof DependencyEdge || e instanceof AssociationEdge) {
+								if (e.getCorrespondingDOMNode() != null) {
+									e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+								}
 							}
 						}
 					}
@@ -60,8 +66,10 @@ public class IsACollectionAndAddCardinalityAnalyzer extends AbstractAnalyzer {
 					paramTypeParams = md.getParamTypeParams().get(i);
 					for (IClassVertex type : paramTypeParams) {
                         for (IClassEdge e : g.getEdgesFromTo(v, type)) {
-                        	if (e.getCorrespondingDOMNode() != null) {
-                        		e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+                        	if(e instanceof DependencyEdge || e instanceof AssociationEdge) {
+	                        	if (e.getCorrespondingDOMNode() != null) {
+	                        		e.getCorrespondingDOMNode().addAttribute("headlabel", "\"1..n\"");
+	                        	}
                         	}
                         }
 					}

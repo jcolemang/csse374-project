@@ -11,6 +11,7 @@ import projectFile.DOMGraph;
 
 public class AssociationSupercedesDependencyAnalyzer extends AbstractAnalyzer{
 	
+	
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
 		List<IClassEdge> edges = v.getEdges();

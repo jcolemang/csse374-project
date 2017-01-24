@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.objectweb.asm.ClassReader;
-
 import CommandLineArgument.AccessCommandLineArgument;
 import CommandLineArgument.ICommandLineArgument;
 import CommandLineArgument.RecursivelyParseCommandLine;
@@ -17,11 +15,12 @@ import DOMNodes.DOMExtendsEdge;
 import DOMNodes.DOMImplementsEdge;
 import DOMNodes.DOMInterfaceNode;
 import analyzers.AssociationSupercedesDependencyAnalyzer;
+import analyzers.BlacklistNodesAnalyzer;
 import analyzers.ClassNodeTraverser;
 import analyzers.IAnalyzer;
 import analyzers.IsACollectionAndAddCardinalityAnalyzer;
 import analyzers.MergeArrowAnalyzer;
-import analyzers.ViolatesCompositionOverInheritenceAnalyzer;
+import analyzers.ViolatesCompositionOverInheritanceAnalyzer;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -86,8 +85,12 @@ public class MainClass {
 		traverser.addAnalyzer(mergeArrowAnalyzer);
 		
 		System.out.println("Highlighting violations of composition v. inheritance");
-		IAnalyzer violationAnalyzer = new ViolatesCompositionOverInheritenceAnalyzer();
+		IAnalyzer violationAnalyzer = new ViolatesCompositionOverInheritanceAnalyzer();
 		traverser.addAnalyzer(violationAnalyzer);
+		
+		System.out.println("Blacklisting nodes via DOM removal");
+		IAnalyzer blacklistAnalyzer = new BlacklistNodesAnalyzer();
+		traverser.addAnalyzer(blacklistAnalyzer);
 		
 		traverser.analyzeAll(); //run all analyzers
 		
