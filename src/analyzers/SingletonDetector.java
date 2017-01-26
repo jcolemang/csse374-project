@@ -18,11 +18,9 @@ public class SingletonDetector extends AbstractAnalyzer {
 		for (MethodData md: methods){
 			if ((md.getMethodName().equals("<init>"))&&(md.getAccessLevel().equals("private"))){
 				if(v.getCorrespondingDOMNode()!=null){
-				v.getCorrespondingDOMNode().addAttribute("color", "\"blue\"");
-				String title = v.getTitle()+"\n\\<\\<Singleton\\>\\>";
-				System.out.println(title);
-		 //	v.getCorrespondingDOMNode().addAttribute("label", title);
-				break;
+                    v.getCorrespondingDOMNode().addAttribute("color", "\"blue\"");
+                    String title = v.getTitle()+"\n\\<\\<Singleton\\>\\>";
+                    break;
 				}
 			}
 		}

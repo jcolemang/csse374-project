@@ -52,9 +52,5 @@ public abstract class DOMActuallyAbstractEdgeNode implements IDOMEdgeNode {
 	public void set(IDOMClassNode start, IDOMClassNode end) {
 		this.start = start;
 		this.end = end;
-		if (this.end == null || this.start == null) {
-			System.out.println("BAD BAD BAD!!!");
-			System.exit(-1);
-		}
 	}
 }

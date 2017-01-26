@@ -19,22 +19,27 @@ public class FieldData {
 		this.typeParamStr = typeParamStr;
 		this.typeParamVertices = typeParamVertices;
 	}
+
 	
 	public String getAccessLevel() {
 		return this.accessLevel;
 	}
 
+
 	public String getFieldName() {
 		return this.fieldName;
 	}
 
+
 	public IClassVertex getFieldType() {
 		return this.fieldType;
 	}
+
 	
 	public String getTypeParameterString() {
 		return this.typeParamStr == null ? "" : this.typeParamStr;
 	}
+
 	
 	public List<IClassVertex> getTypeParameterVertices() {
 		return this.typeParamVertices;

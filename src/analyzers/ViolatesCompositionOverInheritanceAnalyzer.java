@@ -21,10 +21,6 @@ public class ViolatesCompositionOverInheritanceAnalyzer extends AbstractAnalyzer
 		
 		IDOMNode superDomNode = v.getSuperclassEdge().getTo().getCorrespondingDOMNode();
 		IDOMNode superDomEdge = v.getSuperclassEdge().getCorrespondingDOMNode();
-		if (v.toString().contains("Foo")) {
-			System.out.println("I am here!!!");
-			System.out.println(v);
-		}
 		
 		//tapdancing all over the Law of Demeter
 		if (checkViolation(v) && superDomNode != null) {
@@ -36,9 +32,6 @@ public class ViolatesCompositionOverInheritanceAnalyzer extends AbstractAnalyzer
 	}
 
 	private boolean checkViolation(IClassVertex v) {
-		
-		System.out.println(v.getTitle());
-		
 		return (v.getSuperclassEdge().getTo() instanceof RegularClassVertex
 				&& !(v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")));
 	}

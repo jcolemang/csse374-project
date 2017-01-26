@@ -10,6 +10,8 @@ import java.util.Map;
 import DOMNodes.IDOMClassNode;
 import DOMNodes.IDOMEdgeNode;
 import DOMNodes.IDOMNode;
+import dataFilters.FieldDataFilter;
+import dataFilters.MethodDataFilter;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import graphNodes.PrimitiveVertex;
@@ -26,6 +28,9 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	private Map<Class<? extends IClassVertex>, Class<? extends IDOMClassNode>> vertexToDOMNode = new HashMap<>();
 	private Map<Class<? extends IClassEdge>, Class<? extends IDOMEdgeNode>> edgeToDOMEdge = new HashMap<>();
+	
+	private List<Class<? extends MethodDataFilter>> methodDataFilters = new ArrayList<>();
+	private List<Class<? extends FieldDataFilter>> fieldDataFilters = new ArrayList<>();
 	
 	
 	/**
@@ -182,15 +187,36 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
 		IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
-        
         dn.setAccessLevel(this.defaultAccessLevel);
         dn.setTitle(v.getTitle());
-        dn.setMethods(v.getMethods());
-        dn.setFields(v.getFields());
+
+        List<FieldData> fields = v.getFields();
+        for (Class<? extends FieldDataFilter> f : this.fieldDataFilters) {
+        	fields = f.newInstance().filter(fields);
+        }
+        
+        dn.setFields(fields);
+        
+        List<MethodData> methods = v.getMethods();
+        for (Class<? extends MethodDataFilter> f : this.methodDataFilters) {
+        	methods = f.newInstance().filter(methods);
+        }
+        dn.setMethods(methods);
         this.domNodes.add(dn);
         return dn;
 	}
 	
+	
+	public void addMethodDataFilter(Class<? extends MethodDataFilter> f) {
+		this.methodDataFilters.add(f);
+	}
+	
+	
+	public void addFieldDataFilter(Class<? extends FieldDataFilter> f) {
+		this.fieldDataFilters.add(f);
+	}
+	
+
 	/**
 	 * Get some information from IClassEdge and fill them into a DOMEdgeNode.
 	 * Add it into the DOMNode list.
@@ -277,5 +303,5 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		}
 		
 	}
-
+	
 }

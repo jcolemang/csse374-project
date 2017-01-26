@@ -42,6 +42,16 @@ public class MethodData {
 	}
 	
 	
+	@Override
+	public String toString() {
+		String s = "";
+		s += "Name: " + this.methodName;
+		s += "\n\tParams: " + this.params;
+		s += "\n\tReturn type: " + this.returnTypeString;
+		return s;
+	}
+	
+	
 	/**
 	 * Return the access of method as String.
 	 * @return
@@ -97,6 +107,7 @@ public class MethodData {
 	public List<List<IClassVertex>> getParamTypeParams() {
 		return this.paramTypeTypeParams;
 	}
+	
 	
 	/**
 	 * add a parameter of the method into the list.

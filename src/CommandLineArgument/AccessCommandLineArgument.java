@@ -20,11 +20,7 @@ public class AccessCommandLineArgument implements ICommandLineArgument {
 		List<String> unusedArgs = new ArrayList<>();
 		String access = "";
 		
-		System.out.println("Top of thing");
-		System.out.println(args);
-		
 		for (String a : args) {
-			System.out.println(a);
 			switch (a) {
 			case "-private":
 				access = "private";
@@ -45,8 +41,6 @@ public class AccessCommandLineArgument implements ICommandLineArgument {
 			this.g.setDefaultAccessLevel(access);
 		}
 		
-		System.out.println(unusedArgs);
-		System.out.println("Bottom of thing");
 		return unusedArgs;
 	}
 

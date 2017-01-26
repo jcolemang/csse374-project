@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeAnnotationNode;
-
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -26,7 +23,6 @@ import graphNodes.ImplementsEdge;
 import graphNodes.InterfaceVertex;
 import graphNodes.PrimitiveVertex;
 import graphNodes.RegularClassVertex;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GraphParser {
 
@@ -77,9 +73,9 @@ public class GraphParser {
 	/*
 	 * 
 	 */
-	private InterfaceVertex makeInterfaceVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
+	private IClassVertex makeInterfaceVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
-		InterfaceVertex iv = new InterfaceVertex(name);
+		IClassVertex iv = new InterfaceVertex(name);
 		this.addVisit(name, iv, g);
 		this.setFields(classNode, iv, g);
 		this.setMethods(classNode, iv, g);
@@ -113,9 +109,7 @@ public class GraphParser {
 	
 
 	/*
-	 * TODO: Consider turning this into a factory pattern?
-	 * This "if this then make one of these" pattern tells me 
-	 * that is something we should do.
+	 * 
 	 */
 	private IClassVertex makeSingleNode(String className, ClassNodeGraph g) {
 		
@@ -145,7 +139,7 @@ public class GraphParser {
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
 			
 			// checking the types and delegating to separate methods
-            if((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
+            if ((classNode.access & Opcodes.ACC_INTERFACE) != 0) {
                 classVertex = this.makeInterfaceVertex(classNode, g);
             } else if ((classNode.access & Opcodes.ACC_ABSTRACT) != 0) {
                 classVertex = this.makeAbstractVertex(classNode, g);
@@ -192,8 +186,6 @@ public class GraphParser {
 			}
 		}
 		
-		// parsing the lines of code
-		
 		
 		this.addVisit(className, classVertex, g);
 		return classVertex;
@@ -203,9 +195,9 @@ public class GraphParser {
 	/*
 	 * 
 	 */
-	private AbstractClassVertex makeAbstractVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
+	private IClassVertex makeAbstractVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
-		AbstractClassVertex av = new AbstractClassVertex(name);
+		IClassVertex av = new AbstractClassVertex(name);
 		this.addVisit(name, av, g);
 		this.setFields(classNode, av, g);
 		this.setMethods(classNode, av, g);
@@ -217,9 +209,9 @@ public class GraphParser {
 	/*
 	 * 
 	 */
-	private RegularClassVertex makeVanillaVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
+	private IClassVertex makeVanillaVertex(ClassNode classNode, ClassNodeGraph g) throws IOException {
 		String name = Type.getObjectType(classNode.name).getClassName();
-		RegularClassVertex vv = new RegularClassVertex(name);
+		IClassVertex vv = new RegularClassVertex(name);
 		this.addVisit(name, vv, g);
 		this.setFields(classNode, vv, g);
 		this.setMethods(classNode, vv, g);
@@ -231,8 +223,8 @@ public class GraphParser {
 	/*
 	 * Used as a placeholder for primitive types, even though they are not classes.
 	 */
-	private PrimitiveVertex makePrimitiveVertex(String className, ClassNodeGraph g) {
-		PrimitiveVertex primitiveVertex = new PrimitiveVertex(className);
+	private IClassVertex makePrimitiveVertex(String className, ClassNodeGraph g) {
+		IClassVertex primitiveVertex = new PrimitiveVertex(className);
 		this.addVisit(className, primitiveVertex, g);
 		return primitiveVertex;
 	}
@@ -244,26 +236,16 @@ public class GraphParser {
 	public ClassNodeGraph parse(List<String> classNames) throws IOException{
 		
 		ClassNodeGraph graph = new ClassNodeGraph();
-		IClassVertex vertex;
 		
 		// Need multiple starting points in case the vertices are not connected
 		for (String className : classNames) {
-			vertex = makeSingleNode(className, graph);
+			makeSingleNode(className, graph);
 		}
 		
 		return graph;
 	}
 	
 
-	/*
-	 * Will take a Java package and will parse each of the classes in it
-	 * TODO Implement this
-	 */
-	public ClassNodeGraph parse(String packageName){
-		throw new NotImplementedException();
-	}
-	
-	
 	/*
 	 * 
 	 */
@@ -331,7 +313,6 @@ public class GraphParser {
 		// general use
 		List<MethodNode> methods = classNode.methods;
 		IClassVertex realReturnType;
-		IClassEdge dependsEdge;
 		int i;
 
 		// return type objects
@@ -341,16 +322,18 @@ public class GraphParser {
 		String returnTypeTypeDesc;
 		
 		// parameter type objects
-		List<IClassVertex> paramTypeVertices = new ArrayList<>();
-		List<List<IClassVertex>> paramTypeTypeParams = new ArrayList<>();
-		List<String> allParamTypeStrings = new ArrayList<>();
-		List<String> paramTypeStrings;
+		List<IClassVertex> paramTypeVertices;
+		List<List<IClassVertex>> paramTypeTypeParams;
+		List<String> allParamTypeStrings;
 		
 		
 		for (MethodNode m : methods) {
 			String name = m.name;
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
+			paramTypeVertices = new ArrayList<>();
+			paramTypeTypeParams = new ArrayList<>();
+			allParamTypeStrings = new ArrayList<>();
 			
 			// parsing the return type
 			if (hasBeenVisited(returnType)) {
@@ -388,6 +371,7 @@ public class GraphParser {
 			// one hundred percent a hack.
 			// this will not work getting the one to many arrows for parameter types
 			List<String> parameterTypeStrings = getTypeStrings(this.getMethodParameterString((m.signature == null ? m.desc : m.signature)));
+			
 			for (String s : parameterTypeStrings) {
 				IClassVertex v = this.makeSingleNode(s, g);
 				this.addDependsEdge(cv, v, g);
@@ -395,6 +379,8 @@ public class GraphParser {
 			}
 			
 			for (Type t : Type.getArgumentTypes(m.desc)) {
+				
+				
 				currentTypeDesc = t.getDescriptor();
 				currentTypeStrings = getTypeStrings(currentTypeDesc);
 				paramTypeStr = t.getClassName();
@@ -411,12 +397,14 @@ public class GraphParser {
 				
 				allParamTypeStrings.add(currentTypeDesc);
 				paramTypeTypeParams.add(parameterTypes);
+				
 				paramTypeVertices.add(param);
 			}
 			
 			MethodData md = new MethodData(access, name,
 					realReturnType, returnTypeTypeDesc, returnTypeTypeParams,
 					paramTypeVertices, allParamTypeStrings, paramTypeTypeParams);
+
 			cv.addMethodData(md);
 		}
 	}
