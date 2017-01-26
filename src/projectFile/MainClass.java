@@ -20,6 +20,7 @@ import analyzers.ClassNodeTraverser;
 import analyzers.IAnalyzer;
 import analyzers.IsACollectionAndAddCardinalityAnalyzer;
 import analyzers.MergeArrowAnalyzer;
+import analyzers.SingletonDetector;
 import analyzers.ViolatesCompositionOverInheritanceAnalyzer;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
@@ -87,6 +88,10 @@ public class MainClass {
 		System.out.println("Highlighting violations of composition v. inheritance");
 		IAnalyzer violationAnalyzer = new ViolatesCompositionOverInheritanceAnalyzer();
 		traverser.addAnalyzer(violationAnalyzer);
+		
+		System.out.println("Highlighting the Singleton class");
+		IAnalyzer singletonDetector = new SingletonDetector();
+		traverser.addAnalyzer(singletonDetector);
 		
 		System.out.println("Blacklisting nodes via DOM removal");
 		IAnalyzer blacklistAnalyzer = new BlacklistNodesAnalyzer();
