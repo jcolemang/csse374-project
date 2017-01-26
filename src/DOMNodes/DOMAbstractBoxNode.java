@@ -26,19 +26,29 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	protected List<String> fields;
 	protected List<String> methods;
 
+	
+	@Override
+	public String getTitle() {
+		return this.classTitle;
+	}
+	
 
+	@Override
 	public void setTitle(String title) {
 		this.classTitle = title;
 	}
 
+
 	public void setAccessLevel(String access) {
 		this.accessLevel = this.translateAccessLevel(access);
 	}
+
 	
 	@Override
 	public void addAttribute(String dotAttrName, String property) {
 		this.aestheticAttributes.put(dotAttrName, property);
 	}
+
 
 	@Override
 	public String attributeMapToString() {
@@ -165,13 +175,6 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 		}
 		return "";
 	}
-	
-	
-	@Override
-	public String getTitle() {
-		return this.classTitle;
-	}
-
 	
 
 	/**

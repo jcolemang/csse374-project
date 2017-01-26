@@ -7,9 +7,9 @@ import projectFile.MethodData;
 
 public interface IDOMClassNode extends IDOMNode {
 	String getTitle();
+	void setTitle(String title);
 	String getDOTTitle();
 	void setFields(List<FieldData> data);
-	void setTitle(String title);
 	void setMethods(List<MethodData> data);
 	void setAccessLevel(String access);
 }
