@@ -1,5 +1,6 @@
 package analyzers;
 
+import DOMNodes.IDOMNode;
 import graphNodes.IClassVertex;
 import graphNodes.RegularClassVertex;
 import projectFile.ClassNodeGraph;
@@ -13,13 +14,26 @@ public class ViolatesCompositionOverInheritenceAnalyzer extends AbstractAnalyzer
 	//It violates the convention of "composition over inheritence"
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-		
-		//tapdancing all over the Law of Demeter
-		if(checkViolation(v) && v.getSuperclassEdge().getTo().getCorrespondingDOMNode() != null) {
-			v.getSuperclassEdge().getTo().getCorrespondingDOMNode().addAttribute("color", "\"orange\"");
+		this.setVisited(v);
+		if (v.getTitle().equals("java.lang.Object") ||
+				!(v instanceof RegularClassVertex)) {
+			return;
 		}
 		
-		this.setVisited(v);
+		IDOMNode superDomNode = v.getSuperclassEdge().getTo().getCorrespondingDOMNode();
+		IDOMNode superDomEdge = v.getSuperclassEdge().getCorrespondingDOMNode();
+		if (v.toString().contains("Foo")) {
+			System.out.println("I am here!!!");
+			System.out.println(v);
+		}
+		
+		//tapdancing all over the Law of Demeter
+		if (checkViolation(v) && superDomNode != null) {
+			superDomNode.addAttribute("fillcolor", "\"orange\"");
+			superDomNode.addAttribute("style", "\"filled\"");
+			superDomEdge.addAttribute("color", "\"orange\"");
+		}
+		
 		
 	}
 
@@ -27,9 +41,7 @@ public class ViolatesCompositionOverInheritenceAnalyzer extends AbstractAnalyzer
 		
 		System.out.println(v.getTitle());
 		
-		return (v instanceof RegularClassVertex
-				&& !(v.getTitle().equals("java.lang.Object"))
-				&& v.getSuperclassEdge().getTo() instanceof RegularClassVertex
+		return (v.getSuperclassEdge().getTo() instanceof RegularClassVertex
 				&& !(v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")));
 	}
 

@@ -22,7 +22,7 @@ public class DOMConcreteClassNode extends DOMAbstractBoxNode {
 
 		// Compile the text representation of the class to
 		// be used as the class's DOT representation's label
-		return this.sanitize(this.getDOTTitle() + "[\n" +
+		return this.sanitize(this.getDOTTitle() + "[\n" + this.attributeMapToString() +
 				"label = \"{" + title + "|" + fieldsString + "|"
 				+ methodFields + "}\"\n]");
 

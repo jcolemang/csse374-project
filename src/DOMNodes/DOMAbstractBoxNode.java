@@ -20,11 +20,7 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 	
-//	String OutlineColor = "black";
-//	String BGColor = "white";
-//	String Font = "SansSerif";
 	String classTitle = "";
-//	String color;
 	private int accessLevel = 0;
 
 	protected List<String> fields;
