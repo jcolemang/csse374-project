@@ -48,6 +48,9 @@ public class MergeArrowAnalyzer extends AbstractAnalyzer {
 						e2.getCorrespondingDOMNode() == null) {
 					continue;
 				}
+				if(e1==e2){
+					continue;
+				}
 				if (e1 instanceof AssociationEdge && e2 instanceof AssociationEdge) {
 					merger (e1.getCorrespondingDOMNode(), e2.getCorrespondingDOMNode());
 					
