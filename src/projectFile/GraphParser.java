@@ -379,8 +379,6 @@ public class GraphParser {
 			}
 			
 			for (Type t : Type.getArgumentTypes(m.desc)) {
-				
-				
 				currentTypeDesc = t.getDescriptor();
 				currentTypeStrings = getTypeStrings(currentTypeDesc);
 				paramTypeStr = t.getClassName();

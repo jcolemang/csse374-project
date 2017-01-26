@@ -62,7 +62,7 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 			built += attr + " = " + this.aestheticAttributes.get(attr) + ", ";
 		}
 		
-		return built.substring(0, built.length() - 2);
+		return built.substring(0, built.length());
 	}
 	
 

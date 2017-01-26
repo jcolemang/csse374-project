@@ -22,6 +22,7 @@ import analyzers.IsACollectionAndAddCardinalityAnalyzer;
 import analyzers.MergeArrowAnalyzer;
 import analyzers.SingletonDetector;
 import analyzers.ViolatesCompositionOverInheritanceAnalyzer;
+import dataFilters.SyntheticFilter;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -69,6 +70,9 @@ public class MainClass {
 		dom.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
 		dom.addEdgeToDOMEdgeMapping(AssociationEdge.class, DOMAssociationEdge.class);
 		dom.addEdgeToDOMEdgeMapping(DependencyEdge.class, DOMDependencyEdge.class);
+		
+		// needs to be toggleable
+		dom.addMethodDataFilter(SyntheticFilter.class);
 
 		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
