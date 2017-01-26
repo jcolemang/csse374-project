@@ -6,9 +6,8 @@ import graphNodes.RegularClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 
-public class ViolatesCompositionOverInheritenceAnalyzer extends AbstractAnalyzer {
+public class ViolatesCompositionOverInheritanceAnalyzer extends AbstractAnalyzer {
 
-	
 	//If the vertex extends a class
 	//And that class is concrete AND that class is NOT Object AND not abstract
 	//It violates the convention of "composition over inheritence"
@@ -33,7 +32,6 @@ public class ViolatesCompositionOverInheritenceAnalyzer extends AbstractAnalyzer
 			superDomNode.addAttribute("style", "\"filled\"");
 			superDomEdge.addAttribute("color", "\"orange\"");
 		}
-		
 		
 	}
 
