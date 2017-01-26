@@ -7,10 +7,12 @@ import projectFile.DOMGraph;
 
 public class RecursivelyParseCommandLine implements ICommandLineArgument {
 
+	private Configuration config;
 	private DOMGraph graph;
 	
 	public RecursivelyParseCommandLine(DOMGraph g){
 		this.graph = g;
+		this.config = Configuration.getInstance();
 	}
 	
 	@Override

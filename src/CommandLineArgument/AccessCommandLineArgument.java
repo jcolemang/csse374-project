@@ -7,10 +7,12 @@ import projectFile.DOMGraph;
 
 public class AccessCommandLineArgument implements ICommandLineArgument {
 	
+	private Configuration config;
 	private DOMGraph g;
 	
 	public AccessCommandLineArgument(DOMGraph g) {
 		this.g = g;
+		this.config = Configuration.getInstance();
 	}
 
 	@Override
@@ -26,6 +28,7 @@ public class AccessCommandLineArgument implements ICommandLineArgument {
 			switch (a) {
 			case "-private":
 				access = "private";
+				
 				break;
 			case "-protected":
 				access = "protected";
