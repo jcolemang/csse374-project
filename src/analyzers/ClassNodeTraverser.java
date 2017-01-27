@@ -2,12 +2,14 @@ package analyzers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import CommandLineArgument.Configuration;
 import graphNodes.IClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 
+
 public class ClassNodeTraverser {
+	private Configuration config = Configuration.getInstance();
 	private List<IClassVertex> nodeList;
 	private List<IAnalyzer> analyzers;
 	private ClassNodeGraph graph;
@@ -28,7 +30,7 @@ public class ClassNodeTraverser {
 	 * Analyze the nodeList with a single IAnalyzer
 	 * @param an
 	 */
-	public void analyze(IAnalyzer an) {
+	private void analyze(IAnalyzer an) {
 		for (IClassVertex v : this.nodeList) {
 			if(!an.wasVisited(v)) {
 				an.analyze(v, this.graph, this.dom);
@@ -38,11 +40,13 @@ public class ClassNodeTraverser {
 	
 	/**
 	 * Run all analyzers on the nodeList
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public void analyzeAll() {
-		for(IAnalyzer a : this.analyzers) {
-			analyze(a);
+	public void analyzeAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		for(String a : config.getAnalyzers()) {
+			analyze((IAnalyzer)Class.forName(a).newInstance());
 		}
 	}
-	
 }

@@ -4,11 +4,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import CommandLineArgument.Configuration;
 import DOMNodes.IDOMNode;
 
 public class TextAggregator {
 	
 	private final String FOLDER_NAME = "./input_output/";
+	private Configuration config = Configuration.getInstance();
 
 	/**
 	 * Create the dot file and write the text we get from each DOMNode of DOMGraph in it.
@@ -20,7 +22,7 @@ public class TextAggregator {
 	public void writeFile(String fileName, DOMGraph domGraph) throws IOException {
 		FileOutputStream out = new FileOutputStream(FOLDER_NAME + fileName);
 		
-		this.writeHeader(out, domGraph.getFontSize() + "");
+		this.writeHeader(out, config.getFontSize() + "");
 
 		// Will take care of the nodes and edges
 		for (IDOMNode node : domGraph) {

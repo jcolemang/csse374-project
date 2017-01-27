@@ -21,14 +21,13 @@ public class RecursivelyParseCommandLine implements ICommandLineArgument {
 
 		for (String str: args) {
 			if (str.equals("-recursive")){
-				this.graph.setRecursivelyParse(true);
+				this.config.setRecursivelyParse(true);
 			} else {
 				argsNotUsed.add(str);
 			}
 		}
 		
 		return argsNotUsed;
-			
 	}
 
 }

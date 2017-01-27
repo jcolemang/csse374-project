@@ -2,11 +2,14 @@ package projectFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import CommandLineArgument.Configuration;
 import DOMNodes.IDOMClassNode;
 import DOMNodes.IDOMEdgeNode;
 import DOMNodes.IDOMNode;
@@ -17,15 +20,10 @@ import graphNodes.IClassVertex;
 import graphNodes.PrimitiveVertex;
 
 
-public class DOMGraph implements Iterable<IDOMNode>{
+public class DOMGraph implements Iterable<IDOMNode> {
 	
+	private Configuration config = Configuration.getInstance();
 	private List<IDOMNode> domNodes;
-	private int fontSize = 14;
-	
-	private String defaultAccessLevel = "private";
-	private boolean recursivelyParse = false;
-	private List<String> classesToDisplay = new ArrayList<String>();
-	
 	private Map<Class<? extends IClassVertex>, Class<? extends IDOMClassNode>> vertexToDOMNode = new HashMap<>();
 	private Map<Class<? extends IClassEdge>, Class<? extends IDOMEdgeNode>> edgeToDOMEdge = new HashMap<>();
 	
@@ -81,14 +79,14 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		List<IClassVertex> start = new LinkedList<>();
 		
 		// Getting a starting point for classes to display
-		for (String name : this.classesToDisplay) {
+		for (String name : this.config.getWhitelist()) {
 			start.add(g.getVertex(name));
 		}
 		
-		if (this.recursivelyParse) {
+		if (this.config.getRecursivelyParse()) {
 			classesToUse = new LinkedList<>();
 			edgesToUse = new LinkedList<>();
-			this.recursivelyGetClassesToUse(start, classesToUse, edgesToUse);
+			this.recursivelyGetClassesToUse(start, classesToUse, edgesToUse, new HashSet<String>());
 		} else {
 			classesToUse = start;
 			edgesToUse = this.getEdgesToUse(classesToUse);
@@ -96,7 +94,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMClassNode generatedDOMNode;
 		for (IClassVertex vert : classesToUse) {
-            if (vert instanceof PrimitiveVertex) {
+            if (vert instanceof PrimitiveVertex ||
+            		config.isBlacklisted(vert.getTitle())) {
             	continue;
             }
             generatedDOMNode = this.addDOMVertex(vert);
@@ -105,10 +104,14 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		
 		IDOMEdgeNode generatedDOMEdge;
 		for(IClassEdge edge : edgesToUse) {
+			
 			if (edge.getFrom() instanceof PrimitiveVertex || 
-					edge.getTo() instanceof PrimitiveVertex) {
+					edge.getTo() instanceof PrimitiveVertex ||
+					config.isBlacklisted(edge.getHeadTitle()) ||
+					config.isBlacklisted(edge.getTailTitle())) {
 				continue;
 			}
+			
 			generatedDOMEdge = this.addDOMEdge(edge);
 			edge.setCorrespondingDOMNode(generatedDOMEdge);
 		}
@@ -117,7 +120,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	
 	
 	/**
-	 * Gets the edges without recursively parsing the graph. An edge with be
+	 * Gets the edges without recursively parsing the graph. An edge will be
 	 * added to the output list if the edge both starts and ends in a vertex from
 	 * the given list
 	 * 
@@ -150,30 +153,40 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private void recursivelyGetClassesToUse(List<IClassVertex> start, 
 			List<IClassVertex> result, 
-			List<IClassEdge> edges) {
+			List<IClassEdge> edges,
+			Set<String> visited) {
 		
-		// base case
-		if (start.size() == 0) {
-			return;
-		}
-
 		// checking if I've been here before
-		IClassVertex first = start.get(0);
-		if (result.contains(first)) {
-			this.recursivelyGetClassesToUse(start.subList(1, start.size()), result, edges);
-			return;
+		IClassVertex first;
+		do {
+            if (start.size() == 0) {
+                return;
+            }
+			first = start.get(0);
+			start = start.subList(1, start.size());
+		}
+		while (visited.contains(first.getTitle()));
+		visited.add(first.getTitle());
+		
+		// need to check the blacklist
+		boolean shouldDisplay = true;
+		for (String pre : config.getBlacklist()) {
+			if (first.getTitle().startsWith(pre)) {
+				shouldDisplay = false;
+				break;
+			}
 		}
 
 		// I haven't been here.
 		// Get all connected elements and add them to the queue
-		result.add(first);
+		if (shouldDisplay) result.add(first);
 		for (IClassEdge e : first.getEdges()) {
-			edges.add(e);
-			start.add(e.getTo());
+			if (shouldDisplay) edges.add(e);
+			if (!visited.contains(e.getTo().getTitle())) start.add(e.getTo());
 		}
 
 		// and recurse!
-		this.recursivelyGetClassesToUse(start.subList(1, start.size()), result, edges);
+		this.recursivelyGetClassesToUse(start, result, edges, visited);
 	}
 	
 	
@@ -187,7 +200,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 	 */
 	private IDOMClassNode addDOMVertex(IClassVertex v) throws InstantiationException, IllegalAccessException {
 		IDOMClassNode dn = this.vertexToDOMNode.get(v.getClass()).newInstance();
-        dn.setAccessLevel(this.defaultAccessLevel);
+        dn.setAccessLevel(this.config.getAccess());
         dn.setTitle(v.getTitle());
 
         List<FieldData> fields = v.getFields();
@@ -230,45 +243,8 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		this.domNodes.add(domNode);
 		return domNode;
 	}
-	
-	/**
-	 * Set to true if the DOMGraph should use every node from the ClassNodeGraph
-	 * If this is false, it will only use the nodes given by setClassesToDisplay().
-	 * Defaults to false.
-	 */
-	public void setRecursivelyParse(boolean recursivelyParse) {
-		this.recursivelyParse = recursivelyParse;
-	}
-	
-	
-	/**
-	 * Possible values for access are "public", "protected", "private", and "default"
-	 * 
-	 * @param access The default access level
-	 */
-	public void setDefaultAccessLevel(String access) {
-		this.defaultAccessLevel = access;
-	}
-	
-	
-	public void setClassesToDisplay(List<String> classNames) {
-		this.classesToDisplay = classNames;
-	}
-	
 
-	public void setFontSize(int size) {
-		this.fontSize = size;
-	}
 	
-	/**
-	 * Return the fontsize.
-	 * @return
-	 */
-	public int getFontSize() {
-		return this.fontSize;
-	}
-	
-
 	/**
 	 * Create a Iterator for IDOMNode.
 	 */
@@ -277,6 +253,7 @@ public class DOMGraph implements Iterable<IDOMNode>{
 		return new GraphIterator(this.domNodes);
 	}
 	
+
 	/**
 	 * 
 	 * @author Administrator

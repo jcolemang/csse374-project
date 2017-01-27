@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import CommandLineArgument.AccessCommandLineArgument;
+import CommandLineArgument.Configuration;
 import CommandLineArgument.ICommandLineArgument;
 import CommandLineArgument.RecursivelyParseCommandLine;
 import DOMNodes.DOMAbstractClassNode;
@@ -41,8 +42,15 @@ public class MainClass {
 	 * @throws IOException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws IOException, 
+												  InstantiationException, 
+												  IllegalAccessException, 
+												  ClassNotFoundException {
+		
+		Configuration config = Configuration.getInstance();
+		System.out.println(config.getBlacklist());
 		
 		List<String> strs = new ArrayList<String>();
 		for (String str: args) {
@@ -57,10 +65,14 @@ public class MainClass {
 		
 		for (ICommandLineArgument cla : argParsers) {
 			strs = cla.execute(strs);
-			System.out.println(strs);
+//			System.out.println(strs);
 		}
 		
-		ClassNodeGraph nodeGraph = gp.parse(strs);
+		for (String name : strs) {
+			config.addToWhitelist(name);
+		}
+		
+		ClassNodeGraph nodeGraph = gp.parse(config.getWhitelist());
 		
 		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
 		dom.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMAbstractClassNode.class);
@@ -73,34 +85,8 @@ public class MainClass {
 		
 		// needs to be toggleable
 		dom.addMethodDataFilter(SyntheticFilter.class);
-
-		dom.setClassesToDisplay(strs);
 		dom.generateDOMTree(nodeGraph);
-
-		IAnalyzer AssociationSupercedesDependency = new AssociationSupercedesDependencyAnalyzer();
 		ClassNodeTraverser traverser = new ClassNodeTraverser(nodeGraph, dom);
-		traverser.addAnalyzer(AssociationSupercedesDependency);
-		
-		System.out.println("Checking our collection thing");
-		IAnalyzer isCollectionAnalyzer = new IsACollectionAndAddCardinalityAnalyzer();
-		traverser.addAnalyzer(isCollectionAnalyzer);
-		
-		System.out.println("Merging bidirectional arrows");
-		IAnalyzer mergeArrowAnalyzer = new MergeArrowAnalyzer();
-		traverser.addAnalyzer(mergeArrowAnalyzer);
-		
-		System.out.println("Highlighting violations of composition v. inheritance");
-		IAnalyzer violationAnalyzer = new ViolatesCompositionOverInheritanceAnalyzer();
-		traverser.addAnalyzer(violationAnalyzer);
-		
-		System.out.println("Highlighting the Singleton class");
-		IAnalyzer singletonDetector = new SingletonDetector();
-		traverser.addAnalyzer(singletonDetector);
-		
-		System.out.println("Blacklisting nodes via DOM removal");
-		IAnalyzer blacklistAnalyzer = new BlacklistNodesAnalyzer();
-		traverser.addAnalyzer(blacklistAnalyzer);
-		
 		traverser.analyzeAll(); //run all analyzers
 		
 		TextAggregator generator = new TextAggregator();

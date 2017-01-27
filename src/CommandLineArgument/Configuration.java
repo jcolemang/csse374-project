@@ -3,6 +3,7 @@ package CommandLineArgument;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,19 +12,18 @@ public class Configuration {
 	private static Configuration soleInstance;
 	
 	private String packageName = "";
-	private List<String> whitelist;
-	private List<String> blacklist;
+	private List<String> whitelist = new ArrayList<>();
+	private List<String> blacklist = new ArrayList<>();
+	private List<String> analyzers = new ArrayList<>();
 	private boolean synthdisplay;
-	private List<String> analyzers;
-	private List<String> flags;
 	private String graphColor;
 	
-	private Configuration() {
-		readFromSettingsFile("../../input_output/defaultsettings.txt");
-	}
+	private boolean recursivelyParse;
+	private String access;
+	private int fontSize;
 	
-	private Configuration(String settingsFile) {
-		readFromSettingsFile(settingsFile);
+	private Configuration() {
+		readFromSettingsFile("/home/coleman/Classes/CSSE374SoftwareDesign/csse374-project/input_output/defaultsettings.txt");
 	}
 	
 	public static Configuration getInstance() {
@@ -35,23 +35,21 @@ public class Configuration {
 	}
 	
 	private void readFromSettingsFile(String settingsFile) {
+
 		try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
 			
-		    String line = "";
-		    String[] lineSplit = line.split(": ");
-		    String lineHeader = lineSplit[0];
+			String line = "";
 		    
 		    while ((line = br.readLine()) != null) {
-		       switch (lineHeader) {
-			       case "packageName":
-			    	   this.packageName = lineSplit[1];
-			    	   break;
-			       case "whitelist":
-			    	   this.whitelist = Arrays.asList(lineSplit[1].split(" "));
-			    	   break;
-			       case "blacklist": 
-			    	   this.blacklist = Arrays.asList(lineSplit[1].split(" "));
-			    	   break;
+		    	String[] lineSplit = line.split(": ");
+		    	String lineHeader = lineSplit[0];
+		    	switch (lineHeader) {
+			    	case "include":
+			    		this.populate(lineSplit[1].split(" "), this.whitelist);
+			    		break;
+			       case "disclude": 
+			    		this.populate(lineSplit[1].split(" "), this.blacklist);
+			    		break;
 			       case "synthdisplay":
 			    	   if (lineSplit[1].equals("off")) {
 			    		   this.synthdisplay = false;
@@ -59,13 +57,22 @@ public class Configuration {
 			    		   this.synthdisplay = true;
 			    	   } break;
 			       case "analyzers": 
-			    	   this.analyzers = Arrays.asList(lineSplit[1].split(" "));
+			    		this.populate(lineSplit[1].split(" "), this.analyzers);
+			    		break;
+			       case "access":
+			    	   this.access = lineSplit[1];
 			    	   break;
-			       case "flags":
-			    	   this.flags = Arrays.asList(lineSplit[1].split(" "));
-			    	   break;
+			       case "recursive":
+			    	   if (lineSplit[1].equals("off")) {
+			    		   this.recursivelyParse = false;
+			    	   } else {
+			    		   this.recursivelyParse = true;
+			    	   } break;
 			       case "graphColor":
 			    	   this.graphColor = lineSplit[1];
+			    	   break;
+			       case "fontSize":
+			    	   this.fontSize = Integer.parseInt(lineSplit[1]);
 			    	   break;
 		       }
 		    }
@@ -96,41 +103,82 @@ public class Configuration {
 		return this.analyzers;
 	}
 	
-	public List<String> getFlags() {
-		return this.flags;
-	}
-	
 	public String getGraphColor() {
 		return this.graphColor;
 	}
+	
+	public boolean getRecursivelyParse() {
+		return this.recursivelyParse;
+	}
+	
+	public String getAccess() {
+		return this.access;
+	}
+	
+	public int getFontSize() {
+		return this.fontSize;
+	}
+	
 	
 	// Start of setters
 	public void setPackageName(String name) {
 		this.packageName = name;
 	}
 	
-	public void setWhitelist(List<String> list) {
-		this.whitelist = list;
-	}
-	
-	public void setetBlacklist(List<String> list) {
-		this.blacklist = list;
-	}
-	
-	public void setetSynthDisplay(boolean yesOrNo) {
+	public void setSynthDisplay(boolean yesOrNo) {
 		this.synthdisplay = yesOrNo;
 	}
 	
-	public void setetAnalyzers(List<String> list) {
+	public void setAnalyzers(List<String> list) {
 		this.analyzers = list;
 	}
 	
-	public void setetFlags(List<String> list) {
-		this.flags = list;
+	
+	public void setRecursivelyParse(boolean val) {
+		this.recursivelyParse = val;
 	}
 	
-	public void setetGraphColor(String color) {
+	
+	public void setGraphColor(String color) {
 		this.graphColor = color;
+	}
+	
+	public void setAccess(String acc) {
+		this.access = acc;
+	}
+	
+	public void setFontSize(int size) {
+		this.fontSize = size;
+	}
+	
+	public void addToWhitelist(String name) {
+		this.whitelist.add(name);
+	}
+	
+	public void addToBlacklist(String name) {
+		this.blacklist.add(name);
+	}
+	
+	private void populate(String[] things, List<String> into) {
+		for (int i = 0; i < things.length; i++) {
+			into.add(things[i]);
+		}
+	}
+	
+	public boolean isBlacklisted(String title) {
+		for (String yep : this.whitelist) {
+			if (title.equals(yep)) {
+				return true;
+			}
+		}
+
+		for (String nope : this.blacklist) {
+			if (title.startsWith(nope)) {
+				System.out.println("Blacklisted: " + title);
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

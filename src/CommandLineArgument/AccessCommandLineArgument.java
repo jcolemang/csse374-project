@@ -18,27 +18,21 @@ public class AccessCommandLineArgument implements ICommandLineArgument {
 	@Override
 	public List<String> execute(List<String> args) {
 		List<String> unusedArgs = new ArrayList<>();
-		String access = "";
-		
+
 		for (String a : args) {
 			switch (a) {
 			case "-private":
-				access = "private";
-				
+				this.config.setAccess(a);
 				break;
 			case "-protected":
-				access = "protected";
+				this.config.setAccess(a);
 				break;
 			case "-public":
-				access = "public";
+				this.config.setAccess(a);
 				break;
 			default: 
 				unusedArgs.add(a);
 			}
-		}
-		
-		if (!access.equals("")) {
-			this.g.setDefaultAccessLevel(access);
 		}
 		
 		return unusedArgs;
