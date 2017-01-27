@@ -24,11 +24,9 @@ public class Configuration {
 	private int fontSize;
 	private String fontColor;
 	
-	private String path;
+	private final String defaultPath = "C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt";
 	
 	private Configuration() {
-		this.path = "C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt";
-		readFromSettingsFile(this.path);
 	}
 	
 	public static Configuration getInstance() {
@@ -39,8 +37,11 @@ public class Configuration {
 		return soleInstance;
 	}
 	
-	private void readFromSettingsFile(String settingsFile) {
-		
+	public void readFromSettingsFile() {
+		readFromSettingsFile(this.defaultPath);
+	}
+	
+	public void readFromSettingsFile(String settingsFile) {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
 			
@@ -202,7 +203,5 @@ public class Configuration {
 		}
 		return true;
 	}
-
-
 
 }

@@ -26,7 +26,8 @@ public class ViolatesCompositionOverInheritanceAnalyzer extends AbstractAnalyzer
 		if (checkViolation(v) && superDomNode != null) {
 			superDomNode.addAttribute("fillcolor", "\"orange\"");
 			superDomNode.addAttribute("style", "\"filled\"");
-			superDomEdge.addAttribute("color", "\"orange\"");
+//			System.out.println(superDomNode.getTextRepresentation());
+//			superDomEdge.addAttribute("color", "\"orange\"");
 		}
 		
 	}

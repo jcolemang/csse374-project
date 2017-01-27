@@ -8,6 +8,7 @@ import CommandLineArgument.AccessCommandLineArgument;
 import CommandLineArgument.Configuration;
 import CommandLineArgument.ICommandLineArgument;
 import CommandLineArgument.RecursivelyParseCommandLine;
+import CommandLineArgument.SetSettingsCommandLineArgument;
 import DOMNodes.DOMAbstractClassNode;
 import DOMNodes.DOMAssociationEdge;
 import DOMNodes.DOMConcreteClassNode;
@@ -60,12 +61,12 @@ public class MainClass {
 		List<ICommandLineArgument> argParsers = new ArrayList<>();
 		GraphParser gp = new GraphParser();
 		DOMGraph dom = new DOMGraph();
+		argParsers.add(new SetSettingsCommandLineArgument(dom));
 		argParsers.add(new RecursivelyParseCommandLine(dom));
 		argParsers.add(new AccessCommandLineArgument(dom));
 		
 		for (ICommandLineArgument cla : argParsers) {
 			strs = cla.execute(strs);
-//			System.out.println(strs);
 		}
 		
 		for (String name : strs) {

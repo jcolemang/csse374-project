@@ -46,6 +46,7 @@ public class ClassNodeTraverser {
 	 */
 	public void analyzeAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		for(String a : config.getAnalyzers()) {
+			System.out.println(a);
 			analyze((IAnalyzer)Class.forName(a).newInstance());
 		}
 	}
