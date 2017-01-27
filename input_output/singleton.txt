@@ -1,0 +1,10 @@
+include: headfirst.singleton.chocolate.ChocolateBoiler headfirst.singleton.chocolate.ChocolateBoilerEager java.lang.Runtime java.awt.Desktop java.util.Calendar
+disclude: java asm
+synthdisplay: off
+analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+access: public
+recursive: on
+graphColor: red
+graphBGColor: white
+fontColor: yellow
+fontSize: 12
