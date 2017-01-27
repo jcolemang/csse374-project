@@ -80,6 +80,8 @@ public class DOMGraph implements Iterable<IDOMNode> {
 		
 		// Getting a starting point for classes to display
 		for (String name : this.config.getWhitelist()) {
+			System.out.println("name of vertex: " + name);
+			System.out.println("vertex with that name: " + g.getVertex(name).getTitle());
 			start.add(g.getVertex(name));
 		}
 		
@@ -163,23 +165,33 @@ public class DOMGraph implements Iterable<IDOMNode> {
                 return;
             }
 			first = start.get(0);
+//			System.out.println("First: " + first);
 			start = start.subList(1, start.size());
+//			System.out.println("Start shorter: " + start);
 		}
 		while (visited.contains(first.getTitle()));
+		
 		visited.add(first.getTitle());
 		
 		// need to check the blacklist
-		boolean shouldDisplay = true;
-		for (String pre : config.getBlacklist()) {
-			if (first.getTitle().startsWith(pre)) {
-				shouldDisplay = false;
-				break;
-			}
-		}
+//		boolean shouldDisplay = true;
+//		for (String pre : config.getBlacklist()) {
+//			if (first.getTitle().startsWith(pre)) {
+//				shouldDisplay = false;
+//				break;
+//			}
+//		}
+		
+		boolean shouldDisplay = !config.isBlacklisted(first.getTitle());
 
 		// I haven't been here.
 		// Get all connected elements and add them to the queue
-		if (shouldDisplay) result.add(first);
+		
+		if (shouldDisplay) {
+			result.add(first);
+//			System.out.println("RECURSIVELY PARSE'S RESULT: " + result.toString());
+		}
+		
 		for (IClassEdge e : first.getEdges()) {
 			if (shouldDisplay) edges.add(e);
 			if (!visited.contains(e.getTo().getTitle())) start.add(e.getTo());

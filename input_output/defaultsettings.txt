@@ -1,7 +1,10 @@
-package: CommandLiveCodingFinal
-whitelist: Client.java HaysCommand.java PrintCommand.java
-blacklist: java.lang. java.util.
+include: javax.swing.JFrame java.awt.Frame
+disclude: java asm
 synthdisplay: off
-analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.BlacklistNodesAnalyzer main.NewSeparateAnalyzer
-flags: public recursive
-graphcolor: black
+analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+access: public
+recursive: on
+graphColor: red
+graphBGColor: purple
+fontColor: yellow
+fontSize: 12

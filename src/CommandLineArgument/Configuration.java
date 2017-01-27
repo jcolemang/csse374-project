@@ -17,13 +17,18 @@ public class Configuration {
 	private List<String> analyzers = new ArrayList<>();
 	private boolean synthdisplay;
 	private String graphColor;
+	private String graphBGColor;
 	
 	private boolean recursivelyParse;
 	private String access;
 	private int fontSize;
+	private String fontColor;
+	
+	private String path;
 	
 	private Configuration() {
-		readFromSettingsFile("/home/coleman/Classes/CSSE374SoftwareDesign/csse374-project/input_output/defaultsettings.txt");
+		this.path = "C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt";
+		readFromSettingsFile(this.path);
 	}
 	
 	public static Configuration getInstance() {
@@ -35,6 +40,7 @@ public class Configuration {
 	}
 	
 	private void readFromSettingsFile(String settingsFile) {
+		
 
 		try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
 			
@@ -46,9 +52,11 @@ public class Configuration {
 		    	switch (lineHeader) {
 			    	case "include":
 			    		this.populate(lineSplit[1].split(" "), this.whitelist);
+			    		System.out.println("WHITELIST: " + this.whitelist);
 			    		break;
 			       case "disclude": 
 			    		this.populate(lineSplit[1].split(" "), this.blacklist);
+			    		System.out.println("BLACKLIST: " + this.blacklist);
 			    		break;
 			       case "synthdisplay":
 			    	   if (lineSplit[1].equals("off")) {
@@ -70,6 +78,12 @@ public class Configuration {
 			    	   } break;
 			       case "graphColor":
 			    	   this.graphColor = lineSplit[1];
+			    	   break;
+			       case "graphBGColor":
+			    	   this.graphBGColor = lineSplit[1];
+			    	   break;
+			       case "fontColor":
+			    	   this.fontColor = lineSplit[1];
 			    	   break;
 			       case "fontSize":
 			    	   this.fontSize = Integer.parseInt(lineSplit[1]);
@@ -105,6 +119,14 @@ public class Configuration {
 	
 	public String getGraphColor() {
 		return this.graphColor;
+	}
+	
+	public String getGraphBGColor() {
+		return this.graphBGColor;
+	}
+	
+	public String getFontColor() {
+		return this.fontColor;
 	}
 	
 	public boolean getRecursivelyParse() {
@@ -168,17 +190,19 @@ public class Configuration {
 	public boolean isBlacklisted(String title) {
 		for (String yep : this.whitelist) {
 			if (title.equals(yep)) {
-				return true;
+				return false;
 			}
 		}
 
 		for (String nope : this.blacklist) {
 			if (title.startsWith(nope)) {
 				System.out.println("Blacklisted: " + title);
-				return false;
+				return true;
 			}
 		}
 		return true;
 	}
+
+
 
 }
