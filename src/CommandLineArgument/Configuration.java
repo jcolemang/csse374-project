@@ -24,10 +24,10 @@ public class Configuration {
 	private int fontSize;
 	private String fontColor;
 	
-	private final String defaultPath = "C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt";
+	private final String defaultPath = "input_output/defaultsettings.txt";
 	
 	private Configuration() {
-
+		this.readFromSettingsFile();
 	}
 	
 	public static Configuration getInstance() {
