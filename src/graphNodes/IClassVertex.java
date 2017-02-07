@@ -33,5 +33,6 @@ public interface IClassVertex {
 	public void removeEdge(IClassEdge edge);
 	
 	IClassEdge getSuperclassEdge();
-	
+	List<IClassEdge> getImplementsEdges();
+
 }
