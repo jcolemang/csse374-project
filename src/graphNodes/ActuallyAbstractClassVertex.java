@@ -191,4 +191,13 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 		return implementsEdges;
 	}
 
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof IClassVertex)) {
+			return false;
+		}
+		return ((IClassVertex)other).getTitle().equals(this.getTitle());
+	}
+
 }

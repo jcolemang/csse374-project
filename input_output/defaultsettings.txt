@@ -1,10 +1,10 @@
 include: tester_12345.Foo tester_12345.Bar
 disclude: java
 synthdisplay: off
-analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer
 access: public
 recursive: on
 fontColor: black
 graphColor: white
-graphBGColor: purple
+graphBGColor: white
 fontSize: 12
