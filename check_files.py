@@ -3,9 +3,7 @@ import os
 
 DEAD_TO_US = ['ClassVisitor',
               'MethodVisitor',
-              'FieldVisitor',
-              'Visitor',
-              'visit']
+              'FieldVisitor']
 
 
 def check_files_for_badness(rootdir):

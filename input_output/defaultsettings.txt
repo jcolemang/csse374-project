@@ -4,7 +4,7 @@ synthdisplay: off
 analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
 access: public
 recursive: on
-graphColor: white
-graphBGColor: white
 fontColor: black
+graphColor: red
+graphBGColor: white
 fontSize: 12

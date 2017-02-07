@@ -27,6 +27,7 @@ public class Configuration {
 	private final String defaultPath = "C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt";
 	
 	private Configuration() {
+
 	}
 	
 	public static Configuration getInstance() {

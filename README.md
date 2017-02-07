@@ -1,17 +1,41 @@
 
 # CSSE374 Final Project
 
-# TODO
-- Make things that should be enums, enums
+# Milestone 4
+- Dependency Inversion
+
+  If A has a B and B has an interface and B is concrete then there is a
+  violation of the dependency inversion principle
+
+- Decorators
+
+  If you extend something and have an instance of the something then you have
+  decorated the something
+
+- Adapter
+
+  If you extend A and have an instance of B and you override all of A's methods.
+
+- Abstract Decorator
+
+  If A is abstract and has an instance of the class it extends
+
+Notes:
+  String is a violation? Ignore string
+  Implement code analysis
+
+  If it extends abstract then it is a decorator
+
 
 # Added
-- Make DOM nodes comparable
-- Add cardinality setter
-- Make sure arrows arent overwriting eachother
-- Ask Hays whether all types can repeat
+- make an analyzer remove certain relationships
+- add hashmap to DOM
+- getopt
 - Add classes for association, dependency, bidirection
-- do comparisons when we go from data structure to DOM
+- Make sure arrows arent overwriting eachother
+- Add cardinality setter
 - Add cardinalities when we go from data structure to DOM
+- fix the "if it fails it is primitive" problem
 
 ## Introduction
 
