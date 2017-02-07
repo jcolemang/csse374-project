@@ -6,5 +6,5 @@ access: public
 recursive: on
 fontColor: black
 graphColor: white
-graphBGColor: red
+graphBGColor: purple
 fontSize: 12
