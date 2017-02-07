@@ -1,14 +1,10 @@
 package analyzers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import DOMNodes.IDOMClassNode;
 import graphNodes.AbstractClassVertex;
-import graphNodes.ExtendsEdge;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
-import graphNodes.InterfaceVertex;
 import graphNodes.RegularClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
@@ -23,25 +19,25 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
 
-		IDOMClassNode dn;
 		this.setVisited(v);
 		
-		if (v instanceof AbstractClassVertex) {
-			dn = v.getCorrespondingDOMNode();
-			dn.addAttribute("color", "\"green\"");
-//			if(((AbstractClassVertex) v).getImplementsEdges() != null) {
-//				
-//			}
-		} else if (v instanceof InterfaceVertex) {
-			
-		} else if (v instanceof RegularClassVertex) {
+		if (v instanceof RegularClassVertex) {
 			IClassVertex abs = v.getSuperclassEdge().getTo();
 			if (abs != null
 					&& extendsAbstract(v)) { //if extends something and that thing is abstract
 				for (FieldData f : v.getFields()) {
 					if (f.getFieldType().getTitle().equals(abs.getTitle())) { //ewwwww
-						
+						makeGreen(v);
+						makeGreen(abs);
 					}
+				}
+			}
+			
+			//Turns interface(s) green
+			List<IClassEdge> intForAbs = abs.getImplementsEdges();
+			if(intForAbs != null) {
+				for (IClassEdge e : intForAbs) {
+					makeGreen(e.getTo());
 				}
 			}
 		}
@@ -57,5 +53,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		return false;
 	}
 	
-	
+	public void makeGreen(IClassVertex v) {
+		v.getCorrespondingDOMNode().addAttribute("color", "\"green\"");
+	}
 }

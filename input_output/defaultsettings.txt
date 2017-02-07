@@ -1,7 +1,7 @@
-include: javax.swing.JFrame java.awt.Frame
+include: tester_12345.Foo tester_12345.Bar
 disclude: java
 synthdisplay: off
-analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
 access: public
 recursive: on
 fontColor: black
