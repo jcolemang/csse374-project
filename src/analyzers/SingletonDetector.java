@@ -28,8 +28,5 @@ public class SingletonDetector extends AbstractAnalyzer {
 				}
 			}
 		}
-		
-
 	}
-
 }

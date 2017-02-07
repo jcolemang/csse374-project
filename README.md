@@ -9,8 +9,8 @@
 
 - Decorators
 
-  If you extend something and have an instance of the something then you have
-  decorated the something
+  If you extend A and has an instance of A then you have
+  decorated A
 
 - Adapter
 

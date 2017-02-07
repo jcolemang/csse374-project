@@ -157,6 +157,9 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 		}
 	}
 	
+	/**
+	 * Returns the edge that denotes the vertex's superclass
+	 */
 	public IClassEdge getSuperclassEdge() {
 		
 		IClassEdge superclassEdge = null;
@@ -168,6 +171,24 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 		}
 		
 		return superclassEdge;
+	}
+	
+	/**
+	 * Returns a list of edges that denote the vertex's inheritance from
+	 * other classes
+	 * @return
+	 */
+	
+	public List<IClassEdge> getImplementsEdges() {
+		List<IClassEdge> implementsEdges = new ArrayList<IClassEdge>();
+		
+		for (IClassEdge e : this.edges) {
+			if (e instanceof ImplementsEdge) {
+				implementsEdges.add(e);
+			}
+		}
+		
+		return implementsEdges;
 	}
 
 }
