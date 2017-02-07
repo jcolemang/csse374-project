@@ -5,6 +5,6 @@ analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollec
 access: public
 recursive: on
 fontColor: black
-graphColor: red
-graphBGColor: white
+graphColor: white
+graphBGColor: red
 fontSize: 12
