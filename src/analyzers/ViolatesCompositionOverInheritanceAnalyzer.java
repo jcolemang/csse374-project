@@ -19,13 +19,13 @@ public class ViolatesCompositionOverInheritanceAnalyzer extends AbstractAnalyzer
 			return;
 		}
 		
-		IDOMNode superDomNode = v.getSuperclassEdge().getTo().getCorrespondingDOMNode();
-		IDOMNode superDomEdge = v.getSuperclassEdge().getCorrespondingDOMNode();
+		IDOMNode theNode = v.getSuperclassEdge().getFrom().getCorrespondingDOMNode();
+//		IDOMNode superDomEdge = v.getSuperclassEdge().getCorrespondingDOMNode();
 		
 		//tapdancing all over the Law of Demeter
-		if (checkViolation(v) && superDomNode != null) {
-			superDomNode.addAttribute("fillcolor", "\"orange\"");
-			superDomNode.addAttribute("style", "\"filled\"");
+		if (checkViolation(v) && theNode != null) {
+			theNode.addAttribute("fillcolor", "\"orange\"");
+			theNode.addAttribute("style", "\"filled\"");
 //			System.out.println(superDomNode.getTextRepresentation());
 //			superDomEdge.addAttribute("color", "\"orange\"");
 		}

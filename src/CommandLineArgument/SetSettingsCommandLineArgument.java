@@ -22,7 +22,7 @@ public class SetSettingsCommandLineArgument implements ICommandLineArgument{
 			if (args.get(i).equals("-path")) {
 				String path = args.get(i + 1);
 				
-				this.config.readFromSettingsFile(path);
+				this.config.readFromSettingsFile("C:/Users/wickersl/Desktop/PROJ-374/csse374-project/input_output/defaultsettings.txt");
 			} else if ((i - 1 > 0) && args.get(i - 1).equals("-path")){
 				//skip this
 			} else {
