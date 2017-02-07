@@ -1,10 +1,10 @@
-include: javax.swing.JFrame java.awt.Frame
+include: javax.swing.JFrame java.awt.Frame java.lang.String
 disclude: java
 synthdisplay: off
-analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer
 access: public
 recursive: on
 fontColor: black
 graphColor: white
-graphBGColor: purple
+graphBGColor: white
 fontSize: 12
