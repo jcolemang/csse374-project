@@ -39,7 +39,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			if (abs != null
 					&& extendsAbstract(v)) { //if extends something and that thing is abstract
 				for (FieldData f : v.getFields()) {
-					if (f.getFieldType() instanceof abs) {
+					if (f.getFieldType().getTitle().equals(abs.getTitle())) { //ewwwww
 						
 					}
 				}
@@ -56,4 +56,6 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 		return false;
 	}
+	
+	
 }
