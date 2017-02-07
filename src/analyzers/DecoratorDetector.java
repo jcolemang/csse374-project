@@ -22,7 +22,13 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		this.setVisited(v);
 		
 		if (v instanceof RegularClassVertex) {
-			IClassVertex abs = v.getSuperclassEdge().getTo();
+			IClassVertex abs;
+			
+			if (v.getSuperclassEdge() != null) {
+				abs = v.getSuperclassEdge().getTo();				
+			} else {
+				return;
+			}
 			if (abs != null
 					&& extendsAbstract(v)) { //if extends something and that thing is abstract
 				for (FieldData f : v.getFields()) {
@@ -54,6 +60,8 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	}
 	
 	public void makeGreen(IClassVertex v) {
-		v.getCorrespondingDOMNode().addAttribute("color", "\"green\"");
+		if (v.getCorrespondingDOMNode() != null) {
+			v.getCorrespondingDOMNode().addAttribute("color", "\"green\"");			
+		}
 	}
 }
