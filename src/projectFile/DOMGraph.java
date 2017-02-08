@@ -80,30 +80,30 @@ public class DOMGraph implements Iterable<IDOMNode> {
 		
 		// Getting a starting point for classes to display
 		for (String name : this.config.getWhitelist()) {
-			System.out.println("name of vertex: " + name);
-			System.out.println("vertex with that name: " + g.getVertex(name).getTitle());
 			start.add(g.getVertex(name));
 		}
-		
+
+		// getting the dom nodes
 		if (this.config.getRecursivelyParse()) {
-			classesToUse = new LinkedList<>();
-			edgesToUse = new LinkedList<>();
-			this.recursivelyGetClassesToUse(start, classesToUse, edgesToUse, new HashSet<String>());
+			classesToUse = g.getVertices();
+			edgesToUse = g.getEdges();
 		} else {
 			classesToUse = start;
 			edgesToUse = this.getEdgesToUse(classesToUse);
 		}
-		
+
+		// filtering out the blacklisted classes
 		IDOMClassNode generatedDOMNode;
 		for (IClassVertex vert : classesToUse) {
             if (vert instanceof PrimitiveVertex ||
             		config.isBlacklisted(vert.getTitle())) {
             	continue;
             }
+
             generatedDOMNode = this.addDOMVertex(vert);
             vert.setCorrespondingDOMNode(generatedDOMNode);
 		}
-		
+
 		IDOMEdgeNode generatedDOMEdge;
 		for(IClassEdge edge : edgesToUse) {
 			
@@ -117,7 +117,8 @@ public class DOMGraph implements Iterable<IDOMNode> {
 			generatedDOMEdge = this.addDOMEdge(edge);
 			edge.setCorrespondingDOMNode(generatedDOMEdge);
 		}
-		
+
+		System.out.println("Number of DOM nodes: " + this.domNodes.size());
 	}
 	
 	
@@ -153,10 +154,11 @@ public class DOMGraph implements Iterable<IDOMNode> {
 	 * @param result The resultant list of vertices, modified in place
 	 * @param edges the resultant list of edges, modified in place
 	 */
+	@Deprecated
 	private void recursivelyGetClassesToUse(List<IClassVertex> start, 
-			List<IClassVertex> result, 
-			List<IClassEdge> edges,
-			Set<String> visited) {
+			                                List<IClassVertex> result,
+                                            List<IClassEdge> edges,
+			                                Set<String> visited) {
 		
 		// checking if I've been here before
 		IClassVertex first;
@@ -165,31 +167,19 @@ public class DOMGraph implements Iterable<IDOMNode> {
                 return;
             }
 			first = start.get(0);
-//			System.out.println("First: " + first);
 			start = start.subList(1, start.size());
-//			System.out.println("Start shorter: " + start);
 		}
 		while (visited.contains(first.getTitle()));
 		
 		visited.add(first.getTitle());
-		
-		// need to check the blacklist
-//		boolean shouldDisplay = true;
-//		for (String pre : config.getBlacklist()) {
-//			if (first.getTitle().startsWith(pre)) {
-//				shouldDisplay = false;
-//				break;
-//			}
-//		}
-		
 		boolean shouldDisplay = !config.isBlacklisted(first.getTitle());
 
 		// I haven't been here.
 		// Get all connected elements and add them to the queue
 		
-		if (shouldDisplay) {
+		if (shouldDisplay || !shouldDisplay) {
+		    System.out.println("Should display: " + first);
 			result.add(first);
-//			System.out.println("RECURSIVELY PARSE'S RESULT: " + result.toString());
 		}
 		
 		for (IClassEdge e : first.getEdges()) {
