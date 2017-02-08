@@ -19,7 +19,6 @@ public class DependencyInversionAnalyzer extends AbstractAnalyzer {
         }
 
         // This is Coleman and I am VERY proud of myself
-        // TODO this isn't quite right
         v.getFields().stream()
                 .map((FieldData f) -> {
                     return f.getFieldType();
