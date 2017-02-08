@@ -1,18 +1,20 @@
 package projectFile;
 
+import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.*;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
 import graphNodes.DependencyEdge;
@@ -27,6 +29,8 @@ import graphNodes.RegularClassVertex;
 public class GraphParser {
 
 	private Map<String, IClassVertex> visited;
+	private Pattern methodParameterPattern = Pattern.compile("^(?:<.*>)*\\((.*)\\).*$");
+	private Pattern methodReturnPattern = Pattern.compile("^(?:<.*>)*\\(.*\\)(.*)$");
 
 	public GraphParser() {
 		this.visited = new HashMap<>();
@@ -174,7 +178,6 @@ public class GraphParser {
 		}
 		
 		// parsing the instance variables
-		// TODO go through here
 		List<String> classes;
 		for (Object f : classNode.fields) {
 			FieldNode field = (FieldNode)f;
@@ -244,51 +247,13 @@ public class GraphParser {
 		
 		return graph;
 	}
-	
 
-	/*
-	 * 
-	 */
-	private void setFields(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
-		@SuppressWarnings("unchecked")
-		List<FieldNode> fields = classNode.fields;
-		List<IClassVertex> verts;
-		List<String> vertStrings;
-		IClassVertex realType;
-		int i;
-		IClassVertex paramVert;
-		
-		for (FieldNode f : fields) {
-			String name = f.name;
-			String accessLevel = this.getAccessLevel(f.access);
-			String fieldType = Type.getType(f.desc).getClassName();
-			
-			if (hasBeenVisited(fieldType)) {
-				realType = this.visited.get(fieldType);
-			} else {
-				realType = this.makeSingleNode(fieldType, g);
-			}
-			
-			vertStrings = getTypeStrings(f.signature);
-			verts = new ArrayList<IClassVertex>();
-			for (i = 1; i < vertStrings.size(); i++) {
-				paramVert = this.makeSingleNode(vertStrings.get(i), g);
-				verts.add(paramVert);
-				this.addAssociationEdge(cv, paramVert, g);
-			}
-			
-			cv.addFieldData(new FieldData(accessLevel, name, realType, f.signature, verts));
-		}
-		
-	}
-	
 	
 	private String getMethodParameterString(String sig) {
 		if (sig == null) {
 			return null;
 		}
-		Pattern p = Pattern.compile("^(?:<.*>)*\\((.*)\\).*$");
-		Matcher m = p.matcher(sig);
+		Matcher m = this.methodParameterPattern.matcher(sig);
 		m.find();
 		return m.group(1);
 	}
@@ -298,8 +263,7 @@ public class GraphParser {
 		if (sig == null) {
 			return null;
 		}
-		Pattern p = Pattern.compile("^(?:<.*>)*\\(.*\\)(.*)$");
-		Matcher m = p.matcher(sig);
+		Matcher m = this.methodReturnPattern.matcher(sig);
 		m.find();
 		return m.group(1);
 	}
@@ -406,7 +370,69 @@ public class GraphParser {
 			cv.addMethodData(md);
 		}
 	}
-	
+
+
+	/*
+	 *
+	 */
+	private void setFields(ClassNode classNode, IClassVertex cv, ClassNodeGraph g) throws IOException {
+		List<FieldNode> fields = classNode.fields;
+		List<IClassVertex> verts;
+		List<String> vertStrings;
+		IClassVertex realType;
+		int i;
+		IClassVertex paramVert;
+
+		for (FieldNode f : fields) {
+			String name = f.name;
+			String accessLevel = this.getAccessLevel(f.access);
+			String fieldType = Type.getType(f.desc).getClassName();
+
+			if (hasBeenVisited(fieldType)) {
+				realType = this.visited.get(fieldType);
+			} else {
+				realType = this.makeSingleNode(fieldType, g);
+			}
+
+			vertStrings = getTypeStrings(f.signature);
+			verts = new ArrayList<IClassVertex>();
+			for (i = 1; i < vertStrings.size(); i++) {
+				paramVert = this.makeSingleNode(vertStrings.get(i), g);
+				verts.add(paramVert);
+				this.addAssociationEdge(cv, paramVert, g);
+			}
+
+			cv.addFieldData(new FieldData(accessLevel, name, realType, f.signature, verts));
+		}
+
+	}
+
+
+	private void setCode(MethodNode meth, IClassVertex current, ClassNodeGraph graph) {
+		Stream.Builder<AbstractInsnNode> nodes = Stream.builder();
+		for (int i = 0; i < meth.instructions.size(); i++) {
+			nodes.accept(meth.instructions.get(i));
+		}
+		nodes.build().filter(node -> node instanceof VarInsnNode)
+				.filter(node -> node instanceof MethodInsnNode)
+				.map(node -> this.processInstructions(node, current, graph));
+	}
+
+
+	private CodeData processInstructions(AbstractInsnNode node,
+												 IClassVertex curr,
+												 ClassNodeGraph graph) {
+	    if (node instanceof MethodInsnNode) {
+	    	MethodInsnNode meth = (MethodInsnNode)node;
+	    	System.out.println("Owner: " + meth.owner);
+	    	System.out.println("Name: " + meth.name);
+		} else if (node instanceof VarInsnNode) {
+			VarInsnNode var = (VarInsnNode) node;
+			System.out.println("Var: " + var);
+		}
+	    return new CodeData();
+	}
+
 	
 	private List<String> getTypeStrings(String descriptor) {
 		String[] res;
