@@ -192,17 +192,20 @@ public class Configuration {
 	public boolean isBlacklisted(String title) {
 		for (String yep : this.whitelist) {
 			if (title.equals(yep)) {
+			    System.out.println("Whitelisted: " + title);
 				return false;
 			}
 		}
 
 		for (String nope : this.blacklist) {
 			if (title.startsWith(nope)) {
-				System.out.println("Blacklisted: " + title);
+//				System.out.println("Blacklisted: " + title);
 				return true;
 			}
 		}
-		return true;
+
+		System.out.println("Whitelisted: " + title);
+		return false;
 	}
 
 }
