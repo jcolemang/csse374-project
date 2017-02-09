@@ -42,10 +42,10 @@ public class MainClass {
 												  InstantiationException, 
 												  IllegalAccessException, 
 												  ClassNotFoundException {
-	    AnotherClass a = new AnotherClass();
+	    //AnotherClass a = new AnotherClass();
 		Configuration config = Configuration.getInstance();
-		config.readFromSettingsFile("input_output/testsettings");
-//        config.readFromSettingsFile();
+		//config.readFromSettingsFile("input_output/testsettings");
+        config.readFromSettingsFile();
 		System.out.println(config.getBlacklist());
 		
 		List<String> strs = new ArrayList<String>();
