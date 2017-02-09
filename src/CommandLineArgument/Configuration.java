@@ -27,7 +27,7 @@ public class Configuration {
 	private final String defaultPath = "input_output/defaultsettings.txt";
 	
 	private Configuration() {
-		this.readFromSettingsFile();
+//		this.readFromSettingsFile();
 	}
 	
 	public static Configuration getInstance() {

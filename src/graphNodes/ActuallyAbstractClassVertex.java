@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DOMNodes.IDOMClassNode;
+import projectFile.CodeData;
 import projectFile.FieldData;
 import projectFile.MethodData;
 
@@ -21,6 +22,7 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	private String title;
 	private List<FieldData> fields;
 	private List<MethodData> methods;
+	private List<CodeData> codeDatas;
 	private List<IClassEdge> edges;
 	
 	private boolean test = false;
@@ -80,6 +82,13 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 		this.methods.add(data);
 	}
 
+
+	@Override
+	public void addCodeData(CodeData data) {
+		this.codeDatas.add(data);
+	}
+
+
 	/**
 	 * Removes the given MethodData object from the class's List of personal
 	 * methods
@@ -112,6 +121,13 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	public List<MethodData> getMethods() {
 		return this.methods;
 	}
+
+
+	@Override
+	public List<CodeData> getCodeData() {
+		return this.codeDatas;
+	}
+
 
 	/**
 	 * Adds a new FieldData object into the class's List<FieldData>

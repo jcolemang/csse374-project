@@ -292,6 +292,7 @@ public class GraphParser {
 		
 		
 		for (MethodNode m : methods) {
+			this.setCode(m, cv, g);
 			String name = m.name;
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
@@ -413,22 +414,28 @@ public class GraphParser {
 		for (int i = 0; i < meth.instructions.size(); i++) {
 			nodes.accept(meth.instructions.get(i));
 		}
-		nodes.build().filter(node -> node instanceof VarInsnNode)
+		nodes.build()
+				.filter(node -> node instanceof VarInsnNode)
 				.filter(node -> node instanceof MethodInsnNode)
-				.map(node -> this.processInstructions(node, current, graph));
+				.map(node -> this.processInstructions(node, current, graph))
+                .map(data -> {
+                    current.addCodeData(data);
+                    return data;
+                })
+                .flatMap(data -> data.getClasses().stream())
+                .forEach(other -> {
+                    this.addDependsEdge(current, other, graph);
+                });
 	}
 
 
 	private CodeData processInstructions(AbstractInsnNode node,
 												 IClassVertex curr,
 												 ClassNodeGraph graph) {
+	    CodeData codeData = new CodeData();
 	    if (node instanceof MethodInsnNode) {
 	    	MethodInsnNode meth = (MethodInsnNode)node;
-	    	System.out.println("Owner: " + meth.owner);
-	    	System.out.println("Name: " + meth.name);
-		} else if (node instanceof VarInsnNode) {
-			VarInsnNode var = (VarInsnNode) node;
-			System.out.println("Var: " + var);
+	    	codeData.addClass(this.makeSingleNode(meth.owner, graph));
 		}
 	    return new CodeData();
 	}

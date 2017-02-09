@@ -1,35 +1,46 @@
 package analyzers;
 
 import graphNodes.AbstractClassVertex;
-import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import graphNodes.RegularClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 import projectFile.FieldData;
-
-import java.util.logging.FileHandler;
+import java.util.stream.Stream;
 
 public class DependencyInversionAnalyzer extends AbstractAnalyzer {
 
+    // Feeling very proud of myself
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
         this.setVisited(v);
-        if (v.getCorrespondingDOMNode() == null) {
+        if (v.getCorrespondingDOMNode() == null ||
+                !(v instanceof RegularClassVertex) ||
+                !(v.getSuperclassEdge().getTo() instanceof AbstractClassVertex ||
+                    v.getImplementsEdges().size() > 0)) {
             return;
         }
 
-        // This is Coleman and I am VERY proud of myself
-        // TODO this isn't quite right
-        v.getFields().stream()
-                .map((FieldData f) -> {
-                    return f.getFieldType();
-                }).filter((IClassVertex f) -> {
-                    return hasA(v, f)
-                            && f.getCorrespondingDOMNode() != null
-                            && v instanceof RegularClassVertex
-                            && (v.getSuperclassEdge().getTo() instanceof AbstractClassVertex
-                                || v.getImplementsEdges().size() > 0);
-                }).forEach((IClassVertex f) -> {
+        Stream<IClassVertex> fieldStream =
+                v.getFields()
+                .stream()
+                .map(fd -> fd.getFieldType());
+
+        Stream<IClassVertex> methodStream =
+                v.getMethods()
+                .stream()
+                .flatMap(method -> {
+                    Stream.Builder<IClassVertex> builder = Stream.builder();
+                    builder.accept(method.getReturnType());
+                    method.getParams()
+                            .stream()
+                            .forEach(p -> builder.accept(p));
+                    return builder.build();
+                });
+
+        Stream.concat(fieldStream, methodStream)
+                .filter(f -> hasA(v, f))
+                .filter(f -> f.getCorrespondingDOMNode() != null)
+                .forEach((IClassVertex f) -> {
                     v.getCorrespondingDOMNode().addAttribute("fillcolor", "red");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
                 });
