@@ -292,7 +292,6 @@ public class GraphParser {
 		
 		
 		for (MethodNode m : methods) {
-			this.setCode(m, cv, g);
 			String name = m.name;
 			String access = this.getAccessLevel(m.access);
 			String returnType = Type.getReturnType(m.desc).getClassName();
@@ -368,6 +367,7 @@ public class GraphParser {
 					realReturnType, returnTypeTypeDesc, returnTypeTypeParams,
 					paramTypeVertices, allParamTypeStrings, paramTypeTypeParams);
 
+			this.setCode(m, md, cv, g);
 			cv.addMethodData(md);
 		}
 	}
@@ -409,7 +409,7 @@ public class GraphParser {
 	}
 
 
-	private void setCode(MethodNode meth, IClassVertex current, ClassNodeGraph graph) {
+	private void setCode(MethodNode meth, MethodData method, IClassVertex current, ClassNodeGraph graph) {
 		Stream.Builder<AbstractInsnNode> nodes = Stream.builder();
 		for (int i = 0; i < meth.instructions.size(); i++) {
 			nodes.accept(meth.instructions.get(i));
@@ -419,7 +419,7 @@ public class GraphParser {
 				.filter(node -> node instanceof MethodInsnNode)
 				.map(node -> this.processInstructions(node, current, graph))
                 .map(data -> {
-                    current.addCodeData(data);
+                    method.addCodeData(data);
                     return data;
                 })
                 .flatMap(data -> data.getClasses().stream())

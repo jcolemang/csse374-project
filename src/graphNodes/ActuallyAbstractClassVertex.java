@@ -22,7 +22,7 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	private String title;
 	private List<FieldData> fields;
 	private List<MethodData> methods;
-	private List<CodeData> codeDatas;
+	private List<CodeData> allCodeDatas;
 	private List<IClassEdge> edges;
 	
 	private boolean test = false;
@@ -74,8 +74,6 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	/**
 	 * Adds a new MethodData object into the class's List of personal methods
 	 * 
-	 * @param MethodData
-	 *            data
 	 */
 	@Override
 	public void addMethodData(MethodData data) {
@@ -83,18 +81,10 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	}
 
 
-	@Override
-	public void addCodeData(CodeData data) {
-		this.codeDatas.add(data);
-	}
-
-
 	/**
 	 * Removes the given MethodData object from the class's List of personal
 	 * methods
 	 * 
-	 * @param MethodData
-	 *            data
 	 */
 	@Override
 	public void removeMethodData(MethodData data) {
@@ -112,6 +102,16 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 		return this.fields;
 	}
 
+
+	@Override
+	public boolean containsField(IClassVertex v) {
+		return this.getFields()
+				.stream()
+				.map(f -> f.getFieldType())
+				.anyMatch(f -> v.equals(f));
+	}
+
+
 	/**
 	 * Returns the List<MethodData> of the class's methods
 	 * 
@@ -124,16 +124,13 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 
 
 	@Override
-	public List<CodeData> getCodeData() {
-		return this.codeDatas;
+	public List<CodeData> getAllCodeData() {
+		return this.allCodeDatas;
 	}
 
 
 	/**
 	 * Adds a new FieldData object into the class's List<FieldData>
-	 * 
-	 * @param FieldData
-	 *            data
 	 */
 	@Override
 	public void addFieldData(FieldData data) {
@@ -144,9 +141,6 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	/**
 	 * Removes the given FieldData object from the class's List of FieldData
 	 * objects
-	 * 
-	 * @param FieldData
-	 *            data
 	 */
 	@Override
 	public void removeFieldData(FieldData data) {

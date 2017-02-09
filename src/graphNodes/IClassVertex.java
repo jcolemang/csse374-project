@@ -32,9 +32,9 @@ public interface IClassVertex {
 	 void addFieldData(FieldData data);
 	 void removeFieldData(FieldData data);
 	 void removeEdge(IClassEdge edge);
+	 boolean containsField(IClassVertex v);
 
-	 void addCodeData(CodeData data);
-	 List<CodeData> getCodeData();
+	 List<CodeData> getAllCodeData();
 	
 	IClassEdge getSuperclassEdge();
 	List<IClassEdge> getImplementsEdges();
