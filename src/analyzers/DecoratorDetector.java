@@ -30,23 +30,22 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			return;
 		}
 
-        IClassVertex abs;
-
         if (v.getSuperclassEdge() == null) {
             return;
         }
 
-        abs = v.getSuperclassEdge().getTo();
-
         // if extends something and that thing is abstract
-        if (isAbstractDecorator(v) ||
-				extendsAbstractDecorator(v)) {
+        if (extendsAbstractDecorator(v)) {
 			makeGreen(v);
-			makeGreen(abs);
+		}
 
-			//Turns interface(s) green
-			List<IClassEdge> intForAbs = abs.getImplementsEdges();
-            for (IClassEdge e : intForAbs) {
+		// if it is abstract
+		if (isAbstractDecorator(v)) {
+			List<IClassEdge> interfsForAbs = v.getImplementsEdges();
+			if (v.getSuperclassEdge() != null) {
+				interfsForAbs.add(v.getSuperclassEdge());
+			}
+            for (IClassEdge e : interfsForAbs) {
                 this.setVisited(e.getTo());
                 makeGreen(e.getTo());
             }
