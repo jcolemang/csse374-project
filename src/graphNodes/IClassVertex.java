@@ -5,6 +5,7 @@ import java.util.List;
 import org.objectweb.asm.tree.FieldNode;
 
 import DOMNodes.IDOMClassNode;
+import projectFile.CodeData;
 import projectFile.FieldData;
 import projectFile.MethodData;
 
@@ -16,21 +17,24 @@ import projectFile.MethodData;
  *
  */
 public interface IClassVertex {
-	public IDOMClassNode getCorrespondingDOMNode();
-	public void setCorrespondingDOMNode(IDOMClassNode generatedDOMNode);
-	public String getTitle();
+	 IDOMClassNode getCorrespondingDOMNode();
+	 void setCorrespondingDOMNode(IDOMClassNode generatedDOMNode);
+	 String getTitle();
 	
-	public void addMethodData(MethodData data);
-	public void removeMethodData(MethodData data);
-	public List<MethodData> getMethods();
+	 void addMethodData(MethodData data);
+	 void removeMethodData(MethodData data);
+	 List<MethodData> getMethods();
 	
-	public List<IClassEdge> getEdges();
-	public void addEdge(IClassEdge edge);
+	 List<IClassEdge> getEdges();
+	 void addEdge(IClassEdge edge);
 	
-	public List<FieldData> getFields();
-	public void addFieldData(FieldData data);
-	public void removeFieldData(FieldData data);
-	public void removeEdge(IClassEdge edge);
+	 List<FieldData> getFields();
+	 void addFieldData(FieldData data);
+	 void removeFieldData(FieldData data);
+	 void removeEdge(IClassEdge edge);
+
+	 void addCodeData(CodeData data);
+	 List<CodeData> getCodeData();
 	
 	IClassEdge getSuperclassEdge();
 	List<IClassEdge> getImplementsEdges();

@@ -16,14 +16,7 @@ import DOMNodes.DOMDependencyEdge;
 import DOMNodes.DOMExtendsEdge;
 import DOMNodes.DOMImplementsEdge;
 import DOMNodes.DOMInterfaceNode;
-import analyzers.AssociationSupercedesDependencyAnalyzer;
-import analyzers.BlacklistNodesAnalyzer;
 import analyzers.ClassNodeTraverser;
-import analyzers.IAnalyzer;
-import analyzers.IsACollectionAndAddCardinalityAnalyzer;
-import analyzers.MergeArrowAnalyzer;
-import analyzers.SingletonDetector;
-import analyzers.ViolatesCompositionOverInheritanceAnalyzer;
 import dataFilters.SyntheticFilter;
 import graphNodes.AbstractClassVertex;
 import graphNodes.AssociationEdge;
@@ -49,8 +42,10 @@ public class MainClass {
 												  InstantiationException, 
 												  IllegalAccessException, 
 												  ClassNotFoundException {
-		
+	    //AnotherClass a = new AnotherClass();
 		Configuration config = Configuration.getInstance();
+		//config.readFromSettingsFile("input_output/testsettings");
+        config.readFromSettingsFile();
 		System.out.println(config.getBlacklist());
 		
 		List<String> strs = new ArrayList<String>();
@@ -72,7 +67,8 @@ public class MainClass {
 		for (String name : strs) {
 			config.addToWhitelist(name);
 		}
-		
+
+		System.out.println(config.getWhitelist());
 		ClassNodeGraph nodeGraph = gp.parse(config.getWhitelist());
 		
 		dom.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
