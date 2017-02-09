@@ -3,9 +3,7 @@ package CommandLineArgument;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Configuration {
 	
@@ -25,9 +23,11 @@ public class Configuration {
 	private String fontColor;
 	
 	private final String defaultPath = "input_output/defaultsettings.txt";
+
+	private Map<String, String> properties;
 	
 	private Configuration() {
-//		this.readFromSettingsFile();
+	    this.properties = new HashMap<>();
 	}
 	
 	public static Configuration getInstance() {
@@ -90,6 +90,12 @@ public class Configuration {
 			       case "fontSize":
 			    	   this.fontSize = Integer.parseInt(lineSplit[1]);
 			    	   break;
+					default:
+						String prop = "";
+						for (int i = 1; i < lineSplit.length; i++) {
+							prop += lineSplit[i];
+						}
+						this.setProperty(lineSplit[1], prop);
 		       }
 		    }
 		} catch (IOException e) {
@@ -142,6 +148,10 @@ public class Configuration {
 	public int getFontSize() {
 		return this.fontSize;
 	}
+
+	public String getProperty(String name) {
+		return this.properties.get(name);
+	}
 	
 	
 	// Start of setters
@@ -157,9 +167,12 @@ public class Configuration {
 		this.analyzers = list;
 	}
 	
-	
 	public void setRecursivelyParse(boolean val) {
 		this.recursivelyParse = val;
+	}
+
+	public void setProperty(String name, String value) {
+		this.properties.put(name, value);
 	}
 	
 	
