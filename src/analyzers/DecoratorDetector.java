@@ -5,17 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import DOMNodes.IDOMClassNode;
-import DOMNodes.IDOMNode;
 import graphNodes.AbstractClassVertex;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import graphNodes.RegularClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
-import projectFile.FieldData;
 
 public class DecoratorDetector extends AbstractAnalyzer {
 	
@@ -35,12 +31,20 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v, "\n<<Decorator>>");
+        	if (v instanceof RegularClassVertex) {
+        		makeGreenAndAddToTitle(v, "\\n<<Decorator>>");        		
+        	} else if (v instanceof AbstractClassVertex) {
+        		makeGreenAndAddToTitle(v, "<<Decorator>>");
+        	}
 		}
 
 		// if it is abstract
 		if (isAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v, "<<Decorator>>");
+			if (v instanceof RegularClassVertex) {
+        		makeGreenAndAddToTitle(v, "\\n<<Decorator>>");        		
+        	} else if (v instanceof AbstractClassVertex) {
+        		makeGreenAndAddToTitle(v, "<<Decorator>>");
+        	}
 			List<IClassEdge> interfsForAbs = v.getImplementsEdges();
 			if (v.getSuperclassEdge() != null) {
 				interfsForAbs.add(v.getSuperclassEdge());
