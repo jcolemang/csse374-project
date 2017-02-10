@@ -1,0 +1,10 @@
+include: test.AbstractDec test.ConcreteDec test.Inter
+disclude: java sun org
+synthdisplay: off
+analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer
+access: public
+recursive: off
+fontColor: black
+graphColor: white
+graphBGColor: white
+fontSize: 12
