@@ -4,6 +4,7 @@ import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
+import projectFile.FieldData;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +19,40 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
 
     @Override
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-        List<IClassVertex> interfaces = new LinkedList<>();
-        for (IClassEdge e : v.getImplementsEdges()) {
-            interfaces.add(e.getTo());
+
+        // getting the superclass vertices
+        List<IClassVertex> supers = new LinkedList<>();
+
+        if (v.getSuperclassEdge() != null) {
+            supers.add(v.getSuperclassEdge().getTo());
         }
+
+        for (IClassEdge e : v.getImplementsEdges()) {
+            supers.add(e.getTo());
+        }
+
+        // getting the "has a" vertices
+        List<FieldData> fieldDatas = v.getFields();
+        List<IClassVertex> fields = new LinkedList<>();
+        for (FieldData fd : fieldDatas) {
+            fields.add(fd.getFieldType());
+        }
+
+        // checking all pairs
+        for (IClassVertex extnds : supers) {
+            for (IClassVertex has : fields) {
+                if (satisfiesCondition(v, extnds, has)) {
+
+                }
+            }
+        }
+    }
+
+
+    private boolean satisfiesCondition(IClassVertex curr, IClassVertex extnds, IClassVertex has) {
+
+        List<IClassVertex> maybeExtends = new LinkedList<>();
+
+        return false;
     }
 }
