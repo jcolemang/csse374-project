@@ -1,7 +1,7 @@
-include: problem.DecryptInputStream problem.EncryptionOutputStream problem.IDecryption problem.IEncryption problem.SubstitutionCipher problem.TextEditorApp 
+include: java.io.OutputStream java.io.InputStream java.io.FilterOutputStream java.io.FilterInputStream problem.DecryptInputStream problem.EncryptionOutputStream problem.IDecryption problem.IEncryption problem.SubstitutionCipher problem.TextEditorApp 
 disclude: java asm sun
 synthdisplay: off
-analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DecoratorDetector
 access: private
 recursive: on
 graphColor: black

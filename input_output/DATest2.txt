@@ -1,4 +1,4 @@
-include: problem.client.App problem.client.EnumerationAdapter problem.lib.LinearTransformer
+include: java.util.Iterator java.util.Enumeration problem.client.App problem.client.EnumerationAdapter problem.lib.LinearTransformer
 disclude: java asm sun
 synthdisplay: off
 analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
@@ -8,3 +8,4 @@ graphColor: black
 graphBGColor: white
 fontColor: black
 fontSize: 12
+threshold: 0.5
