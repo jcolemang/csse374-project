@@ -1,8 +1,10 @@
 package analyzers;
 
 import CommandLineArgument.Configuration;
+import graphNodes.AbstractClassVertex;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
+import graphNodes.RegularClassVertex;
 import projectFile.*;
 
 import java.util.LinkedList;
@@ -52,7 +54,12 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
                 if (satisfiesCondition(v, extnds, has)) {
                     v.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
-                    v.getCorrespondingDOMNode().setTitleAdditions("<<Adapter>>");
+                    
+                    if (v instanceof RegularClassVertex) {
+                    	v.getCorrespondingDOMNode().setTitleAdditions("\\n<<Adapter>>");      		
+                	} else if (v instanceof AbstractClassVertex) {
+                		v.getCorrespondingDOMNode().setTitleAdditions("<<Adapter>>");
+                	}
 
                     extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     extnds.getCorrespondingDOMNode().addAttribute("style", "filled");
@@ -60,7 +67,11 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
 
                     has.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     has.getCorrespondingDOMNode().addAttribute("style", "filled");
-                    has.getCorrespondingDOMNode().setTitleAdditions("<<Adaptee>>");
+                    if (v instanceof RegularClassVertex) {
+                    	v.getCorrespondingDOMNode().setTitleAdditions("\\n<<Adaptee>>");      		
+                	} else if (v instanceof AbstractClassVertex) {
+                		v.getCorrespondingDOMNode().setTitleAdditions("<<Adaptee>>");
+                	}
 
                     g.getEdgesFromTo(v, has)
                             .stream()
