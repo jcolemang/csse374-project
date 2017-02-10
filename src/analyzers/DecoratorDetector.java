@@ -65,15 +65,17 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
 
 	private boolean isAbstractDecorator(IClassVertex v) {
-		
+
 		if (this.abstractDecoratorMap.getOrDefault(v.getTitle(), false)) {
 			return true;
 		}
 
+		System.out.println(v);
+
 		// getting all possible superclasses
         List<IClassVertex> potentialSupers = new LinkedList<>();
 		if (v.getSuperclassEdge() != null
-                && v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")) {
+                && !v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")) {
             potentialSupers.add(v.getSuperclassEdge().getTo());
 		}
 		for (IClassEdge edge : v.getImplementsEdges()) {
@@ -81,6 +83,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		if (potentialSupers.size() == 0) {
+			System.out.println("No supers");
 		    return false;
         }
 
@@ -94,7 +97,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		this.abstractDecoratorMap.put(v.getTitle(), false);
-
+		System.out.println("Failed here");
 		return false;
 	}
 
