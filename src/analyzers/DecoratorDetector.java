@@ -39,7 +39,6 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-        	addArrowTag(v.getSuperclassEdge());
 			makeGreenAndAddToTitle(v);
 		}
 
@@ -52,6 +51,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			}
             for (IClassEdge e : interfsForAbs) {
                 this.setVisited(e.getTo());
+                addArrowTag(v.getSuperclassEdge());
                 makeGreenAndAddToTitle(e.getTo());
             }
         }
@@ -127,7 +127,8 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	public void makeGreenAndAddToTitle(IClassVertex v) {
 		IDOMClassNode n = v.getCorrespondingDOMNode();
 		if (n != null) {
-			n.addAttribute("bgcolor", "\"green\"");
+			n.addAttribute("style", "filled");
+			n.addAttribute("color", "green");
 			n.setTitle(n.getTitle() + "\\n\\<\\<Decorator\\>\\>");
 		}
 	}
