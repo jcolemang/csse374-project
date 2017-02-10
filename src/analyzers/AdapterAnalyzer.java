@@ -72,6 +72,10 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             return false;
         }
 
+        if (extnds.getClass().equals(has.getClass())) {
+            return false;
+        }
+
         // you extend A
         if (!curr.extendsOrImplements(extnds)) {
             return false;
