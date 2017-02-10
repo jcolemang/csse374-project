@@ -1,4 +1,4 @@
-include: java.awt.event.MouseAdapter java.io.InputStreamReader java.io.OutputStreamWriter
+include: java.io.Writer java.io.Reader java.awt.event.MouseAdapter java.io.InputStreamReader java.io.OutputStreamWriter
 disclude: java asm sun
 synthdisplay: off
 analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer

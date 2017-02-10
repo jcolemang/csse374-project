@@ -15,21 +15,20 @@ import java.util.List;
  */
 public class AdapterAnalyzer extends AbstractAnalyzer {
 
-    private float threshold;
+    private float target;
 
     public AdapterAnalyzer() {
-        String thresh = Configuration.getInstance().getProperty("DecoratorCodeThreshold");
-        if (thresh == null) {
-            thresh = "1";
+        String strTarget = Configuration.getInstance().getProperty(Configuration.BAD_ADAPTER_RATIO);
+        if (strTarget == null) {
+            strTarget = "1";
         }
-
-        this.threshold = Float.parseFloat(thresh);
+        this.target = Float.parseFloat(strTarget);
     }
 
 
     @Override
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-
+    	
         // getting the superclass vertices
         List<IClassVertex> supers = new LinkedList<>();
 
@@ -52,7 +51,10 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         for (IClassVertex extnds : supers) {
             for (IClassVertex has : fields) {
                 if (satisfiesCondition(v, extnds, has)) {
-                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+
+                    System.out.println(v + " adapts " + has + " to " + extnds);
+
+                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
                     
                     if (v instanceof RegularClassVertex) {
@@ -61,11 +63,11 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
                 		v.getCorrespondingDOMNode().setTitleAdditions("<<Adapter>>");
                 	}
 
-                    extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+                    extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     extnds.getCorrespondingDOMNode().addAttribute("style", "filled");
                     extnds.getCorrespondingDOMNode().setTitleAdditions("<<Target>>");
 
-                    has.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+                    has.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     has.getCorrespondingDOMNode().addAttribute("style", "filled");
                     if (v instanceof RegularClassVertex) {
                     	v.getCorrespondingDOMNode().setTitleAdditions("\\n<<Adaptee>>");      		
@@ -95,7 +97,7 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             return false;
         }
 
-        if (extnds.getClass().equals(has.getClass())) {
+        if (extnds.getTitle().equals(has.getTitle())) {
             return false;
         }
 
@@ -110,42 +112,38 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         }
 
         // override all of A's methods
-        int count = 0;
-        int total = 0;
-        for (MethodData md : extnds.getMethods()) {
 
+        for (MethodData md : extnds.getMethods()) {
             if (md.isAnInitializer()) {
                 continue;
             }
 
             if (!curr.getMethods().contains(md)) {
+                System.out.println("Failed here");
                 return false;
             }
         }
 
+        System.out.println(curr);
+
         // all your methods use B
+        float count = 0, total = 0;
         for (MethodData md : curr.getMethods()) {
+
+            if (md.isAnInitializer()) {
+                continue;
+            }
+
             List<CodeData> codeDatas = md.getCodeData();
-            boolean codeMatch = true;
+            total++;
             for (CodeData codeData : codeDatas) {
-                if (!codeData.getClasses().contains(has)) {
-                    codeMatch = false;
+                if (codeData.getClasses().contains(has)) {
+                    count++;
+                    break;
                 }
             }
-
-            if (codeMatch) {
-                count++;
-            }
-            total++;
         }
 
-        if (total == 0) {
-            return false;
-        }
-        if ((float)count / (float)total < this.threshold) {
-            return false;
-        }
-
-        return true;
+        return (total > 0 && count / total >= this.target);
     }
 }

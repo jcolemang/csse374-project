@@ -42,7 +42,7 @@ public class DependencyInversionAnalyzer extends AbstractAnalyzer {
                 .filter(x -> x instanceof RegularClassVertex)
                 .filter(f -> f.getCorrespondingDOMNode() != null)
                 .forEach((IClassVertex f) -> {
-                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "red");
+                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "yellow");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
                 });
     }

@@ -127,10 +127,6 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 			}
 		}
 
-		System.out.println("These are not equal");
-		System.out.println(v);
-		System.out.println(this);
-
 		return false;
 	}
 

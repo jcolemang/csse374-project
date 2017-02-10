@@ -1,5 +1,5 @@
-include: java.util.Iterator java.util.Enumeration problem.client.App problem.client.EnumerationAdapter problem.lib.LinearTransformer
-disclude: java asm sun
+include: org.objectweb.asm.tree.ClassNode org.objectweb.asm.ClassVisitor
+disclude: java asm sun org
 synthdisplay: off
 analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
 access: private
@@ -8,4 +8,3 @@ graphColor: black
 graphBGColor: white
 fontColor: black
 fontSize: 12
-threshold: 0.5
