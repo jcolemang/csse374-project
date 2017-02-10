@@ -28,7 +28,11 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	    if (v.getCorrespondingDOMNode() == null) {
 	        return;
         }
-
+	    
+	    if (v.getTitle().equals("java.lang.Object")){
+	    	return;
+	    }
+	   
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
         	if (v instanceof RegularClassVertex) {
@@ -59,6 +63,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
 
 	private boolean isAbstractDecorator(IClassVertex v) {
+		
 		if (this.abstractDecoratorMap.getOrDefault(v.getTitle(), false)) {
 			return true;
 		}
@@ -73,6 +78,15 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		if (v.getSuperclassEdge() != null) {
 			potentialSupers.add(v.getSuperclassEdge().getTo());
 		}
+		else {
+			System.out.println("11111111111111"+ v);
+			return false;
+		}
+		if (v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")){
+//			this.abstractDecoratorMap.put(v.getTitle(), false);
+//			System.out.println("22222222222222"+ v);
+//	    	return false;
+	    }
 		for (IClassEdge edge : v.getImplementsEdges()) {
 			potentialSupers.add(edge.getTo());
 		}
@@ -87,6 +101,8 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		this.abstractDecoratorMap.put(v.getTitle(), false);
+		System.out.println("333333333333"+ v);
+
 		return false;
 	}
 

@@ -1,5 +1,5 @@
-include: java.io.Writer java.io.Reader java.awt.event.MouseAdapter java.io.InputStreamReader java.io.OutputStreamWriter
-disclude: java asm sun
+include: org.objectweb.asm.tree.ClassNode org.objectweb.asm.ClassVisitor
+disclude: java asm sun org
 synthdisplay: off
 analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
 access: private
