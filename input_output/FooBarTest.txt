@@ -1,0 +1,10 @@
+include: tester_12345.IComponent tester_12345.AbstractDecorator tester_12345.Bar
+disclude: java sun awt
+synthdisplay: off
+analyzers: analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector
+access: public
+recursive: on
+graphColor: white
+graphBGColor: white
+fontColor: black
+fontSize: 12

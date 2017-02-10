@@ -7,7 +7,7 @@ public class DOMExtendsEdge extends DOMActuallyAbstractEdgeNode {
 		return this.start.getDOTTitle() 
 				+ "->" 
 				+ this.end.getDOTTitle() 
-				+ "[ " + attributeMapToString() + "]"
+				+ "[ arrowhead = empty " + attributeMapToString() + "]"
 				+ ";\n";
 	}
 

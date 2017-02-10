@@ -22,7 +22,7 @@ public class Configuration {
 	private int fontSize;
 	private String fontColor;
 	
-	private final String defaultPath = "input_output/defaultsettings.txt";
+	private final String defaultPath = "input_output/FooBarTest.txt";
 
 	private Map<String, String> properties;
 	

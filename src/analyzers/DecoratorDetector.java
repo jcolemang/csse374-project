@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import DOMNodes.IDOMClassNode;
+import DOMNodes.IDOMNode;
 import graphNodes.AbstractClassVertex;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
@@ -36,18 +39,20 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-			makeGreen(v);
+        	addArrowTag(v.getSuperclassEdge());
+			makeGreenAndAddToTitle(v);
 		}
 
 		// if it is abstract
 		if (isAbstractDecorator(v)) {
+			makeGreenAndAddToTitle(v);
 			List<IClassEdge> interfsForAbs = v.getImplementsEdges();
 			if (v.getSuperclassEdge() != null) {
 				interfsForAbs.add(v.getSuperclassEdge());
 			}
             for (IClassEdge e : interfsForAbs) {
                 this.setVisited(e.getTo());
-                makeGreen(e.getTo());
+                makeGreenAndAddToTitle(e.getTo());
             }
         }
 
@@ -119,9 +124,17 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	}
 
 
-	public void makeGreen(IClassVertex v) {
-		if (v.getCorrespondingDOMNode() != null) {
-			v.getCorrespondingDOMNode().addAttribute("color", "\"green\"");			
+	public void makeGreenAndAddToTitle(IClassVertex v) {
+		IDOMClassNode n = v.getCorrespondingDOMNode();
+		if (n != null) {
+			n.addAttribute("bgcolor", "\"green\"");
+			n.setTitle(n.getTitle() + "\\n\\<\\<Decorator\\>\\>");
+		}
+	}
+	
+	public void addArrowTag(IClassEdge e) {
+		if (e.getCorrespondingDOMNode() != null) {
+			e.getCorrespondingDOMNode().addAttribute("label", "\"   \\<\\<decorates\\>\\>\"");;			
 		}
 	}
 }
