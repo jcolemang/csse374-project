@@ -110,7 +110,6 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             if (!curr.getMethods().contains(md)) {
                 return false;
             }
-
         }
 
         // all your methods use B
@@ -129,6 +128,9 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             total++;
         }
 
+        if (total == 0) {
+            return false;
+        }
         if ((float)count / (float)total < this.threshold) {
             return false;
         }
