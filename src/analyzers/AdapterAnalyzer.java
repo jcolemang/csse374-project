@@ -66,7 +66,7 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
                             .stream()
                             .forEach(e -> {
                                 e.getCorrespondingDOMNode()
-                                        .addAttribute("label", "<<adapts>>");
+                                        .addAttribute("label", "\"  \\<\\<adapts\\>\\>\"");
                             });
                 }
             }

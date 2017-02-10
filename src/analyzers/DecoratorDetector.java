@@ -121,13 +121,12 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			n.addAttribute("style", "filled");
 			n.addAttribute("fillcolor", "green");
 			n.setTitleAdditions(tag);
-//			n.setTitle(n.getTitle() + "\\n<<" + tag + ">>");
 		}
 	}
 	
 	public void addArrowTag(IClassEdge e) {
 		if (e.getCorrespondingDOMNode() != null) {
-			e.getCorrespondingDOMNode().addAttribute("label", "\"  \\<\\<decorates\\>\\>\"");;			
+			e.getCorrespondingDOMNode().addAttribute("label", "\"  \\<\\<decorates\\>\\>\"");
 		}
 	}
 }
