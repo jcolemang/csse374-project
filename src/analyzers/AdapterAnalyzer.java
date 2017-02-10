@@ -101,17 +101,20 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         // override all of A's methods
         int count = 0;
         int total = 0;
-        for (MethodData md : curr.getMethods()) {
+        for (MethodData md : extnds.getMethods()) {
 
             if (md.isAnInitializer()) {
                 continue;
             }
 
-            if (!extnds.getMethods().contains(md)) {
+            if (!curr.getMethods().contains(md)) {
                 return false;
             }
 
-            // all your methods use B
+        }
+
+        // all your methods use B
+        for (MethodData md : curr.getMethods()) {
             List<CodeData> codeDatas = md.getCodeData();
             boolean codeMatch = true;
             for (CodeData codeData : codeDatas) {
