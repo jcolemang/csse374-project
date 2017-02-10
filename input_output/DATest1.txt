@@ -1,0 +1,10 @@
+include: problem.DecryptInputStream problem.EncryptionOutputStream problem.IDecryption problem.IEncryption problem.SubstitutionCipher problem.TextEditorApp 
+disclude: java asm sun
+synthdisplay: off
+analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer
+access: private
+recursive: on
+graphColor: black
+graphBGColor: white
+fontColor: black
+fontSize: 12
