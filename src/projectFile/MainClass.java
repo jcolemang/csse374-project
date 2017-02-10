@@ -44,7 +44,7 @@ public class MainClass {
 												  ClassNotFoundException {
 	    //AnotherClass a = new AnotherClass();
 		Configuration config = Configuration.getInstance();
-		config.readFromSettingsFile("input_output/test.txt");
+		config.readFromSettingsFile("input_output/Autowire.txt");
 //        config.readFromSettingsFile();
 		System.out.println(config.getBlacklist());
 		
