@@ -13,20 +13,15 @@ import java.util.List;
  */
 public class AdapterAnalyzer extends AbstractAnalyzer {
 
-    private float threshold;
 
     public AdapterAnalyzer() {
-        String thresh = Configuration.getInstance().getProperty("DecoratorCodeThreshold");
-        if (thresh == null) {
-            thresh = "1";
-        }
-
-        this.threshold = Float.parseFloat(thresh);
+    	
     }
 
 
     @Override
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
+    	
 
         // getting the superclass vertices
         List<IClassVertex> supers = new LinkedList<>();
@@ -81,26 +76,28 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         if (curr.getCorrespondingDOMNode() == null ||
                 extnds.getCorrespondingDOMNode() == null ||
                 has.getCorrespondingDOMNode() == null) {
+
             return false;
         }
 
-        if (extnds.getClass().equals(has.getClass())) {
+        if (extnds.equals(has)) {
             return false;
         }
 
         // you extend A
         if (!curr.extendsOrImplements(extnds)) {
+
             return false;
         }
 
         // you have an instance of B
         if (!curr.containsField(has)) {
+
             return false;
         }
 
         // override all of A's methods
-        int count = 0;
-        int total = 0;
+
         for (MethodData md : extnds.getMethods()) {
 
             if (md.isAnInitializer()) {
@@ -115,24 +112,11 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         // all your methods use B
         for (MethodData md : curr.getMethods()) {
             List<CodeData> codeDatas = md.getCodeData();
-            boolean codeMatch = true;
             for (CodeData codeData : codeDatas) {
                 if (!codeData.getClasses().contains(has)) {
-                    codeMatch = false;
+                	return false;
                 }
             }
-
-            if (codeMatch) {
-                count++;
-            }
-            total++;
-        }
-
-        if (total == 0) {
-            return false;
-        }
-        if ((float)count / (float)total < this.threshold) {
-            return false;
         }
 
         return true;
