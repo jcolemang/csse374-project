@@ -116,6 +116,37 @@ public class MethodData {
 	public List<CodeData> getCodeData() {
 		return this.codeDatas;
 	}
+
+
+	public boolean isAnInitializer() {
+		return this.getMethodName().startsWith("<");
+	}
+
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof MethodData)) {
+			return false;
+		}
+
+		MethodData otherData = (MethodData) other;
+		if (!otherData.getMethodName().equals(this.getMethodName())) {
+		    System.out.println(this.getMethodName());
+			return false;
+		}
+
+		if (this.getParams().size() != otherData.getParams().size()) {
+			return false;
+		}
+
+		for (int i = 0; i < this.getParams().size(); i++) {
+			if (!this.getParams().get(i).equals(otherData.getParams().get(i))) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 	
 
 }

@@ -39,6 +39,7 @@ public class DependencyInversionAnalyzer extends AbstractAnalyzer {
 
         Stream.concat(fieldStream, methodStream)
                 .filter(f -> hasA(v, f))
+                .filter(x -> x instanceof RegularClassVertex)
                 .filter(f -> f.getCorrespondingDOMNode() != null)
                 .forEach((IClassVertex f) -> {
                     v.getCorrespondingDOMNode().addAttribute("fillcolor", "red");
