@@ -13,16 +13,20 @@ import java.util.List;
  */
 public class AdapterAnalyzer extends AbstractAnalyzer {
 
+    private float target;
 
     public AdapterAnalyzer() {
-    	
+        String strTarget = Configuration.getInstance().getProperty(Configuration.BAD_ADAPTER_RATIO);
+        if (strTarget == null) {
+            strTarget = "1";
+        }
+        this.target = Float.parseFloat(strTarget);
     }
 
 
     @Override
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
     	
-
         // getting the superclass vertices
         List<IClassVertex> supers = new LinkedList<>();
 
@@ -45,15 +49,18 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         for (IClassVertex extnds : supers) {
             for (IClassVertex has : fields) {
                 if (satisfiesCondition(v, extnds, has)) {
-                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+
+                    System.out.println(v + " adapts " + has + " to " + extnds);
+
+                    v.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
                     v.getCorrespondingDOMNode().setTitleAdditions("<<Adapter>>");
 
-                    extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+                    extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     extnds.getCorrespondingDOMNode().addAttribute("style", "filled");
                     extnds.getCorrespondingDOMNode().setTitleAdditions("<<Target>>");
 
-                    has.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
+                    has.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     has.getCorrespondingDOMNode().addAttribute("style", "filled");
                     has.getCorrespondingDOMNode().setTitleAdditions("<<Adaptee>>");
 
@@ -76,49 +83,56 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
         if (curr.getCorrespondingDOMNode() == null ||
                 extnds.getCorrespondingDOMNode() == null ||
                 has.getCorrespondingDOMNode() == null) {
-
             return false;
         }
 
-        if (extnds.equals(has)) {
+        if (extnds.getTitle().equals(has.getTitle())) {
             return false;
         }
 
         // you extend A
         if (!curr.extendsOrImplements(extnds)) {
-
             return false;
         }
 
         // you have an instance of B
         if (!curr.containsField(has)) {
-
             return false;
         }
 
         // override all of A's methods
 
         for (MethodData md : extnds.getMethods()) {
-
             if (md.isAnInitializer()) {
                 continue;
             }
 
             if (!curr.getMethods().contains(md)) {
+                System.out.println("Failed here");
                 return false;
             }
         }
 
+        System.out.println(curr);
+
         // all your methods use B
+        float count = 0, total = 0;
         for (MethodData md : curr.getMethods()) {
+
+            if (md.isAnInitializer()) {
+                continue;
+            }
+
             List<CodeData> codeDatas = md.getCodeData();
+            total++;
             for (CodeData codeData : codeDatas) {
-                if (!codeData.getClasses().contains(has)) {
-                	return false;
+                if (codeData.getClasses().contains(has)) {
+                    count++;
+                    break;
                 }
             }
         }
 
-        return true;
+        return (total > 0 && count / total >= this.target);
     }
 }

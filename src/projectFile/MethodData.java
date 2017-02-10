@@ -131,7 +131,6 @@ public class MethodData {
 
 		MethodData otherData = (MethodData) other;
 		if (!otherData.getMethodName().equals(this.getMethodName())) {
-		    System.out.println(this.getMethodName());
 			return false;
 		}
 

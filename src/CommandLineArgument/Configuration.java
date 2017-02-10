@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Configuration {
+
+	public static final String BAD_ADAPTER_RATIO = "adapterRatio";
 	
 	private static Configuration soleInstance;
 	
@@ -95,7 +97,7 @@ public class Configuration {
 						for (int i = 1; i < lineSplit.length; i++) {
 							prop += lineSplit[i];
 						}
-						this.setProperty(lineSplit[1], prop);
+						this.setProperty(lineSplit[0], prop);
 		       }
 		    }
 		} catch (IOException e) {

@@ -5,13 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import CommandLineArgument.Configuration;
 import DOMNodes.IDOMClassNode;
 import graphNodes.AbstractClassVertex;
 import graphNodes.IClassEdge;
 import graphNodes.IClassVertex;
 import graphNodes.RegularClassVertex;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
+import projectFile.MethodData;
 
 public class DecoratorDetector extends AbstractAnalyzer {
 	
@@ -35,11 +38,10 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	   
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-        	if (v instanceof RegularClassVertex) {
-        		makeGreenAndAddToTitle(v, "\\n<<Decorator>>");        		
-        	} else if (v instanceof AbstractClassVertex) {
-        		makeGreenAndAddToTitle(v, "<<Decorator>>");
-        	}
+            makeGreenAndAddToTitle(v, "\\n<<Decorator>>");
+            if (isBadDecorator(v)) {
+                v.getCorrespondingDOMNode().addAttribute("color", "red");
+            }
 		}
 
 		// if it is abstract
@@ -68,28 +70,19 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			return true;
 		}
 
-//		if (!(v instanceof AbstractClassVertex)) {
-//			this.abstractDecoratorMap.put(v.getTitle(), false);
-//			return false;
-//		}
-
 		// getting all possible superclasses
         List<IClassVertex> potentialSupers = new LinkedList<>();
-		if (v.getSuperclassEdge() != null) {
-			potentialSupers.add(v.getSuperclassEdge().getTo());
+		if (v.getSuperclassEdge() != null
+                && v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")) {
+            potentialSupers.add(v.getSuperclassEdge().getTo());
 		}
-		else {
-			System.out.println("11111111111111"+ v);
-			return false;
-		}
-		if (v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")){
-//			this.abstractDecoratorMap.put(v.getTitle(), false);
-//			System.out.println("22222222222222"+ v);
-//	    	return false;
-	    }
 		for (IClassEdge edge : v.getImplementsEdges()) {
 			potentialSupers.add(edge.getTo());
 		}
+
+		if (potentialSupers.size() == 0) {
+		    return false;
+        }
 
 		// checking if, for any of the superclasses, the current class contains them as
 		// a field and overrides all of their methods
@@ -101,38 +94,54 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		this.abstractDecoratorMap.put(v.getTitle(), false);
-		System.out.println("333333333333"+ v);
 
 		return false;
 	}
 
 
 	public boolean extendsAbstractDecorator(IClassVertex v) {
-
-		// checking if this has been visited
-		if (this.extendsAbstract.containsKey(v.getTitle())) {
-			return this.extendsAbstract.get(v.getTitle());
-		}
-
-		// getting the supertype
-		IClassEdge superTypeEdge = v.getSuperclassEdge();
-		if (superTypeEdge == null) {
-            this.extendsAbstract.put(v.getTitle(), false);
-			return false;
-		}
-		IClassVertex superType = v.getSuperclassEdge().getTo();
-
-		// do I extend an abstract decorator, or does my supertype extend an
-		// abstract decorator?
-		if (this.isAbstractDecorator(superType) ||
-				this.extendsAbstractDecorator(superType)) {
-		    this.extendsAbstract.put(v.getTitle(), true);
-		    return true;
-		}
-
-		this.extendsAbstract.put(v.getTitle(), false);
-		return false;
+	    return getAbstractDecorator(v) != null;
+//		// checking if this has been visited
+//		if (this.extendsAbstract.containsKey(v.getTitle())) {
+//			return this.extendsAbstract.get(v.getTitle());
+//		}
+//
+//		// getting the supertype
+//		IClassEdge superTypeEdge = v.getSuperclassEdge();
+//		if (superTypeEdge == null) {
+//            this.extendsAbstract.put(v.getTitle(), false);
+//			return false;
+//		}
+//		IClassVertex superType = v.getSuperclassEdge().getTo();
+//
+//		// do I extend an abstract decorator, or does my supertype extend an
+//		// abstract decorator?
+//		if (this.isAbstractDecorator(superType) ||
+//				this.extendsAbstractDecorator(superType)) {
+//		    this.extendsAbstract.put(v.getTitle(), true);
+//		    return true;
+//		}
+//
+//		this.extendsAbstract.put(v.getTitle(), false);
+//		return false;
 	}
+
+
+	public IClassVertex getAbstractDecorator(IClassVertex v) {
+
+        // getting the supertype
+        IClassEdge superTypeEdge = v.getSuperclassEdge();
+        if (superTypeEdge == null) {
+            return null;
+        }
+
+        IClassVertex superType = v.getSuperclassEdge().getTo();
+        if (this.isAbstractDecorator(superType)) {
+            return superType;
+        }
+
+        return getAbstractDecorator(superType);
+    }
 
 
 	public void makeGreenAndAddToTitle(IClassVertex v, String tag) {
@@ -143,10 +152,29 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			n.setTitleAdditions(tag);
 		}
 	}
-	
+
+
 	public void addArrowTag(IClassEdge e) {
 		if (e.getCorrespondingDOMNode() != null) {
 			e.getCorrespondingDOMNode().addAttribute("label", "\"  \\<\\<decorates\\>\\>\"");
 		}
 	}
+
+
+	public boolean isBadDecorator(IClassVertex curr) {
+        IClassVertex decor = getAbstractDecorator(curr);
+        if (decor == null) {
+            return true;
+        }
+
+        for (MethodData data : decor.getMethods()) {
+            if (!curr.getMethods().contains(data)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

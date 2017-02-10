@@ -188,8 +188,7 @@ public class GraphParser {
                 this.addAssociationEdge(classVertex, fieldVertex, g);
 			}
 		}
-		
-		
+
 		this.addVisit(className, classVertex, g);
 		return classVertex;
 	}
@@ -415,8 +414,6 @@ public class GraphParser {
 			nodes.accept(meth.instructions.get(i));
 		}
 		nodes.build()
-				.filter(node -> node instanceof VarInsnNode)
-				.filter(node -> node instanceof MethodInsnNode)
 				.map(node -> this.processInstructions(node, current, graph))
                 .map(data -> {
                     method.addCodeData(data);
@@ -433,11 +430,30 @@ public class GraphParser {
 												 IClassVertex curr,
 												 ClassNodeGraph graph) {
 	    CodeData codeData = new CodeData();
+
+	    // method instructions
 	    if (node instanceof MethodInsnNode) {
 	    	MethodInsnNode meth = (MethodInsnNode)node;
-	    	codeData.addClass(this.makeSingleNode(meth.owner, graph));
+	    	for (String className : this.getTypeStrings(meth.desc)) {
+	    		IClassVertex v = this.makeSingleNode(className, graph);
+	    		if (!v.equals(curr)) {
+					codeData.addClass(v);
+				}
+			}
+
+		// field instructions
+		} else if (node instanceof FieldInsnNode) {
+			FieldInsnNode f = (FieldInsnNode) node;
+			for (String className : this.getTypeStrings(f.desc)) {
+				IClassVertex v = this.makeSingleNode(className, graph);
+				if (!v.equals(curr)) {
+					codeData.addClass(v);
+				}
+			}
+
+	    // not found
 		}
-	    return new CodeData();
+	    return codeData;
 	}
 
 	
