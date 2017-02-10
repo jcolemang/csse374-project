@@ -79,13 +79,11 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			potentialSupers.add(v.getSuperclassEdge().getTo());
 		}
 		else {
-			System.out.println("11111111111111"+ v);
 			return false;
 		}
 		if (v.getSuperclassEdge().getTo().getTitle().equals("java.lang.Object")){
-//			this.abstractDecoratorMap.put(v.getTitle(), false);
-//			System.out.println("22222222222222"+ v);
-//	    	return false;
+
+	    	return false;
 	    }
 		for (IClassEdge edge : v.getImplementsEdges()) {
 			potentialSupers.add(edge.getTo());
@@ -101,7 +99,6 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		this.abstractDecoratorMap.put(v.getTitle(), false);
-		System.out.println("333333333333"+ v);
 
 		return false;
 	}
