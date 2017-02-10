@@ -52,24 +52,46 @@ only association, not
 
 ## Using Our Project
 
-### Adding Your Project to the Build Path
-1. Open the CSSE374 project in Eclipse
-2. Click the "Run" menu
-3. Select "Run Configurations"
-4. Select the "Classpath" tab and select "User Entries"
-5. Select "Add Projects"
-6. Add your project from the project selection window
 
-### Running the Code
-1. Select the "Run" menu and click "Run Configurations"
-2. Create a new Java Application run configuration
-3. Make sure the "Project" and "Main class" fields are correct
-4. Select the "Arguments" tab
-5. Enter the class name of each class you would like analyzed under "Program
-   arguments"
-6. Add `-recursive` to recursively parse superclasses and interfaces and
-   `-private`, `-public`, or `-protected` to limit the fields and methods
-   displayed
+### Installing the Graphviz
+1. Download the Graphviz from http://graphviz.org/Download..php
+2. Install the Graphviz.
+
+### Customing the Setting File for Configuration
+1. Create a folder named "input_output" in the root directory of your own java project.
+2. Create a txt file named "setting.txt" as the setting file.
+2. Write the objects related to the 10 keywords as the format below:
+
+	include: 
+	(setting the whitelist of classes.)
+	disclude: 
+	(setting the blacklist of classes.)
+	synthdisplay: 
+	analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer 				analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer 				analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer 				analyzers.DependencyInversionAnalyzer
+	(setting the list of analyzers need to be run, usually it doesn't need to be change.)
+	access: 
+	(Write "private", "public", or "protected" to limit the fields and methods displayed.)
+	recursive: 
+	(setting if the program need to recursively parse all the superclasses and interfaces in java. Write "on" or "off")
+	fontColor: Eg. black
+	(setting the font color in the diagram.)
+	graphColor: Eg. white
+	(setting the color of frame of each class in the diagram.)
+	graphBGColor: Eg. black
+	(setting the background color in the diagram created. )
+	fontSize: Eg. 12 
+	(setting the font size in the diagram.)
+	
+3. Save the file.
+
+### Running the project
+1. Put the csse374-project.jar in the root directory of your own java project.
+2. Run the jar from the command line
+	java -jar csse374-project.jar
+
+### Openning the diagram
+1. Launch the Graphviz you install before.
+2. Open the "out.dot" file in the "input_output" folder you create before.
 
 
 ## Contributions
