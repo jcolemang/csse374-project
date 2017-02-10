@@ -52,10 +52,15 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
                 if (satisfiesCondition(v, extnds, has)) {
                     v.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
+                    v.getCorrespondingDOMNode().setTitleAdditions("<<Adapter>>");
+
                     extnds.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     extnds.getCorrespondingDOMNode().addAttribute("style", "filled");
+                    extnds.getCorrespondingDOMNode().setTitleAdditions("<<Target>>");
+
                     has.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     has.getCorrespondingDOMNode().addAttribute("style", "filled");
+                    v.getCorrespondingDOMNode().setTitleAdditions("<<Adaptee>>");
                 }
             }
         }
