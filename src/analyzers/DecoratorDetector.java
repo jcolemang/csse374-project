@@ -28,27 +28,27 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
-
+		
 	    if (v.getCorrespondingDOMNode() == null) {
 	        return;
         }
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v, "Decorator");
+			makeGreenAndAddToTitle(v, "\\n<<Decorator>>");
 		}
 
 		// if it is abstract
 		if (isAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v, "Decorator");
+			makeGreenAndAddToTitle(v, "<<Decorator>>");
 			List<IClassEdge> interfsForAbs = v.getImplementsEdges();
 			if (v.getSuperclassEdge() != null) {
 				interfsForAbs.add(v.getSuperclassEdge());
 			}
             for (IClassEdge e : interfsForAbs) {
                 this.setVisited(e.getTo());
-                addArrowTag(v.getSuperclassEdge());
-                makeGreenAndAddToTitle(e.getTo(), "Component");
+                addArrowTag(e);
+                makeGreenAndAddToTitle(e.getTo(), "<<Component>>");
             }
         }
 	}
@@ -120,13 +120,14 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		if (n != null) {
 			n.addAttribute("style", "filled");
 			n.addAttribute("fillcolor", "green");
-			n.setTitle(n.getTitle() + "\n<<" + tag + ">>");
+			n.setTitleAdditions(tag);
+//			n.setTitle(n.getTitle() + "\\n<<" + tag + ">>");
 		}
 	}
 	
 	public void addArrowTag(IClassEdge e) {
 		if (e.getCorrespondingDOMNode() != null) {
-			e.getCorrespondingDOMNode().addAttribute("label", "\"   \\<\\<decorates\\>\\>\"");;			
+			e.getCorrespondingDOMNode().addAttribute("label", "\"  \\<\\<decorates\\>\\>\"");;			
 		}
 	}
 }

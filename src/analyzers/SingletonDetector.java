@@ -23,6 +23,7 @@ public class SingletonDetector extends AbstractAnalyzer {
 					dn = v.getCorrespondingDOMNode();
                     dn.addAttribute("color", "\"blue\"");
                     String title = dn.getTitle()+"\\n\\<\\<Singleton\\>\\>";
+//                    dn.setTitleAdditions("\\n<<Singleton>>");
                     dn.setTitle(title);
                     break;
 				}
