@@ -16,12 +16,13 @@ public class DOMAbstractClassNode extends DOMAbstractBoxNode {
 			methods += s + "\\l";
 		}
 		
-		return this.getDOTTitle() + "[\nlabel = <{<I>" +
-			this.sanitize(title) + "</I>|" + 
-			this.sanitize(fields).replaceAll("\\\\l", "<br align=\"left\"/>") +
-			"\n|\n" +
-			this.sanitize(methods).replaceAll("\\\\l", "<br align=\"left\"/>") 
-			+ "}>\n]";
+		return this.getDOTTitle() + "[\n" + this.sanitize(this.attributeMapToString()) +
+				"label = <{<I>" +
+				this.sanitize(title) + "</I>|" +
+				this.sanitize(fields).replaceAll("\\\\l", "<br align=\"left\"/>") +
+				"\n|\n" +
+				this.sanitize(methods).replaceAll("\\\\l", "<br align=\"left\"/>") +
+				"}>\n]";
 		
 	}
 

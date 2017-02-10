@@ -29,22 +29,18 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	@Override
 	public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph d) {
 
-		if (!(v instanceof RegularClassVertex)) {
-			return;
-		}
-
-        if (v.getSuperclassEdge() == null) {
-            return;
+	    if (v.getCorrespondingDOMNode() == null) {
+	        return;
         }
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v);
+			makeGreenAndAddToTitle(v, "Decorator");
 		}
 
 		// if it is abstract
 		if (isAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v);
+			makeGreenAndAddToTitle(v, "Decorator");
 			List<IClassEdge> interfsForAbs = v.getImplementsEdges();
 			if (v.getSuperclassEdge() != null) {
 				interfsForAbs.add(v.getSuperclassEdge());
@@ -52,15 +48,13 @@ public class DecoratorDetector extends AbstractAnalyzer {
             for (IClassEdge e : interfsForAbs) {
                 this.setVisited(e.getTo());
                 addArrowTag(v.getSuperclassEdge());
-                makeGreenAndAddToTitle(e.getTo());
+                makeGreenAndAddToTitle(e.getTo(), "Component");
             }
         }
-
 	}
 
 
 	private boolean isAbstractDecorator(IClassVertex v) {
-
 		if (this.abstractDecoratorMap.getOrDefault(v.getTitle(), false)) {
 			return true;
 		}
@@ -97,16 +91,13 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
 		// checking if this has been visited
 		if (this.extendsAbstract.containsKey(v.getTitle())) {
-			if (this.extendsAbstract.get(v.getTitle()))	{
-				return true;
-			}
-
-			return false;
+			return this.extendsAbstract.get(v.getTitle());
 		}
 
 		// getting the supertype
 		IClassEdge superTypeEdge = v.getSuperclassEdge();
 		if (superTypeEdge == null) {
+            this.extendsAbstract.put(v.getTitle(), false);
 			return false;
 		}
 		IClassVertex superType = v.getSuperclassEdge().getTo();
@@ -124,12 +115,12 @@ public class DecoratorDetector extends AbstractAnalyzer {
 	}
 
 
-	public void makeGreenAndAddToTitle(IClassVertex v) {
+	public void makeGreenAndAddToTitle(IClassVertex v, String tag) {
 		IDOMClassNode n = v.getCorrespondingDOMNode();
 		if (n != null) {
 			n.addAttribute("style", "filled");
-			n.addAttribute("color", "green");
-			n.setTitle(n.getTitle() + "\\n\\<\\<Decorator\\>\\>");
+			n.addAttribute("fillcolor", "green");
+			n.setTitle(n.getTitle() + "\n<<" + tag + ">>");
 		}
 	}
 	
