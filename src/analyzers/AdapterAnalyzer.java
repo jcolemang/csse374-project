@@ -61,6 +61,13 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
                     has.getCorrespondingDOMNode().addAttribute("fillcolor", "purple");
                     has.getCorrespondingDOMNode().addAttribute("style", "filled");
                     v.getCorrespondingDOMNode().setTitleAdditions("<<Adaptee>>");
+
+                    g.getEdgesFromTo(v, has)
+                            .stream()
+                            .forEach(e -> {
+                                e.getCorrespondingDOMNode()
+                                        .addAttribute("label", "\\<\\<adapts\\>\\>");
+                            });
                 }
             }
         }
