@@ -112,6 +112,18 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 	}
 
 
+	@Override
+	public boolean extendsOrImplements(IClassVertex v) {
+		if (this.getSuperclassEdge() != null) {
+			if (this.getSuperclassEdge().getTo().equals(v)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
 	/**
 	 * Returns the List<MethodData> of the class's methods
 	 * 
