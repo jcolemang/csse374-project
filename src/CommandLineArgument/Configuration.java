@@ -45,6 +45,10 @@ public class Configuration {
 	}
 	
 	public void readFromSettingsFile(String settingsFile) {
+		
+		this.whitelist.clear();
+		this.blacklist.clear();
+		this.analyzers.clear();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
 			

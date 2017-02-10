@@ -52,7 +52,7 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             for (IClassVertex has : fields) {
                 if (satisfiesCondition(v, extnds, has)) {
 
-                    System.out.println(v + " adapts " + has + " to " + extnds);
+//                    System.out.println(v + " adapts " + has + " to " + extnds);
 
                     v.getCorrespondingDOMNode().addAttribute("fillcolor", "maroon");
                     v.getCorrespondingDOMNode().addAttribute("style", "filled");
@@ -119,7 +119,6 @@ public class AdapterAnalyzer extends AbstractAnalyzer {
             }
 
             if (!curr.getMethods().contains(md)) {
-                System.out.println("Failed here");
                 return false;
             }
         }

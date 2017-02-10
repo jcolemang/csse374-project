@@ -74,8 +74,6 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			return false;
 		}
 
-		System.out.println(v);
-
 		// getting all possible superclasses
         List<IClassVertex> potentialSupers = new LinkedList<>();
 		if (v.getSuperclassEdge() != null
@@ -87,7 +85,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		if (potentialSupers.size() == 0) {
-			System.out.println("No supers");
+//			System.out.println("No supers");
 		    return false;
         }
 
@@ -101,7 +99,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 		}
 
 		this.abstractDecoratorMap.put(v.getTitle(), false);
-		System.out.println("Failed here");
+//		System.out.println("Failed here");
 		return false;
 	}
 
