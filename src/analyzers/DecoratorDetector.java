@@ -70,6 +70,10 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			return true;
 		}
 
+		if (this.extendsAbstractDecorator(v)) {
+			return false;
+		}
+
 		System.out.println(v);
 
 		// getting all possible superclasses
