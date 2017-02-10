@@ -1,4 +1,4 @@
-include: problem.DecryptInputStream problem.EncryptionOutputStream problem.IDecryption problem.IEncryption problem.SubstitutionCipher problem.TextEditorApp 
+include: problem.DecryptionInputStream problem.EncryptionOutputStream problem.IDecryption problem.IEncryption problem.SubstitutionCipher problem.TextEditorApp java.io.FilterInputStream java.io.FilterOutputStream java.io.InputStream java.io.OutputStream
 disclude: java asm sun
 synthdisplay: off
 analyzers: analyzers.AdapterAnalyzer analyzers.DependencyInversionAnalyzer analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer

@@ -47,8 +47,8 @@ public class TextAggregator {
 		out.write("rankdir = BT\n".getBytes());
 		out.write(("fontsize = " + fontSize + "\n").getBytes());
 		out.write(("color = \"" + config.getGraphColor() + "\"\n").getBytes());
-		out.write(("bgcolor = \"" + config.getGraphBGColor() + "\"\n").getBytes());
-		out.write(("fontcolor = \"" + config.getFontColor() + "\"\n").getBytes());
+//		out.write(("bgcolor = \"" + config.getGraphBGColor() + "\"\n").getBytes());
+		out.write(("fontcolor = " + config.getFontColor() + "\n").getBytes());
 		out.write("node [ shape = record ]\n".getBytes());
 	}
 	
@@ -61,10 +61,5 @@ public class TextAggregator {
 	public void writeFooter(OutputStream out) throws IOException {
 		out.write("}".getBytes());
 	}
-	
-	
-	
-
-	
 	
 }
