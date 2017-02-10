@@ -35,7 +35,7 @@ public class DecoratorDetector extends AbstractAnalyzer {
 
         // if extends something and that thing is abstract
         if (extendsAbstractDecorator(v)) {
-			makeGreenAndAddToTitle(v, "\\n<<Decorator>>");
+			makeGreenAndAddToTitle(v, "\n<<Decorator>>");
 		}
 
 		// if it is abstract
@@ -59,10 +59,10 @@ public class DecoratorDetector extends AbstractAnalyzer {
 			return true;
 		}
 
-		if (!(v instanceof AbstractClassVertex)) {
-			this.abstractDecoratorMap.put(v.getTitle(), false);
-			return false;
-		}
+//		if (!(v instanceof AbstractClassVertex)) {
+//			this.abstractDecoratorMap.put(v.getTitle(), false);
+//			return false;
+//		}
 
 		// getting all possible superclasses
         List<IClassVertex> potentialSupers = new LinkedList<>();
