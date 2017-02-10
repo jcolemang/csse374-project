@@ -21,6 +21,7 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 	Map<String, String> aestheticAttributes = new HashMap<String, String>();
 	
 	String classTitle = "";
+	String titleAdditions = "";
 	private int accessLevel = 0;
 
 	protected List<String> fields;
@@ -38,6 +39,14 @@ public abstract class DOMAbstractBoxNode implements IDOMClassNode {
 		this.classTitle = title;
 	}
 
+	@Override
+	public void setTitleAdditions(String add) {
+		this.titleAdditions = add;
+	}
+	
+	public String getTitleAdditions() {
+		return this.titleAdditions;
+	}
 
 	public void setAccessLevel(String access) {
 		this.accessLevel = this.translateAccessLevel(access);

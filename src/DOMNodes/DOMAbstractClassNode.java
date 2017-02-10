@@ -18,7 +18,7 @@ public class DOMAbstractClassNode extends DOMAbstractBoxNode {
 		
 		return this.getDOTTitle() + "[\n" + this.sanitize(this.attributeMapToString()) +
 				"label = <{<I>" +
-				this.sanitize(title) + "</I>|" +
+				this.sanitize(title) + "</I><br/>" + this.sanitize(this.getTitleAdditions()) + "|" +
 				this.sanitize(fields).replaceAll("\\\\l", "<br align=\"left\"/>") +
 				"\n|\n" +
 				this.sanitize(methods).replaceAll("\\\\l", "<br align=\"left\"/>") +

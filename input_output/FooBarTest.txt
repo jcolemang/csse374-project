@@ -1,7 +1,7 @@
 include: tester_12345.IComponent tester_12345.AbstractDecorator tester_12345.Bar
 disclude: java sun awt
 synthdisplay: off
-analyzers: analyzers.DecoratorDetector
+analyzers: analyzers.DecoratorDetector analyzers.BlacklistNodesAnalyzer analyzers.DependencyInversionAnalyzer analyzers.ViolatesCompositionOverInheritanceAnalyzer
 access: public
 recursive: on
 graphColor: white
