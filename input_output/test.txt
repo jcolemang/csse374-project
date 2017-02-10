@@ -1,7 +1,7 @@
 include: test.AbstractDec test.ConcreteDec test.Inter
 disclude: java sun org
 synthdisplay: off
-analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer
+analyzers: analyzers.DecoratorDetector analyzers.AssociationSupercedesDependencyAnalyzer analyzers.IsACollectionAndAddCardinalityAnalyzer analyzers.MergeArrowAnalyzer analyzers.SingletonDetector analyzers.ViolatesCompositionOverInheritanceAnalyzer analyzers.DependencyInversionAnalyzer analyzers.AdapterAnalyzer
 access: public
 recursive: off
 fontColor: black

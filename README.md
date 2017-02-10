@@ -16,7 +16,8 @@
 
 - Adapter
 
-  If you extend A and have an instance of B and you override all of A's methods.
+  if you extend a and have an instance of b and you override all of a's methods.
+  and all of your methods use b
 
 - Abstract Decorator
 

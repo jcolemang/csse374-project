@@ -120,6 +120,17 @@ public abstract class ActuallyAbstractClassVertex implements IClassVertex {
 			}
 		}
 
+		for (IClassEdge ie : this.getImplementsEdges()) {
+			IClassVertex i = ie.getTo();
+			if (i.equals(v)) {
+				return true;
+			}
+		}
+
+		System.out.println("These are not equal");
+		System.out.println(v);
+		System.out.println(this);
+
 		return false;
 	}
 
