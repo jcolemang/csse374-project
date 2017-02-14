@@ -8,13 +8,15 @@ import java.util.List;
 
 /**
  * Created by coleman on 2/14/17.
+ *
+ * Time for some Java trickery
  */
-public class NewDOMGraph extends DOMGraph {
+public class $$$NewDOMGraph$$$ extends DOMGraph {
 
     protected DOMGraph forRealGraph;
     protected List<IDOMNode> extras;
 
-    public NewDOMGraph(DOMGraph g) {
+    public $$$NewDOMGraph$$$(DOMGraph g) {
         this.forRealGraph = g;
         this.extras = new LinkedList<>();
     }
@@ -58,9 +60,5 @@ public class NewDOMGraph extends DOMGraph {
         }
 
     }
-
-    // now time for some java sorcery
-
-
 
 }
