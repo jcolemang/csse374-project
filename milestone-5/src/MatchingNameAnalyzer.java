@@ -15,7 +15,7 @@ public class MatchingNameAnalyzer extends AbstractAnalyzer {
 
     public void analyze(IClassVertex v, ClassNodeGraph g, DOMGraph dom) {
 
-        NewDOMGraph seriousHack = (NewDOMGraph) dom;
+        $$$NewDOMGraph$$$ seriousHack = ($$$NewDOMGraph$$$) dom;
 
         if (v.getCorrespondingDOMNode() == null) {
             return;

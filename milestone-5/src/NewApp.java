@@ -18,7 +18,7 @@ public class NewApp {
 
         GraphParser gp = new GraphParser();
         DOMGraph dg = new DOMGraph();
-        DOMGraph fine = new NewDOMGraph(dg);
+        DOMGraph fine = new $$$NewDOMGraph$$$(dg);
 
         ClassNodeGraph cng;
         try {
