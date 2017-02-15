@@ -1,5 +1,7 @@
 import CommandLineArgument.Configuration;
+import DOMNodes.*;
 import analyzers.ClassNodeTraverser;
+import graphNodes.*;
 import projectFile.ClassNodeGraph;
 import projectFile.DOMGraph;
 import projectFile.GraphParser;
@@ -20,10 +22,19 @@ public class NewApp {
         DOMGraph dg = new DOMGraph();
         DOMGraph fine = new $$$NewDOMGraph$$$(dg);
 
+        dg.addVertexToDOMNodeMapping(RegularClassVertex.class, DOMConcreteClassNode.class);
+        dg.addVertexToDOMNodeMapping(AbstractClassVertex.class, DOMAbstractClassNode.class);
+        dg.addVertexToDOMNodeMapping(InterfaceVertex.class, DOMInterfaceNode.class);
+
+        dg.addEdgeToDOMEdgeMapping(ImplementsEdge.class, DOMImplementsEdge.class);
+        dg.addEdgeToDOMEdgeMapping(ExtendsEdge.class, DOMExtendsEdge.class);
+        dg.addEdgeToDOMEdgeMapping(AssociationEdge.class, DOMAssociationEdge.class);
+        dg.addEdgeToDOMEdgeMapping(DependencyEdge.class, DOMDependencyEdge.class);
+
         ClassNodeGraph cng;
         try {
             cng = gp.parse(conf.getWhitelist());
-            fine.generateDOMTree(cng);
+            dg.generateDOMTree(cng);
             ClassNodeTraverser traverser = new ClassNodeTraverser(cng, fine);
             traverser.analyzeAll();
             TextAggregator agg = new TextAggregator();
@@ -42,11 +53,7 @@ public class NewApp {
             return;
         }
 
+
         System.out.println("DONE");
-
-
-
-
-
     }
 }
