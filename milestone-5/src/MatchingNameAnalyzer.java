@@ -20,16 +20,14 @@ public class MatchingNameAnalyzer extends AbstractAnalyzer {
         if (v.getCorrespondingDOMNode() == null) {
             return;
         }
-
-        IDOMNode node = v.getCorrespondingDOMNode();
-
+        
         g.getVertices()
                 .stream()
                 .filter(x -> x.getCorrespondingDOMNode() != null)
                 .filter(x -> !x.getTitle().equals(v.getTitle()))
                 .filter(x -> nameMatches(x, v))
                 .forEach(vert -> {
-                    this.setVisited(vert);
+//                    this.setVisited(vert);
                     IDOMClassNode end = vert.getCorrespondingDOMNode();
                     IDOMEdgeNode newDomNode = new MatchingNameArrow();
                     IDOMClassNode start = v.getCorrespondingDOMNode();
@@ -38,6 +36,7 @@ public class MatchingNameAnalyzer extends AbstractAnalyzer {
                     newDomNode.addAttribute("label", "\" LOOK THEY MATCH!!!!!!\"");
                     seriousHack.addDOMNode(newDomNode);
                 });
+        this.setVisited(v);
     }
 
 

@@ -9,6 +9,6 @@ public class MatchingNameArrow extends DOMActuallyAbstractEdgeNode {
         return this.start.getDOTTitle() +
                 " -> " +
                 this.end.getDOTTitle() +
-                "[ dir = \"both\"" + this.attributeMapToString() + " ];\n";
+                "[" + this.attributeMapToString() + " ];\n";
     }
 }

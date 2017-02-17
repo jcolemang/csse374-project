@@ -99,16 +99,19 @@ only association, not
 ### Wenkang
 - Update the uml design for our milestone 1 at end
 - Do some start for command line arguments
+- various analyzers
 
 
 ### Sabrina
 - Contributed to overall design and many design refinement debates
 - Edge implementation
-- DOT code debugging
+- (lots and lots of) DOT code debugging. DOT queen.
 - Code design improvements via abstraction of related classes
 - Interface cleanup
+- various analyzers
 
 ### Coleman
 - Contributed to design
 - Helped to write the class -> graph parsing code
 - Helped to write the graph -> DOM parsing code
+- various analyzers

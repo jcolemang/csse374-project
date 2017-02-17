@@ -1,0 +1,10 @@
+include: java.awt.List java.util.List java.lang.List
+disclude: java asm sun org
+synthdisplay: off
+analyzers: analyzers.MatchingNameAnalyzer
+access: private
+recursive: on
+graphColor: black
+graphBGColor: white
+fontColor: black
+fontSize: 12

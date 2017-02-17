@@ -16,7 +16,7 @@ public class NewApp {
     public static void main(String[] args) {
 
         Configuration conf = Configuration.getInstance();
-        conf.readFromSettingsFile();
+        conf.readFromSettingsFile("input_output/DATest5.txt");
 
         GraphParser gp = new GraphParser();
         DOMGraph dg = new DOMGraph();
